@@ -1,11 +1,11 @@
 package com.todos.mmd.domain.login.service;
 
+import com.todos.mmd.domain.model.Member;
 import com.todos.mmd.jwt.security.config.JwtTokenProvider;
 import com.todos.mmd.jwt.security.dto.TokenDto;
-import com.todos.mmd.domain.login.dto.UserResponse;
-import com.todos.mmd.domain.login.dto.UserServiceDto;
-import com.todos.mmd.domain.model.User;
-import com.todos.mmd.domain.repository.UserRepository;
+import com.todos.mmd.domain.login.dto.MemberResponse;
+import com.todos.mmd.domain.login.dto.MemberServiceDto;
+import com.todos.mmd.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,28 +20,28 @@ import javax.validation.Valid;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserLoginService {
+public class MemberLoginService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     /* 회원가입 */
     @Transactional
-    public UserResponse registerUser(@Valid UserServiceDto.RegisterUser registerUser) {
+    public MemberResponse registerUser(@Valid MemberServiceDto.RegisterMember request) {
 
         // 1. User 정보
-        String pwd = passwordEncoder.encode(registerUser.getPwd());
-        User savedUser = userRepository.save(registerUser.toUser(pwd));
+        String pwd = passwordEncoder.encode(request.getPwd());
+        Member savedMember = memberRepository.save(request.toMember(pwd));
         // 2. Role 등록
         // TODO: 롤 등록
 
-        return UserResponse.toVO(savedUser);
+        return MemberResponse.toVO(savedMember);
     }
 
     /* 로그인 */
-    public TokenDto login(UserServiceDto.LoginUser loginUser){
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPwd());
+    public TokenDto login(MemberServiceDto.LoginMember request){
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPwd());
         // 실제 검증 -> UserDetailService의 loadUserByUsername 메소드 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 

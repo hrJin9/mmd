@@ -1,6 +1,6 @@
 package com.todos.mmd.domain.login.enums;
 
-public enum UserRole {
+public enum MemberRole {
     ADMIN,
     USER
 }

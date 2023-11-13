@@ -1,4 +1,4 @@
-package com.todos.mmd.config;
+package com.todos.mmd.jwt.security.config;
 
 import com.todos.mmd.jwt.security.config.JwtAccessDeniedHandler;
 import com.todos.mmd.jwt.security.config.JwtAuthentcationEntryPoint;

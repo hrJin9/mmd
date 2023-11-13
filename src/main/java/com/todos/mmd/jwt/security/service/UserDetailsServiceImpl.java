@@ -1,7 +1,7 @@
-package com.todos.mmd.login.service;
+package com.todos.mmd.jwt.security.service;
 
-import com.todos.mmd.domain.model.User;
-import com.todos.mmd.domain.repository.UserRepository;
+import com.todos.mmd.domain.model.Member;
+import com.todos.mmd.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,13 +13,13 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("유저가 없습니다."));
-        return new UserDetailsImpl(user);
+        return new UserDetailsImpl(member);
     }
 }

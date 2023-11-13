@@ -1,7 +1,7 @@
 package com.todos.mmd.domain.model;
 
 import com.todos.mmd.domain.login.enums.UseStauts;
-import com.todos.mmd.domain.login.enums.UserRole;
+import com.todos.mmd.domain.login.enums.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,14 +9,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity @Table(name="USER")
+@Entity @Table(name="MEMBER")
 @Getter
 @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class User {
+public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userNo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
+    private Long memberNo;
 
     private String email;
 
@@ -26,14 +26,14 @@ public class User {
 
     private String phone;
 
-    private String addr;
+    private String address;
 
     private String registerDate;
 
     private String lastLoginDate;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private MemberRole role;
 
     @Enumerated(EnumType.STRING)
     private UseStauts useStauts;

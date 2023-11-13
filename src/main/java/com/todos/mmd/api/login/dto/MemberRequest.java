@@ -1,7 +1,7 @@
-package com.todos.mmd.domain.login.dto;
+package com.todos.mmd.api.login.dto;
 
+import com.todos.mmd.domain.login.dto.MemberServiceDto;
 import com.todos.mmd.domain.login.enums.UseStauts;
-import com.todos.mmd.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,11 +11,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class UserServiceDto {
 
-    @Getter @Builder
-    @AllArgsConstructor @NoArgsConstructor
-    public static class RegisterUser {
+public class MemberRequest {
+
+    @Getter
+    public static class RegisterMember {
         @NotNull
         @Email
         private String email;
@@ -30,7 +30,7 @@ public class UserServiceDto {
         private String phone;
 
         @NotBlank
-        private String addr;
+        private String address;
 
         @NotBlank
         private String registerDate;
@@ -41,13 +41,13 @@ public class UserServiceDto {
         @NotNull
         private UseStauts useStauts;
 
-        public User toUser(String pwd){
-            return User.builder()
+        public MemberServiceDto.RegisterMember convertToServiceDto(){
+            return MemberServiceDto.RegisterMember.builder()
                     .email(email)
                     .pwd(pwd)
                     .name(name)
                     .phone(phone)
-                    .addr(addr)
+                    .address(address)
                     .registerDate(registerDate)
                     .lastLoginDate(lastLoginDate)
                     .useStauts(useStauts).build();
@@ -55,11 +55,18 @@ public class UserServiceDto {
 
     }
 
-    @Getter @Builder
-    @AllArgsConstructor @NoArgsConstructor
-    public static class LoginUser {
+    @Getter
+    public static class LoginMember {
         private String email;
         private String pwd;
+
+        public MemberServiceDto.LoginMember convertToServiceDto() {
+            return MemberServiceDto.LoginMember.builder()
+                    .email(email)
+                    .pwd(pwd)
+                    .build();
+        }
     }
+
 
 }

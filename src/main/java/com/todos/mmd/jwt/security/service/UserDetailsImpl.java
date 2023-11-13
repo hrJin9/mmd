@@ -1,6 +1,6 @@
-package com.todos.mmd.login.service;
+package com.todos.mmd.jwt.security.service;
 
-import com.todos.mmd.domain.model.User;
+import com.todos.mmd.domain.model.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,21 +12,21 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private final User user;
+    private final Member member;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
+        return Collections.singleton(new SimpleGrantedAuthority(member.getRole().toString()));
     }
 
     @Override
     public String getPassword() {
-        return user.getPwd();
+        return member.getPwd();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return member.getEmail();
     }
 
     @Override

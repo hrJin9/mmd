@@ -1,7 +1,7 @@
-package com.todos.mmd.api.login.dto;
+package com.todos.mmd.domain.login.dto;
 
-import com.todos.mmd.domain.login.dto.UserServiceDto;
 import com.todos.mmd.domain.login.enums.UseStauts;
+import com.todos.mmd.domain.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,12 +11,13 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+public class MemberServiceDto {
 
-public class UserRequest {
-
-    @Getter @Builder
-    @AllArgsConstructor @NoArgsConstructor
-    public static class RegisterUser {
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class RegisterMember {
         @NotNull
         @Email
         private String email;
@@ -31,7 +32,7 @@ public class UserRequest {
         private String phone;
 
         @NotBlank
-        private String addr;
+        private String address;
 
         @NotBlank
         private String registerDate;
@@ -42,13 +43,13 @@ public class UserRequest {
         @NotNull
         private UseStauts useStauts;
 
-        public UserServiceDto.RegisterUser convertToServiceDto(){
-            return UserServiceDto.RegisterUser.builder()
+        public Member toMember(String pwd){
+            return Member.builder()
                     .email(email)
                     .pwd(pwd)
                     .name(name)
                     .phone(phone)
-                    .addr(addr)
+                    .address(address)
                     .registerDate(registerDate)
                     .lastLoginDate(lastLoginDate)
                     .useStauts(useStauts).build();
@@ -56,19 +57,16 @@ public class UserRequest {
 
     }
 
-    @Getter @Builder
-    @AllArgsConstructor @NoArgsConstructor
-    public static class LoginUser {
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class LoginMember {
         private String email;
         private String pwd;
 
-        public UserServiceDto.LoginUser convertToServiceDto() {
-            return UserServiceDto.LoginUser.builder()
-                    .email(email)
-                    .pwd(pwd)
-                    .build();
-        }
-    }
 
+
+    }
 
 }

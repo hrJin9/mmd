@@ -1,4 +1,4 @@
-package org.mmd.config;
+package com.todos.mmd.swagger.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
