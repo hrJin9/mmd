@@ -1,4 +1,4 @@
-package com.todos.mmd.jwt.config;
+package com.todos.mmd.jwt.security.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

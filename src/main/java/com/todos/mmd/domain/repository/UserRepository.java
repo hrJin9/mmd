@@ -1,6 +1,6 @@
-package com.todos.mmd.login.repository;
+package com.todos.mmd.domain.repository;
 
-import com.todos.mmd.login.model.User;
+import com.todos.mmd.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.todos.mmd.login.enums;
+package com.todos.mmd.domain.login.enums;
 
 public enum UserRole {
     ADMIN,

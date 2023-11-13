@@ -1,4 +1,4 @@
-package com.todos.mmd.jwt.config;
+package com.todos.mmd.jwt.security.config;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

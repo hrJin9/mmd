@@ -1,11 +1,11 @@
-package com.todos.mmd.jwt.service;
+package com.todos.mmd.domain.login.service;
 
-import com.todos.mmd.jwt.config.JwtTokenProvider;
-import com.todos.mmd.jwt.dto.TokenDto;
-import com.todos.mmd.login.dto.UserResponse;
-import com.todos.mmd.login.dto.UserServiceDto;
-import com.todos.mmd.login.model.User;
-import com.todos.mmd.login.repository.UserRepository;
+import com.todos.mmd.jwt.security.config.JwtTokenProvider;
+import com.todos.mmd.jwt.security.dto.TokenDto;
+import com.todos.mmd.domain.login.dto.UserResponse;
+import com.todos.mmd.domain.login.dto.UserServiceDto;
+import com.todos.mmd.domain.model.User;
+import com.todos.mmd.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

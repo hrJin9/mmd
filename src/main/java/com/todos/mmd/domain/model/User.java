@@ -1,13 +1,12 @@
-package com.todos.mmd.login.model;
+package com.todos.mmd.domain.model;
 
-import com.todos.mmd.login.enums.UseStauts;
+import com.todos.mmd.domain.login.enums.UseStauts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity @Table(name="USER")
 @Getter

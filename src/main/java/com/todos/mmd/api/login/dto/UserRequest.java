@@ -1,7 +1,7 @@
-package com.todos.mmd.login.dto;
+package com.todos.mmd.api.login.dto;
 
-import com.todos.mmd.login.enums.UseStauts;
-import com.todos.mmd.login.model.User;
+import com.todos.mmd.domain.login.dto.UserServiceDto;
+import com.todos.mmd.domain.login.enums.UseStauts;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +11,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class UserServiceDto {
+
+public class UserRequest {
 
     @Getter @Builder
     @AllArgsConstructor @NoArgsConstructor
@@ -41,8 +42,8 @@ public class UserServiceDto {
         @NotNull
         private UseStauts useStauts;
 
-        public User toUser(String pwd){
-            return User.builder()
+        public UserServiceDto.RegisterUser convertToServiceDto(){
+            return UserServiceDto.RegisterUser.builder()
                     .email(email)
                     .pwd(pwd)
                     .name(name)
@@ -60,6 +61,14 @@ public class UserServiceDto {
     public static class LoginUser {
         private String email;
         private String pwd;
+
+        public UserServiceDto.LoginUser convertToServiceDto() {
+            return UserServiceDto.LoginUser.builder()
+                    .email(email)
+                    .pwd(pwd)
+                    .build();
+        }
     }
+
 
 }

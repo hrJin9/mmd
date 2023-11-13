@@ -1,4 +1,4 @@
-package com.todos.mmd.login.repository;
+package com.todos.mmd.domain.repository;
 
 public interface CustomUserRepository {
 }

@@ -1,6 +1,6 @@
-package com.todos.mmd.jwt.config;
+package com.todos.mmd.jwt.security.config;
 
-import com.todos.mmd.jwt.dto.TokenDto;
+import com.todos.mmd.jwt.security.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

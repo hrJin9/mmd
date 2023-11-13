@@ -1,4 +1,4 @@
-package com.todos.mmd.jwt.config;
+package com.todos.mmd.jwt.security.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

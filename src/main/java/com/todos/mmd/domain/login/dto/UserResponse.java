@@ -1,6 +1,6 @@
-package com.todos.mmd.login.dto;
+package com.todos.mmd.domain.login.dto;
 
-import com.todos.mmd.login.model.User;
+import com.todos.mmd.domain.model.User;
 import lombok.Getter;
 
 @Getter

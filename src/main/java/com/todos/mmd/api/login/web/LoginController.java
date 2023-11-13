@@ -1,9 +1,9 @@
-package com.todos.mmd.login;
+package com.todos.mmd.api.login.web;
 
-import com.todos.mmd.jwt.dto.TokenDto;
-import com.todos.mmd.jwt.service.UserLoginService;
-import com.todos.mmd.login.dto.UserRequest;
-import com.todos.mmd.login.dto.UserResponse;
+import com.todos.mmd.jwt.security.dto.TokenDto;
+import com.todos.mmd.domain.login.service.UserLoginService;
+import com.todos.mmd.api.login.dto.UserRequest;
+import com.todos.mmd.domain.login.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class AuthController {
+public class LoginController {
     private final UserLoginService userLoginService;
 
     /* 회원가입 */

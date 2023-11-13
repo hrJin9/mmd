@@ -1,9 +1,9 @@
 package com.todos.mmd.config;
 
-import com.todos.mmd.jwt.config.JwtAccessDeniedHandler;
-import com.todos.mmd.jwt.config.JwtAuthentcationEntryPoint;
-import com.todos.mmd.jwt.config.JwtSecurityConfig;
-import com.todos.mmd.jwt.config.JwtTokenProvider;
+import com.todos.mmd.jwt.security.config.JwtAccessDeniedHandler;
+import com.todos.mmd.jwt.security.config.JwtAuthentcationEntryPoint;
+import com.todos.mmd.jwt.security.config.JwtSecurityConfig;
+import com.todos.mmd.jwt.security.config.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

@@ -1,4 +1,4 @@
-package com.todos.mmd.jwt.dto;
+package com.todos.mmd.jwt.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
