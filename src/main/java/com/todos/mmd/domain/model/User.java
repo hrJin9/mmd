@@ -1,6 +1,7 @@
 package com.todos.mmd.domain.model;
 
 import com.todos.mmd.domain.login.enums.UseStauts;
+import com.todos.mmd.domain.login.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,9 @@ public class User {
     private String registerDate;
 
     private String lastLoginDate;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Enumerated(EnumType.STRING)
     private UseStauts useStauts;

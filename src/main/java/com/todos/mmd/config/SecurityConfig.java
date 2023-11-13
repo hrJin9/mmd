@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/register").permitAll()
                 .anyRequest().authenticated()
             .and()
             .apply(new JwtSecurityConfig(jwtTokenProvider)); //JwtFilter를 등록했던 jwtSecurityConfig 적용
