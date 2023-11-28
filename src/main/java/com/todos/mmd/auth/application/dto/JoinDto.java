@@ -7,24 +7,17 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class MemberRegisterDto {
+public class JoinDto {
     private final String email;
-
     private final String pwd;
-
     private final String name;
-
     private final String phone;
-
     private final String address;
-
     private final String registerDate;
-
     private final String lastLoginDate;
-
     private final UseStauts useStauts;
 
-    public Member of(String pwd){
+    public Member toEntity(String pwd){
         return Member.builder()
                 .email(email)
                 .pwd(pwd)
@@ -35,4 +28,5 @@ public class MemberRegisterDto {
                 .lastLoginDate(lastLoginDate)
                 .useStauts(useStauts).build();
     }
+
 }

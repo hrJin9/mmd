@@ -1,18 +1,21 @@
 package com.todos.mmd.auth.api.request;
 
-import com.todos.mmd.auth.application.dto.MemberLoginDto;
+import com.todos.mmd.auth.application.dto.JoinDto;
+import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.UseStauts;
+import lombok.AccessLevel;
 import lombok.Getter;
-
+import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
-public class MemberRequest {
+public class AuthRequest {
 
     @Getter
-    public static class RegisterMember {
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class JoinMember {
         @NotNull
         @Email
         private String email;
@@ -38,18 +41,18 @@ public class MemberRequest {
         @NotNull
         private UseStauts useStauts;
 
-        public MemberLoginDto.RegisterMember convertToServiceDto(){
-            return MemberLoginDto.RegisterMember.builder()
-                    .email(email)
-                    .pwd(pwd)
-                    .name(name)
-                    .phone(phone)
-                    .address(address)
-                    .registerDate(registerDate)
-                    .lastLoginDate(lastLoginDate)
-                    .useStauts(useStauts).build();
+        public JoinDto toServiceDto() {
+            return new JoinDto(
+                    this.email,
+                    this.pwd,
+                    this.name,
+                    this.phone,
+                    this.address,
+                    this.registerDate,
+                    this.lastLoginDate,
+                    this.useStauts
+            );
         }
-
     }
 
     @Getter
@@ -57,13 +60,12 @@ public class MemberRequest {
         private String email;
         private String pwd;
 
-        public MemberLoginDto.LoginMember convertToServiceDto() {
-            return MemberLoginDto.LoginMember.builder()
-                    .email(email)
-                    .pwd(pwd)
-                    .build();
+        public LoginDto toServiceDto() {
+            return new LoginDto(
+                    this.email,
+                    this.pwd
+            );
         }
     }
-
 
 }

@@ -38,4 +38,5 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private UseStauts useStauts;
 
+
 }
