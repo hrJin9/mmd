@@ -3,18 +3,20 @@ package com.todos.mmd.auth.api.response;
 import lombok.*;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthTokenResponse {
 
-    private final String accessToken;
-    private final String grantType;
+    private String accessToken;
+    private String refreshToken;
+    private String grantType;
+    private Long expiresIn;
 
-    public static AuthTokenResponse of(String accessToken, String grantType) {
+    public static AuthTokenResponse of(String accessToken, String refreshToken, String grantType, Long expiresIn) {
         return new AuthTokenResponse(
                 accessToken,
-                grantType
+                refreshToken,
+                grantType,
+                expiresIn
         );
     }
-
-
 }

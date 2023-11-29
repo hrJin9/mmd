@@ -1,6 +1,6 @@
 package com.todos.mmd.auth.api.request;
 
-import com.todos.mmd.auth.application.dto.JoinDto;
+import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.UseStauts;
 import lombok.AccessLevel;
@@ -15,13 +15,13 @@ public class AuthRequest {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class JoinMember {
+    public static class MemberCreateRequest {
         @NotNull
         @Email
         private String email;
 
         @NotNull
-        private String pwd;
+        private String password;
 
         @NotBlank
         private String name;
@@ -41,10 +41,10 @@ public class AuthRequest {
         @NotNull
         private UseStauts useStauts;
 
-        public JoinDto toServiceDto() {
-            return new JoinDto(
+        public MemberCreateDto toServiceDto() {
+            return new MemberCreateDto(
                     this.email,
-                    this.pwd,
+                    this.password,
                     this.name,
                     this.phone,
                     this.address,
@@ -56,14 +56,14 @@ public class AuthRequest {
     }
 
     @Getter
-    public static class LoginMember {
+    public static class LoginRequest {
         private String email;
-        private String pwd;
+        private String password;
 
         public LoginDto toServiceDto() {
             return new LoginDto(
                     this.email,
-                    this.pwd
+                    this.password
             );
         }
     }

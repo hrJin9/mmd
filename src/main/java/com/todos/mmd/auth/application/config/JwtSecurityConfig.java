@@ -1,6 +1,5 @@
 package com.todos.mmd.auth.application.config;
 
-import com.todos.mmd.auth.application.util.JwtFilter;
 import com.todos.mmd.auth.application.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
