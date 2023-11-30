@@ -17,7 +17,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -39,7 +38,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
         String email = jwtTokenProvider.extractSubject(accessToken);
         memberRepository.findByEmail(email)
-                .orElseThrow(() -> new AuthException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new AuthException("존재하지 않는 계정입니다."));
 
         // 토큰 정보로 Authentication 객체 생성 및 저장
         Authentication authentication = jwtTokenProvider.extractAuthentication(accessToken);

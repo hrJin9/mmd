@@ -3,7 +3,9 @@ package com.todos.mmd.auth.api;
 import com.todos.mmd.auth.api.response.AuthTokenResponse;
 import com.todos.mmd.auth.application.AuthService;
 import com.todos.mmd.auth.api.request.AuthRequest;
+import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.LoginDto;
+import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,10 +25,17 @@ import javax.validation.Valid;
 public class AuthController {
     private final AuthService authService;
 
-    /* 회원가입 */
+    /* 일반회원 회원가입 */
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody @Valid AuthRequest.MemberCreateRequest request, BindingResult bindingResult){
-        authService.register(request.toServiceDto());
+    public ResponseEntity<Void> register(@RequestBody @Valid AuthRequest.MemberCreateRequest request){
+        authService.register(MemberCreateDto.from(request));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    
+    /* 관리자 회원가입 */
+    @PostMapping("/register/admin")
+    public ResponseEntity<Void> registerAmdin(@RequestBody @Valid AuthRequest.AdminCreateRequest request) {
+        authService.registerAdmin(AdminCreateDto.from(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -36,7 +45,5 @@ public class AuthController {
         AuthTokenResponse token = authService.login(LoginDto.from(request));
         return ResponseEntity.ok(token);
     }
-
-
 
 }

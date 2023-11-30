@@ -12,7 +12,6 @@ public class PasswordEncryptor {
         try {
             MessageDigest digest = MessageDigest.getInstance(ALGORITHM);
             digest.update(password.getBytes());
-
             return Base64.getEncoder().encodeToString(digest.digest());
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException("존재하지 않는 암호화 알고리즘입니다.");

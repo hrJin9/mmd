@@ -32,40 +32,36 @@ public class AuthRequest {
         @NotBlank
         private String address;
 
-        @NotBlank
-        private String registerDate;
-
-        @NotBlank
-        private String lastLoginDate;
-
         @NotNull
         private UseStauts useStauts;
 
-        public MemberCreateDto toServiceDto() {
-            return new MemberCreateDto(
-                    this.email,
-                    this.password,
-                    this.name,
-                    this.phone,
-                    this.address,
-                    this.registerDate,
-                    this.lastLoginDate,
-                    this.useStauts
-            );
-        }
     }
 
     @Getter
+    @NoArgsConstructor
+    public static class AdminCreateRequest {
+
+        @NotNull
+        @Email
+        private String email;
+
+        @NotNull
+        private String password;
+
+        @NotBlank
+        private String name;
+
+        @NotBlank
+        private String phone;
+
+    }
+
+
+    @Getter
+    @NoArgsConstructor
     public static class LoginRequest {
         private String email;
         private String password;
-
-        public LoginDto toServiceDto() {
-            return new LoginDto(
-                    this.email,
-                    this.password
-            );
-        }
     }
 
 }

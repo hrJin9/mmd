@@ -39,11 +39,6 @@ public class JwtTokenProvider {
     /* 토큰 생성 */
     public AuthTokenResponse generate(String email, MemberRole role) {
 
-        // claim 권한 설정
-//        String authorities = role.stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-
         String authorities = role.toString();
 
         // access/refresh 토큰 설정

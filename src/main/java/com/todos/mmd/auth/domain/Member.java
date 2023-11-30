@@ -1,24 +1,22 @@
 package com.todos.mmd.auth.domain;
 
+import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.PasswordEncryptor;
 import com.todos.mmd.auth.application.util.PasswordValidator;
 import com.todos.mmd.auth.domain.UseStauts;
 import com.todos.mmd.auth.domain.MemberRole;
+import com.todos.mmd.domain.CommonDate;
 import com.todos.mmd.global.exception.AuthException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Member {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Member extends CommonDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
     private Long memberNo;
@@ -33,28 +31,52 @@ public class Member {
 
     private String address;
 
-    private String registerDate;
-
-    private String lastLoginDate;
-
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
     private UseStauts useStauts;
 
+    public Member(String email, String password, String name, String phone, String address, MemberRole role, UseStauts useStauts) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.useStauts = useStauts;
+    }
+
+    public Member(String email, String password, String name, String phone, MemberRole role, UseStauts useStauts) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phone = phone;
+        this.role = role;
+        this.useStauts = useStauts;
+    }
+
     public static Member from(MemberCreateDto serviceDto) {
         PasswordValidator.validatePassword(serviceDto.getPassword());
         return new Member(
-                null,
                 serviceDto.getEmail(),
                 PasswordEncryptor.encrypt(serviceDto.getPassword()),
                 serviceDto.getName(),
                 serviceDto.getPhone(),
                 serviceDto.getAddress(),
-                serviceDto.getRegisterDate(),
-                serviceDto.getLastLoginDate(),
                 MemberRole.USER,
+                UseStauts.Y
+        );
+    }
+
+    public static Member from(AdminCreateDto adminCreateDto) {
+        PasswordValidator.validatePassword(adminCreateDto.getPassword());
+        return new Member(
+                adminCreateDto.getEmail(),
+                PasswordEncryptor.encrypt(adminCreateDto.getPassword()),
+                adminCreateDto.getName(),
+                adminCreateDto.getPhone(),
+                MemberRole.ADMIN,
                 UseStauts.Y
         );
     }
