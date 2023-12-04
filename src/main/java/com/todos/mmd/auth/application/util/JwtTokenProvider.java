@@ -1,11 +1,14 @@
 package com.todos.mmd.auth.application.util;
 
 import com.todos.mmd.auth.api.response.AuthTokenResponse;
+import com.todos.mmd.auth.application.UserDetailsServiceImpl;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.MemberRole;
+import com.todos.mmd.repository.member.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -29,11 +33,13 @@ public class JwtTokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private static final String AUTHORITIES_KEY = "auth";
     private final Key key;
+    private final UserDetailsServiceImpl userDetailsService;
     
     /* jwt secret key 변수 할당 */
-    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
+    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, UserDetailsServiceImpl userDetailsService) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.userDetailsService = userDetailsService;
     }
 
     /* 토큰 생성 */
@@ -83,31 +89,11 @@ public class JwtTokenProvider {
         return false;
     }
     
-    /* claim에 저장된 subject(email) 추출 */
-    public String extractSubject(String accessToken) {
-        Claims claims = parseClaims(accessToken);
-        return claims.getSubject();
-    }
-
     /* claim에 저장된 정보로 authentication 추출 */
     public Authentication extractAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
-
-        // authorities 생성
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        // User 객체 생성
-        User principal = new User(
-                claims.getSubject(),
-                null,
-                authorities
-        );
-
-        return new UsernamePasswordAuthenticationToken(principal, accessToken, authorities);
-
+        UserDetails member = userDetailsService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(member.getUsername(), accessToken, member.getAuthorities());
     }
     
     /* 토큰 Parsing */

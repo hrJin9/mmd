@@ -1,7 +1,5 @@
 package com.todos.mmd.auth.api.request;
 
-import com.todos.mmd.auth.application.dto.MemberCreateDto;
-import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.UseStauts;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -38,7 +36,7 @@ public class AuthRequest {
     }
 
     @Getter
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class AdminCreateRequest {
 
         @NotNull
@@ -58,7 +56,7 @@ public class AuthRequest {
 
 
     @Getter
-    @NoArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class LoginRequest {
         private String email;
         private String password;
