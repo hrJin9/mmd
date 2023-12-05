@@ -4,12 +4,9 @@ import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.PasswordEncryptor;
 import com.todos.mmd.auth.application.util.PasswordValidator;
-import com.todos.mmd.auth.domain.UseStauts;
-import com.todos.mmd.auth.domain.MemberRole;
-import com.todos.mmd.domain.CommonDate;
+import com.todos.mmd.entity.CommonDate;
 import com.todos.mmd.global.exception.AuthException;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -84,7 +81,7 @@ public class Member extends CommonDate {
     public void validatePassword(String password) {
         String hashedPassword = PasswordEncryptor.encrypt(password);
         if(!this.password.equals(password)) {
-            throw new AuthException("아이디와 패스워드를 다시 확인해주세요.");
+            throw new AuthException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
     }

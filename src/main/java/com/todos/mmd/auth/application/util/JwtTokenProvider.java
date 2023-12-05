@@ -1,6 +1,7 @@
 package com.todos.mmd.auth.application.util;
 
 import com.todos.mmd.auth.api.response.AuthTokenResponse;
+import com.todos.mmd.auth.application.MemberRefreshTokenService;
 import com.todos.mmd.auth.application.UserDetailsServiceImpl;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.MemberRole;
@@ -34,7 +35,7 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private final Key key;
     private final UserDetailsServiceImpl userDetailsService;
-    
+
     /* jwt secret key 변수 할당 */
     public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, UserDetailsServiceImpl userDetailsService) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -43,9 +44,7 @@ public class JwtTokenProvider {
     }
 
     /* 토큰 생성 */
-    public AuthTokenResponse generate(String email, MemberRole role) {
-
-        String authorities = role.toString();
+    public AuthTokenResponse generate(String email, String authorities) {
 
         // access/refresh 토큰 설정
         long now = (new Date()).getTime();
@@ -70,12 +69,12 @@ public class JwtTokenProvider {
     }
 
     /* 토큰 유효성 검증 */
-    public boolean validateToken(String accessToken) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
-                    .parseClaimsJws(accessToken);
+                    .parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid Jwt Token");

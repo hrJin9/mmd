@@ -1,4 +1,4 @@
-package com.todos.mmd.domain;
+package com.todos.mmd.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

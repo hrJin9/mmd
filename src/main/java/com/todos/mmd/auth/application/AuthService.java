@@ -56,7 +56,7 @@ public class AuthService {
         
         // 패스워드 검증
         member.validatePassword(loginDto.getPassword());
-        return jwtTokenProvider.generate(loginDto.getEmail(), member.getRole());
+        return jwtTokenProvider.generate(loginDto.getEmail(), member.getRole().toString());
     }
     
     /* 이메일 중복검사 */
