@@ -9,8 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberRefreshToken {
-
+public class Token {
     @Id
     private Long memberNo;
 
@@ -21,13 +20,13 @@ public class MemberRefreshToken {
     private String refreshToken;
     private int reissueCount = 0;
 
-    public MemberRefreshToken(Member member, String refreshToken) {
+    public Token(Member member, String refreshToken) {
         this.member = member;
         this.refreshToken = refreshToken;
     }
 
-    public static MemberRefreshToken from(Member member, String refreshToken) {
-        return new MemberRefreshToken(
+    public static Token from(Member member, String refreshToken) {
+        return new Token(
                 member,
                 refreshToken
         );
