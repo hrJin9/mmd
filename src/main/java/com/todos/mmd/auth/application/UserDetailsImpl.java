@@ -5,23 +5,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
-import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-
     private final Member member;
+    private static final String ROLE_PREFIX = "ROLE_";
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(member.getRole().toString()));
+        return Stream.of(new SimpleGrantedAuthority(ROLE_PREFIX + member.getRole()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return member.getPwd();
+        return member.getPassword();
     }
 
     @Override
