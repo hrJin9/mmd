@@ -15,17 +15,14 @@ import java.time.LocalDateTime;
 public class CommonDate {
 
     @CreatedDate
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    public CommonDate(LocalDateTime createDate, LocalDateTime lastModifiedDate) {
-        this.createDate = createDate;
-        this.lastModifiedDate = lastModifiedDate;
+    public CommonDate() {
+        this.createdDate = LocalDateTime.now();
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
-    public CommonDate() {
-        this(null, null);
-    }
 }

@@ -1,8 +1,6 @@
 package com.todos.mmd.auth.application.dto;
 
 import com.todos.mmd.auth.api.request.AuthRequest;
-import com.todos.mmd.auth.domain.UseStauts;
-import com.todos.mmd.auth.domain.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +12,6 @@ public class MemberCreateDto {
     private final String name;
     private final String phone;
     private final String address;
-    private final UseStauts useStauts;
 
     public static MemberCreateDto from(AuthRequest.MemberCreateRequest request) {
         return new MemberCreateDto(
@@ -22,8 +19,7 @@ public class MemberCreateDto {
                 request.getPassword(),
                 request.getName(),
                 request.getPhone(),
-                request.getAddress(),
-                request.getUseStauts()
+                request.getAddress()
         );
     }
 

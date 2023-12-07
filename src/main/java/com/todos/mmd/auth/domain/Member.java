@@ -32,25 +32,25 @@ public class Member extends CommonDate {
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
-    private UseStauts useStauts;
+    private UseStatus useStatus;
 
-    public Member(String email, String password, String name, String phone, String address, MemberRole role, UseStauts useStauts) {
+    public Member(String email, String password, String name, String phone, String address, MemberRole role, UseStatus useStatus) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.role = role;
-        this.useStauts = useStauts;
+        this.useStatus = useStatus;
     }
 
-    public Member(String email, String password, String name, String phone, MemberRole role, UseStauts useStauts) {
+    public Member(String email, String password, String name, String phone, MemberRole role, UseStatus useStatus) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.role = role;
-        this.useStauts = useStauts;
+        this.useStatus = useStatus;
     }
 
     public static Member from(MemberCreateDto serviceDto) {
@@ -62,7 +62,7 @@ public class Member extends CommonDate {
                 serviceDto.getPhone(),
                 serviceDto.getAddress(),
                 MemberRole.USER,
-                UseStauts.Y
+                UseStatus.Y
         );
     }
 
@@ -74,13 +74,13 @@ public class Member extends CommonDate {
                 adminCreateDto.getName(),
                 adminCreateDto.getPhone(),
                 MemberRole.ADMIN,
-                UseStauts.Y
+                UseStatus.Y
         );
     }
 
     public void validatePassword(String password) {
         String hashedPassword = PasswordEncryptor.encrypt(password);
-        if(!this.password.equals(password)) {
+        if(!this.password.equals(hashedPassword)) {
             throw new AuthException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 

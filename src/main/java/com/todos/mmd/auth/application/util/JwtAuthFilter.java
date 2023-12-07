@@ -21,14 +21,11 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private static final String DELIMS = " ";
-    private static final String RTK = "refreshToken";
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         log.info("JwtAuthFilter.doFilterInternal, Jwt 필터 인증 시작");
-
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         // 헤더에서 bearer 토큰인지 검증

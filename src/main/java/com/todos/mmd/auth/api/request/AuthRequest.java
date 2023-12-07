@@ -1,6 +1,5 @@
 package com.todos.mmd.auth.api.request;
 
-import com.todos.mmd.auth.domain.UseStauts;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,10 +28,6 @@ public class AuthRequest {
 
         @NotBlank
         private String address;
-
-        @NotNull
-        private UseStauts useStauts;
-
     }
 
     @Getter

@@ -2,8 +2,9 @@ package com.todos.mmd.auth.application.util;
 
 import com.todos.mmd.auth.api.response.TokenResponse;
 import com.todos.mmd.auth.application.UserDetailsServiceImpl;
+import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.global.exception.AuthException;
-import com.todos.mmd.repository.redis.RedisRepository;
+import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -13,11 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import javax.security.auth.Subject;
 import java.security.Key;
-import java.time.Duration;
 import java.util.Date;
 
 @Slf4j
@@ -29,14 +27,14 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private final Key key;
     private final UserDetailsServiceImpl userDetailsService;
-    private final RedisRepository redisRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     /* jwt secret key 변수 할당 */
-    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, UserDetailsServiceImpl userDetailsService, RedisRepository redisRepository) {
+    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, UserDetailsServiceImpl userDetailsService, RefreshTokenRepository refreshTokenRepository) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.userDetailsService = userDetailsService;
-        this.redisRepository = redisRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     /* 토큰 생성 */
@@ -52,17 +50,17 @@ public class JwtTokenProvider {
         String refreshToken = createToken(email, authorities, refreshTokenExpiredAt);
 
         // refresh 토큰 redis에 저장
-        redisRepository.setValues(email, refreshToken, Duration.ofMillis(ACCESS_TOKEN_EXPIRE_TIME));
+        refreshTokenRepository.save(RefreshToken.of(email, refreshToken, REFRESH_TOKEN_EXPIRE_TIME / 1000L));
 
         return TokenResponse.of(accessToken, refreshToken, "Bearer", ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 
     /* 토큰 재발급 */
     public TokenResponse reissueAccessToken(String email, String authorities) {
-        String refreshTokenInRedis = redisRepository.getValues(email);
-        if(!StringUtils.hasText(refreshTokenInRedis)) {
-            throw new AuthException("만료된 인증 정보입니다.");
-        }
+
+        refreshTokenRepository.findById(email)
+                .orElseThrow(() -> new AuthException("만료된 인증 정보입니다."));
+
         return generate(email, authorities);
     }
 

@@ -6,9 +6,10 @@ import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.JwtTokenProvider;
 import com.todos.mmd.auth.domain.Member;
 import com.todos.mmd.auth.application.dto.LoginDto;
+import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.global.exception.AuthException;
 import com.todos.mmd.repository.member.MemberRepository;
-import com.todos.mmd.repository.redis.RedisRepository;
+import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
     private final MemberRepository memberRepository;
-    private final RedisRepository redisRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     /* 일반회원 회원가입 */
@@ -56,14 +57,15 @@ public class AuthService {
     public TokenResponse login(LoginDto loginDto){
         Member member = memberRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new AuthException("존재하지 않는 이메일입니다."));
-        
+
         // 패스워드 검증
         member.validatePassword(loginDto.getPassword());
 
         // jwt 토큰 발급
         TokenResponse tokenResponse = jwtTokenProvider.generate(loginDto.getEmail(), member.getRole().toString());
 
-        redisRepository.setValues(member.getEmail(), tokenResponse.getRefreshToken());
+        // redis에 refreshToken 저장
+        refreshTokenRepository.save(RefreshToken.of(member.getEmail(), tokenResponse.getRefreshToken(), tokenResponse.getExpiresIn()));
 
         return tokenResponse;
     }
@@ -81,12 +83,12 @@ public class AuthService {
     /* 로그아웃 */
     public void logout(String email, String refreshToken) {
 
-        if(!redisRepository.isExists(email)) {
-            throw new AuthException("이미 로그아웃된 계정입니다.");
-        } else if (!redisRepository.Matches(email, refreshToken)){
+        RefreshToken token = refreshTokenRepository.findById(email)
+                .orElseThrow(() -> new AuthException("이미 로그아웃된 계정입니다."));
+        if(!refreshToken.equals(token.getRefreshToken())) {
             throw new AuthException("로그인된 사용자의 refresh token이 아닙니다.");
         }
 
-        redisRepository.deleteValues(email);
+        refreshTokenRepository.delete(token);
     }
 }
