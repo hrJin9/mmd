@@ -4,7 +4,7 @@ import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.PasswordEncryptor;
 import com.todos.mmd.auth.application.util.PasswordValidator;
-import com.todos.mmd.entity.CommonDate;
+import com.todos.mmd.entity.Common;
 import com.todos.mmd.auth.exception.AuthException;
 import lombok.*;
 
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends CommonDate {
+public class Member extends Common {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
     private Long memberNo;
