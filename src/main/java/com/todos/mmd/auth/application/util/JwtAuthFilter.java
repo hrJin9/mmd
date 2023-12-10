@@ -36,18 +36,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             Authentication authentication = jwtTokenProvider.extractAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-//        else if (StringUtils.hasText(refreshToken) && !jwtTokenProvider.validateToken(accessToken) && jwtTokenProvider.validateToken(refreshToken) && tokenService.isExists(refreshToken)) {
-//
-//            // refresh 토큰 정보로 Authentication 객체 생성 및 저장
-//            Authentication authentication = jwtTokenProvider.extractAuthentication(refreshToken);
-//
-//            // accessToken과 refreshToken 재발급
-//            TokenResponse tokenResponse = jwtTokenProvider.generate(authentication.getName(), authentication.getAuthorities().toString());
-//
-//            tokenService.saveMemberRefreshToken(authentication.getName(), tokenResponse.getRefreshToken());
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//        }
 
         filterChain.doFilter(request, response);
     }

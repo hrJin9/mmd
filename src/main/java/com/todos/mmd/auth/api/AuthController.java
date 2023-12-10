@@ -3,16 +3,17 @@ package com.todos.mmd.auth.api;
 import com.todos.mmd.auth.api.response.TokenResponse;
 import com.todos.mmd.auth.application.AuthService;
 import com.todos.mmd.auth.api.request.AuthRequest;
-import com.todos.mmd.auth.application.UserDetailsImpl;
+import com.todos.mmd.auth.application.MemberDetails;
 import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
-import com.todos.mmd.auth.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -48,8 +49,8 @@ public class AuthController {
 
     /* access 토큰 재발급 */
     @GetMapping("/reissue")
-    public ResponseEntity<TokenResponse> reissue(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        TokenResponse token = authService.reissue(userDetails);
+    public ResponseEntity<TokenResponse> reissue(@AuthenticationPrincipal MemberDetails memberDetails) {
+        TokenResponse token = authService.reissue(memberDetails);
         return ResponseEntity.ok(token);
     }
 

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class UserDetailsImpl implements UserDetails {
+public class MemberDetails implements UserDetails {
     private final Member member;
     private static final String ROLE_PREFIX = "ROLE_";
 
@@ -22,7 +22,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return member.getPassword();
+        return null;
     }
 
     @Override

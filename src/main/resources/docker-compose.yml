@@ -1,0 +1,18 @@
+version: "3.0"
+services:
+#  web:
+#    image: redis
+#    container_name: mmd_redis
+#    ports:
+#      - "6379:6379"
+
+  redis-container:
+    image: redis:latest
+    container_name: mmd_redis
+    command: redis-server
+    hostname: redis
+    ports:
+      - 6379:6379
+    restart: always
+
+

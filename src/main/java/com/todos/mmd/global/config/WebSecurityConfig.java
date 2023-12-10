@@ -1,6 +1,5 @@
 package com.todos.mmd.global.config;
 
-import com.todos.mmd.auth.application.util.JwtAccessDeniedHandler;
 import com.todos.mmd.auth.application.util.JwtAuthFilter;
 import com.todos.mmd.auth.application.util.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +23,14 @@ public class WebSecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private static final String[] ALLOWED_URIS = {"/api/auth/**"};
 
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> {
-            web.ignoring()
-                    .antMatchers(
-                    );
-        };
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> {
+//            web.ignoring()
+//                    .antMatchers(
+//                    );
+//        };
+//    }
 
     /* filterChain 설정 */
     @Bean
