@@ -12,6 +12,7 @@ import com.todos.mmd.repository.member.MemberRepository;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,8 +77,8 @@ public class AuthService {
     }
 
     /* 토큰 재발급 */
-    public TokenResponse reissue(UserDetailsImpl userDetails) {
-        return jwtTokenProvider.reissueAccessToken(userDetails.getUsername(), userDetails.getAuthorities().toString());
+    public TokenResponse reissue(MemberDetails memberDetails) {
+        return jwtTokenProvider.reissueAccessToken(memberDetails.getUsername(), memberDetails.getAuthorities().toString());
     }
 
     /* 로그아웃 */

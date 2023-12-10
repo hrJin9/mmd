@@ -1,7 +1,8 @@
 package com.todos.mmd.auth.application.util;
 
 import com.todos.mmd.auth.api.response.TokenResponse;
-import com.todos.mmd.auth.application.UserDetailsServiceImpl;
+import com.todos.mmd.auth.application.MemberDetails;
+import com.todos.mmd.auth.application.MemberDetailsService;
 import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.global.exception.AuthException;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -26,14 +28,14 @@ public class JwtTokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private static final String AUTHORITIES_KEY = "auth";
     private final Key key;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final MemberDetailsService memberDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
     /* jwt secret key 변수 할당 */
-    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, UserDetailsServiceImpl userDetailsService, RefreshTokenRepository refreshTokenRepository) {
+    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, MemberDetailsService memberDetailsService, RefreshTokenRepository refreshTokenRepository) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.userDetailsService = userDetailsService;
+        this.memberDetailsService = memberDetailsService;
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
@@ -97,8 +99,9 @@ public class JwtTokenProvider {
     /* claim에 저장된 정보로 authentication 추출 */
     public Authentication extractAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
-        UserDetails member = userDetailsService.loadUserByUsername(claims.getSubject());
-        return new UsernamePasswordAuthenticationToken(member.getUsername(), accessToken, member.getAuthorities());
+        UserDetails memberDetails = memberDetailsService.loadUserByUsername(claims.getSubject());
+        // TODO : 여기에서 memberDetails를 넘기면 Controller에서 member의 정보를 다 넘기게 되는데 이래도 되는걸까..? (memberDetails를 넘기지 않으면 @AuthenticationPrincipal이 null이 됨)
+        return new UsernamePasswordAuthenticationToken(memberDetails, accessToken, memberDetails.getAuthorities());
     }
     
     /* 토큰 Parsing */
