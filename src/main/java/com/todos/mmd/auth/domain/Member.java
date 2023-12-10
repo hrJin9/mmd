@@ -4,8 +4,8 @@ import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.PasswordEncryptor;
 import com.todos.mmd.auth.application.util.PasswordValidator;
-import com.todos.mmd.entity.Common;
 import com.todos.mmd.auth.exception.AuthException;
+import com.todos.mmd.entity.Common;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,27 +30,25 @@ public class Member extends Common {
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
+//
+//    @Enumerated(EnumType.STRING)
+//    private UseStatus useStatus;
 
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
-
-    public Member(String email, String password, String name, String phone, String address, MemberRole role, UseStatus useStatus) {
+    public Member(String email, String password, String name, String phone, String address, MemberRole role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.role = role;
-        this.useStatus = useStatus;
     }
 
-    public Member(String email, String password, String name, String phone, MemberRole role, UseStatus useStatus) {
+    public Member(String email, String password, String name, String phone, MemberRole role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.role = role;
-        this.useStatus = useStatus;
     }
 
     public static Member from(MemberCreateDto serviceDto) {
@@ -61,8 +59,7 @@ public class Member extends Common {
                 serviceDto.getName(),
                 serviceDto.getPhone(),
                 serviceDto.getAddress(),
-                MemberRole.USER,
-                UseStatus.Y
+                MemberRole.USER
         );
     }
 
@@ -73,8 +70,7 @@ public class Member extends Common {
                 PasswordEncryptor.encrypt(adminCreateDto.getPassword()),
                 adminCreateDto.getName(),
                 adminCreateDto.getPhone(),
-                MemberRole.ADMIN,
-                UseStatus.Y
+                MemberRole.ADMIN
         );
     }
 
