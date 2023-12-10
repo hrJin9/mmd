@@ -1,4 +1,6 @@
-package com.todos.mmd.global.exception;
+package com.todos.mmd.auth.exception;
+
+import com.todos.mmd.global.exception.MmdException;
 
 /* auth관련 exception 처리 */
 public class AuthException extends MmdException {

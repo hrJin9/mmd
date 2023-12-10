@@ -7,12 +7,11 @@ import com.todos.mmd.auth.application.util.JwtTokenProvider;
 import com.todos.mmd.auth.domain.Member;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.RefreshToken;
-import com.todos.mmd.global.exception.AuthException;
+import com.todos.mmd.auth.exception.AuthException;
 import com.todos.mmd.repository.member.MemberRepository;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +33,7 @@ public class AuthService {
         }
 
         Member member = Member.from(memberCreateDto);
-
-        log.info("등록된 회원 = {}", member.getEmail());
-        memberRepository.save(member).getEmail();
+        memberRepository.save(member);
     }
 
     /* 관리자 회원가입 */
@@ -48,8 +45,6 @@ public class AuthService {
         }
 
         Member member = Member.from(adminCreateDto);
-
-        log.info("등록된 관리자 = {}", member.getEmail());
         memberRepository.save(member);
     }
 
@@ -77,7 +72,7 @@ public class AuthService {
     }
 
     /* 토큰 재발급 */
-    public TokenResponse reissue(MemberDetails memberDetails) {
+    public TokenResponse reissueAccessToken(MemberDetails memberDetails) {
         return jwtTokenProvider.reissueAccessToken(memberDetails.getUsername(), memberDetails.getAuthorities().toString());
     }
 

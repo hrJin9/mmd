@@ -50,7 +50,7 @@ public class AuthController {
     /* access 토큰 재발급 */
     @GetMapping("/reissue")
     public ResponseEntity<TokenResponse> reissue(@AuthenticationPrincipal MemberDetails memberDetails) {
-        TokenResponse token = authService.reissue(memberDetails);
+        TokenResponse token = authService.reissueAccessToken(memberDetails);
         return ResponseEntity.ok(token);
     }
 

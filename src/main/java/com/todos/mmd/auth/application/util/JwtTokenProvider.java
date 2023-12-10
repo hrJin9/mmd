@@ -1,10 +1,9 @@
 package com.todos.mmd.auth.application.util;
 
 import com.todos.mmd.auth.api.response.TokenResponse;
-import com.todos.mmd.auth.application.MemberDetails;
 import com.todos.mmd.auth.application.MemberDetailsService;
 import com.todos.mmd.auth.domain.RefreshToken;
-import com.todos.mmd.global.exception.AuthException;
+import com.todos.mmd.auth.exception.AuthException;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +37,7 @@ public class JwtTokenProvider {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    /* 토큰 생성 */
+    /* access/refresh 토큰 생성 */
     public TokenResponse generate(String email, String authorities) {
 
         // access/refresh 토큰 설정
@@ -57,13 +55,19 @@ public class JwtTokenProvider {
         return TokenResponse.of(accessToken, refreshToken, "Bearer", ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 
-    /* 토큰 재발급 */
+    /* access 토큰 재발급 */
     public TokenResponse reissueAccessToken(String email, String authorities) {
 
-        refreshTokenRepository.findById(email)
+        // refresh 토큰 유무
+        RefreshToken refreshToken = refreshTokenRepository.findById(email)
                 .orElseThrow(() -> new AuthException("만료된 인증 정보입니다."));
 
-        return generate(email, authorities);
+        // access 토큰 재발급
+        long now = (new Date()).getTime();
+        Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        String accessToken = createToken(email, authorities, accessTokenExpiredAt);
+
+        return TokenResponse.of(accessToken, refreshToken.getRefreshToken(), "Bearer", ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 
     /* 토큰 빌드 */
@@ -87,7 +91,7 @@ public class JwtTokenProvider {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid Jwt Token");
         } catch (ExpiredJwtException e){
-            log.info("Expired Jwt Token");
+            throw new AuthException("만료된 token 입니다.");
         } catch (UnsupportedJwtException e){
             log.info("Unsupported Jwt Token");
         } catch (IllegalArgumentException e){
