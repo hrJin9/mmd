@@ -1,5 +1,6 @@
 package com.todos.mmd.global.exception;
 
+import com.todos.mmd.auth.exception.AuthException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

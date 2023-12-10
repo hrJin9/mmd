@@ -5,7 +5,7 @@ import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.PasswordEncryptor;
 import com.todos.mmd.auth.application.util.PasswordValidator;
 import com.todos.mmd.entity.CommonDate;
-import com.todos.mmd.global.exception.AuthException;
+import com.todos.mmd.auth.exception.AuthException;
 import lombok.*;
 
 import javax.persistence.*;

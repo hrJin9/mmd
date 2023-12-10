@@ -1,7 +1,7 @@
 package com.todos.mmd.auth.application;
 
 import com.todos.mmd.auth.domain.Member;
-import com.todos.mmd.global.exception.AuthException;
+import com.todos.mmd.auth.exception.AuthException;
 import com.todos.mmd.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
