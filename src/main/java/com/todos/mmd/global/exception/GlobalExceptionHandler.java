@@ -1,6 +1,7 @@
 package com.todos.mmd.global.exception;
 
 import com.todos.mmd.auth.exception.AuthException;
+import com.todos.mmd.auth.exception.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<ExceptionResponse> handleAuthException(AuthException exception) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ExceptionResponse(exception.getMessage(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ExceptionResponse> handleJwtException(JwtException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ExceptionResponse(exception.getMessage(), LocalDateTime.now()));

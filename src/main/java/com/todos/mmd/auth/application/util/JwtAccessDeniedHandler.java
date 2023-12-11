@@ -1,5 +1,6 @@
 package com.todos.mmd.auth.application.util;
 
+import com.todos.mmd.auth.exception.AuthDeniedException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     /* 인가 -> 필요한 권한이 존재하지 않는 경우 403 Forbidden 에러 */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        response.sendError(HttpServletResponse.SC_FORBIDDEN, "권한이 존재하지 않습니다.");
+        throw new AuthDeniedException("필요한 권한이 존재하지 않습니다.");
     }
 }

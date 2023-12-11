@@ -1,14 +1,15 @@
 package com.todos.mmd.global.config;
 
+import com.todos.mmd.auth.application.util.JwtAccessDeniedHandler;
 import com.todos.mmd.auth.application.util.JwtAuthFilter;
 import com.todos.mmd.auth.application.util.JwtAuthenticationEntryPoint;
+import com.todos.mmd.auth.application.util.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,17 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private static final String[] ALLOWED_URIS = {"/api/auth/**"};
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> {
-//            web.ignoring()
-//                    .antMatchers(
-//                    );
-//        };
-//    }
 
     /* filterChain 설정 */
     @Bean
@@ -38,6 +32,7 @@ public class WebSecurityConfig {
         http.csrf().disable() // 토큰 사용 -> 비활성화
             .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
             .and()
                 .sessionManagement()  //세션 사용 X
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -47,7 +42,8 @@ public class WebSecurityConfig {
                 .antMatchers("/swagger-resources/**", "/swagger-ui/**", "swagger/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
 
         return http.build();
     }
