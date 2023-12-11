@@ -8,6 +8,8 @@ import com.todos.mmd.auth.domain.Member;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.auth.exception.AuthException;
+import com.todos.mmd.auth.exception.JwtException;
+import com.todos.mmd.global.exception.BadRequestException;
 import com.todos.mmd.repository.member.MemberRepository;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,7 @@ public class AuthService {
         String email = memberCreateDto.getEmail();
         
         if(isDuplicatedEmail(email)) {
-            throw new AuthException("중복된 이메일입니다.");
+            throw new BadRequestException("중복된 이메일입니다.");
         }
 
         Member member = Member.from(memberCreateDto);
@@ -41,7 +43,7 @@ public class AuthService {
         String email = adminCreateDto.getEmail();
 
         if(isDuplicatedEmail(email)) {
-            throw new AuthException("중복된 이메일입니다.");
+            throw new BadRequestException("중복된 이메일입니다.");
         }
 
         Member member = Member.from(adminCreateDto);
@@ -80,11 +82,12 @@ public class AuthService {
     public void logout(String email, String refreshToken) {
 
         RefreshToken token = refreshTokenRepository.findById(email)
-                .orElseThrow(() -> new AuthException("이미 로그아웃된 계정입니다."));
+                .orElseThrow(() -> new JwtException("이미 로그아웃된 사용자입니다."));
         if(!refreshToken.equals(token.getRefreshToken())) {
-            throw new AuthException("로그인된 사용자의 refresh token이 아닙니다.");
+            throw new JwtException("로그인된 사용자의 Refresh 토큰이 아닙니다.");
         }
 
         refreshTokenRepository.delete(token);
     }
+
 }

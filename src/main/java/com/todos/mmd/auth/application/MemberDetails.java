@@ -20,6 +20,10 @@ public class MemberDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public Long getMemberNo() {
+        return member.getMemberNo();
+    }
+
     @Override
     public String getPassword() {
         return null;

@@ -1,10 +1,8 @@
-package com.todos.mmd.global.exception;
+package com.todos.mmd.api;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
 @Getter

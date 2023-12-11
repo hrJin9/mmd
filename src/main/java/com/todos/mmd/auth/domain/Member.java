@@ -1,19 +1,21 @@
 package com.todos.mmd.auth.domain;
 
+import com.todos.mmd.application.member.dto.MemberUpdateDto;
 import com.todos.mmd.auth.application.dto.AdminCreateDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import com.todos.mmd.auth.application.util.PasswordEncryptor;
 import com.todos.mmd.auth.application.util.PasswordValidator;
 import com.todos.mmd.auth.exception.AuthException;
-import com.todos.mmd.entity.Common;
+import com.todos.mmd.entity.CommonDate;
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends Common {
+public class Member extends CommonDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
     private Long memberNo;
@@ -30,25 +32,27 @@ public class Member extends Common {
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
-//
-//    @Enumerated(EnumType.STRING)
-//    private UseStatus useStatus;
 
-    public Member(String email, String password, String name, String phone, String address, MemberRole role) {
+    @Enumerated(EnumType.STRING)
+    private UseStatus useStatus;
+
+    public Member(String email, String password, String name, String phone, String address, MemberRole role, UseStatus useStatus) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.role = role;
+        this.useStatus = useStatus;
     }
 
-    public Member(String email, String password, String name, String phone, MemberRole role) {
+    public Member(String email, String password, String name, String phone, MemberRole role, UseStatus useStatus) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.role = role;
+        this.useStatus = useStatus;
     }
 
     public static Member from(MemberCreateDto serviceDto) {
@@ -59,7 +63,8 @@ public class Member extends Common {
                 serviceDto.getName(),
                 serviceDto.getPhone(),
                 serviceDto.getAddress(),
-                MemberRole.USER
+                MemberRole.USER,
+                UseStatus.Y
         );
     }
 
@@ -70,8 +75,17 @@ public class Member extends Common {
                 PasswordEncryptor.encrypt(adminCreateDto.getPassword()),
                 adminCreateDto.getName(),
                 adminCreateDto.getPhone(),
-                MemberRole.ADMIN
+                MemberRole.ADMIN,
+                UseStatus.Y
         );
+    }
+
+    public void update(MemberUpdateDto memberUpdateDto) {
+        this.name = memberUpdateDto.getName();
+        this.phone = memberUpdateDto.getPhone();
+        if(StringUtils.hasText(memberUpdateDto.getAddress())) {
+            this.address = memberUpdateDto.getAddress();
+        }
     }
 
     public void validatePassword(String password) {

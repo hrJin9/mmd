@@ -9,11 +9,10 @@ import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.application.dto.MemberCreateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,22 +42,28 @@ public class AuthController {
     /* 로그인 */
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid AuthRequest.LoginRequest request){
-        TokenResponse token = authService.login(LoginDto.from(request));
-        return ResponseEntity.ok(token);
+        TokenResponse tokenResponse = authService.login(LoginDto.from(request));
+        return ResponseEntity.ok()
+                .body(tokenResponse);
     }
 
     /* access 토큰 재발급 */
     @GetMapping("/reissue")
     public ResponseEntity<TokenResponse> reissue(@AuthenticationPrincipal MemberDetails memberDetails) {
-        TokenResponse token = authService.reissueAccessToken(memberDetails);
-        return ResponseEntity.ok(token);
+        TokenResponse tokenResponse = authService.reissueAccessToken(memberDetails);
+        return ResponseEntity.ok()
+                .body(tokenResponse);
     }
 
     /* 로그아웃 */
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(Principal principal, @RequestHeader("refreshToken") String refreshToken) {
+    public ResponseEntity<Void> logout(
+            Principal principal,
+            @RequestHeader("refreshToken") String refreshToken
+    ) {
         authService.logout(principal.getName(), refreshToken);
         return ResponseEntity.noContent().build();
     }
+    
 
 }

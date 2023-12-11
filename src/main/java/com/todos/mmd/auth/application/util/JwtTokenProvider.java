@@ -3,7 +3,7 @@ package com.todos.mmd.auth.application.util;
 import com.todos.mmd.auth.api.response.TokenResponse;
 import com.todos.mmd.auth.application.MemberDetailsService;
 import com.todos.mmd.auth.domain.RefreshToken;
-import com.todos.mmd.auth.exception.AuthException;
+import com.todos.mmd.auth.exception.JwtException;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -60,7 +60,7 @@ public class JwtTokenProvider {
 
         // refresh 토큰 유무
         RefreshToken refreshToken = refreshTokenRepository.findById(email)
-                .orElseThrow(() -> new AuthException("만료된 인증 정보입니다."));
+                .orElseThrow(() -> new JwtException("만료된 토큰입니다."));
 
         // access 토큰 재발급
         long now = (new Date()).getTime();
@@ -89,15 +89,14 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid Jwt Token");
+            throw new JwtException("유효하지 않은 토큰입니다.");
         } catch (ExpiredJwtException e){
-            throw new AuthException("만료된 token 입니다.");
+            throw new JwtException("만료된 토큰입니다.");
         } catch (UnsupportedJwtException e){
-            log.info("Unsupported Jwt Token");
+            throw new JwtException("지원되지 않는 유형의 토큰입니다.");
         } catch (IllegalArgumentException e){
-            log.info("Claim is empty");
+            throw new JwtException("클레임이 비어있습니다.");
         }
-        return false;
     }
     
     /* claim에 저장된 정보로 authentication 추출 */

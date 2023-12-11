@@ -5,13 +5,12 @@ import lombok.*;
 import java.time.Duration;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TokenResponse {
-
-    private String accessToken;
-    private String refreshToken;
-    private String grantType;
-    private long expiresIn;
+    private final String accessToken;
+    private final String refreshToken;
+    private final String grantType;
+    private final long expiresIn;
 
     public static TokenResponse of(String accessToken, String refreshToken, String grantType, long expiresIn) {
         return new TokenResponse(
