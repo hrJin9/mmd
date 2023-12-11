@@ -3,7 +3,7 @@ package com.todos.mmd.auth.application.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.todos.mmd.auth.exception.AuthDeniedException;
 import com.todos.mmd.auth.exception.JwtException;
-import com.todos.mmd.global.exception.ExceptionResponse;
+import com.todos.mmd.api.ExceptionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

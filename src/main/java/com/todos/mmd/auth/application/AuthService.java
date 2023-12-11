@@ -9,6 +9,7 @@ import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.auth.exception.AuthException;
 import com.todos.mmd.auth.exception.JwtException;
+import com.todos.mmd.global.exception.BadRequestException;
 import com.todos.mmd.repository.member.MemberRepository;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class AuthService {
         String email = memberCreateDto.getEmail();
         
         if(isDuplicatedEmail(email)) {
-            throw new AuthException("중복된 이메일입니다.");
+            throw new BadRequestException("중복된 이메일입니다.");
         }
 
         Member member = Member.from(memberCreateDto);
@@ -42,7 +43,7 @@ public class AuthService {
         String email = adminCreateDto.getEmail();
 
         if(isDuplicatedEmail(email)) {
-            throw new AuthException("중복된 이메일입니다.");
+            throw new BadRequestException("중복된 이메일입니다.");
         }
 
         Member member = Member.from(adminCreateDto);
@@ -88,4 +89,5 @@ public class AuthService {
 
         refreshTokenRepository.delete(token);
     }
+
 }

@@ -1,8 +1,7 @@
 package com.todos.mmd.auth.api.request;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,6 +11,7 @@ public class AuthRequest {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class MemberCreateRequest {
         @NotNull
         @Email
@@ -26,12 +26,12 @@ public class AuthRequest {
         @NotBlank
         private String phone;
 
-        @NotBlank
         private String address;
     }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class AdminCreateRequest {
 
         @NotNull
@@ -49,12 +49,17 @@ public class AuthRequest {
 
     }
 
-
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     public static class LoginRequest {
+        @NotNull
+        @Email
         private String email;
+
+        @NotNull
         private String password;
     }
+
 
 }

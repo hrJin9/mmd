@@ -42,17 +42,17 @@ public class AuthController {
     /* 로그인 */
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid AuthRequest.LoginRequest request){
-        TokenResponse token = authService.login(LoginDto.from(request));
+        TokenResponse tokenResponse = authService.login(LoginDto.from(request));
         return ResponseEntity.ok()
-                .body(token);
+                .body(tokenResponse);
     }
 
     /* access 토큰 재발급 */
     @GetMapping("/reissue")
     public ResponseEntity<TokenResponse> reissue(@AuthenticationPrincipal MemberDetails memberDetails) {
-        TokenResponse token = authService.reissueAccessToken(memberDetails);
+        TokenResponse tokenResponse = authService.reissueAccessToken(memberDetails);
         return ResponseEntity.ok()
-                .body(token);
+                .body(tokenResponse);
     }
 
     /* 로그아웃 */
@@ -64,5 +64,6 @@ public class AuthController {
         authService.logout(principal.getName(), refreshToken);
         return ResponseEntity.noContent().build();
     }
+    
 
 }

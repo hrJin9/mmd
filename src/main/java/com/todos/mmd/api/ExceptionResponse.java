@@ -1,4 +1,4 @@
-package com.todos.mmd.global.exception;
+package com.todos.mmd.api;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
