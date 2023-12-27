@@ -9,13 +9,15 @@ import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.auth.exception.AuthException;
 import com.todos.mmd.auth.exception.JwtException;
-import com.todos.mmd.global.exception.BadRequestException;
+import com.todos.mmd.global.exception.EmailException;
 import com.todos.mmd.repository.member.MemberRepository;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.constraints.Email;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,16 +28,15 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     /* 일반회원 회원가입 */
-    public void register(MemberCreateDto memberCreateDto) {
-
+    public Member register(MemberCreateDto memberCreateDto) {
         String email = memberCreateDto.getEmail();
         
         if(isDuplicatedEmail(email)) {
-            throw new BadRequestException("중복된 이메일입니다.");
+            throw new EmailException("중복된 이메일입니다.");
         }
 
         Member member = Member.from(memberCreateDto);
-        memberRepository.save(member);
+        return memberRepository.save(member);
     }
 
     /* 관리자 회원가입 */
@@ -43,7 +44,7 @@ public class AuthService {
         String email = adminCreateDto.getEmail();
 
         if(isDuplicatedEmail(email)) {
-            throw new BadRequestException("중복된 이메일입니다.");
+            throw new EmailException("중복된 이메일입니다.");
         }
 
         Member member = Member.from(adminCreateDto);
@@ -54,7 +55,7 @@ public class AuthService {
     @Transactional
     public TokenResponse login(LoginDto loginDto){
         Member member = memberRepository.findByEmail(loginDto.getEmail())
-                .orElseThrow(() -> new AuthException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new EmailException("존재하지 않는 이메일입니다."));
 
         // 패스워드 검증
         member.validatePassword(loginDto.getPassword());
@@ -80,7 +81,6 @@ public class AuthService {
 
     /* 로그아웃 */
     public void logout(String email, String refreshToken) {
-
         RefreshToken token = refreshTokenRepository.findById(email)
                 .orElseThrow(() -> new JwtException("이미 로그아웃된 사용자입니다."));
         if(!refreshToken.equals(token.getRefreshToken())) {
