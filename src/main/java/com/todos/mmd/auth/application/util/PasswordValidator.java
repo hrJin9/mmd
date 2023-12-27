@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class PasswordValidator {
 
-    private static final Pattern pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[A-Za-z\\d!@#$%^*+=-]{8,30}$");
+    private static final Pattern pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$");
 
     public static void validatePassword(String password) {
         Matcher matcher = pattern.matcher(password);
