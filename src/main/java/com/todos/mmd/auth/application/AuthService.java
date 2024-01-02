@@ -7,7 +7,6 @@ import com.todos.mmd.auth.application.util.JwtTokenProvider;
 import com.todos.mmd.auth.domain.Member;
 import com.todos.mmd.auth.application.dto.LoginDto;
 import com.todos.mmd.auth.domain.RefreshToken;
-import com.todos.mmd.auth.exception.AuthException;
 import com.todos.mmd.auth.exception.JwtException;
 import com.todos.mmd.global.exception.EmailException;
 import com.todos.mmd.repository.member.MemberRepository;
@@ -16,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.constraints.Email;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,7 +37,7 @@ public class AuthService {
     }
 
     /* 관리자 회원가입 */
-    public void registerAdmin(AdminCreateDto adminCreateDto) {
+    public Member registerAdmin(AdminCreateDto adminCreateDto) {
         String email = adminCreateDto.getEmail();
 
         if(isDuplicatedEmail(email)) {
@@ -48,7 +45,7 @@ public class AuthService {
         }
 
         Member member = Member.from(adminCreateDto);
-        memberRepository.save(member);
+        return memberRepository.save(member);
     }
 
     /* 로그인 */

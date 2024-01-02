@@ -36,9 +36,9 @@ public class Member extends CommonDate {
     @Enumerated(EnumType.STRING)
     private UseStatus useStatus;
 
-    public Member(String email, String password, String name, String phone, String address, MemberRole role, UseStatus useStatus) {
+    public Member(String email, String encryptPassword, String name, String phone, String address, MemberRole role, UseStatus useStatus) {
         this.email = email;
-        this.password = password;
+        this.password = encryptPassword;
         this.name = name;
         this.phone = phone;
         this.address = address;
@@ -46,23 +46,14 @@ public class Member extends CommonDate {
         this.useStatus = useStatus;
     }
 
-    public Member(String email, String password, String name, String phone, MemberRole role, UseStatus useStatus) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.role = role;
-        this.useStatus = useStatus;
-    }
-
-    public static Member from(MemberCreateDto serviceDto) {
-        PasswordValidator.validatePassword(serviceDto.getPassword());
+    public static Member from(MemberCreateDto memberCreateDto) {
+        PasswordValidator.validatePassword(memberCreateDto.getPassword());
         return new Member(
-                serviceDto.getEmail(),
-                PasswordEncryptor.encrypt(serviceDto.getPassword()),
-                serviceDto.getName(),
-                serviceDto.getPhone(),
-                serviceDto.getAddress(),
+                memberCreateDto.getEmail(),
+                PasswordEncryptor.encrypt(memberCreateDto.getPassword()),
+                memberCreateDto.getName(),
+                memberCreateDto.getPhone(),
+                memberCreateDto.getAddress(),
                 MemberRole.USER,
                 UseStatus.Y
         );
@@ -74,7 +65,8 @@ public class Member extends CommonDate {
                 adminCreateDto.getEmail(),
                 PasswordEncryptor.encrypt(adminCreateDto.getPassword()),
                 adminCreateDto.getName(),
-                adminCreateDto.getPhone(),
+                null,
+                null,
                 MemberRole.ADMIN,
                 UseStatus.Y
         );
@@ -93,6 +85,5 @@ public class Member extends CommonDate {
         if(!this.password.equals(hashedPassword)) {
             throw new AuthException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
-
     }
 }
