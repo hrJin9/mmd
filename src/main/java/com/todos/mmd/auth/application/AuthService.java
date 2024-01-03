@@ -58,12 +58,7 @@ public class AuthService {
         member.validatePassword(loginDto.getPassword());
 
         // jwt 토큰 발급
-        TokenResponse tokenResponse = jwtTokenProvider.generate(loginDto.getEmail(), member.getRole().toString());
-
-        // redis에 refreshToken 저장
-        refreshTokenRepository.save(RefreshToken.of(member.getEmail(), tokenResponse.getRefreshToken(), tokenResponse.getExpiresIn()));
-
-        return tokenResponse;
+        return jwtTokenProvider.generate(loginDto.getEmail(), member.getRole().toString());
     }
     
     /* 이메일 중복검사 */
