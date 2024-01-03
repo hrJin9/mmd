@@ -12,6 +12,7 @@ import com.todos.mmd.auth.domain.MemberRole;
 import com.todos.mmd.auth.domain.RefreshToken;
 import com.todos.mmd.auth.domain.UseStatus;
 import com.todos.mmd.auth.exception.AuthException;
+import com.todos.mmd.auth.exception.ExpiredRefreshTokenException;
 import com.todos.mmd.auth.exception.JwtException;
 import com.todos.mmd.global.exception.EmailException;
 import com.todos.mmd.repository.member.MemberRepository;
@@ -152,7 +153,7 @@ class AuthServiceTest {
         // TODO : 왜 에러가 안던져지는지 모르겠음..
         // when, then
         assertThatThrownBy(() -> authService.reissueAccessToken(memberDetails))
-                .isInstanceOf(JwtException.class)
+                .isInstanceOf(ExpiredRefreshTokenException.class)
                 .hasMessage("만료된 토큰입니다.");
     }
 

@@ -3,6 +3,7 @@ package com.todos.mmd.auth.application.util;
 import com.todos.mmd.auth.api.response.TokenResponse;
 import com.todos.mmd.auth.application.MemberDetailsService;
 import com.todos.mmd.auth.domain.RefreshToken;
+import com.todos.mmd.auth.exception.ExpiredRefreshTokenException;
 import com.todos.mmd.auth.exception.JwtException;
 import com.todos.mmd.repository.redis.RefreshTokenRepository;
 import io.jsonwebtoken.*;
@@ -60,7 +61,7 @@ public class JwtTokenProvider {
 
         // refresh 토큰 유무
         RefreshToken refreshToken = refreshTokenRepository.findById(email)
-                .orElseThrow(() -> new JwtException("만료된 토큰입니다."));
+                .orElseThrow(() -> new ExpiredRefreshTokenException("만료된 토큰입니다."));
 
         // access 토큰 재발급
         long now = (new Date()).getTime();
@@ -91,7 +92,7 @@ public class JwtTokenProvider {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new JwtException("유효하지 않은 토큰입니다.");
         } catch (ExpiredJwtException e){
-            throw new JwtException("만료된 토큰입니다.");
+            throw new JwtException("만료된 access 토큰입니다.");
         } catch (UnsupportedJwtException e){
             throw new JwtException("지원되지 않는 유형의 토큰입니다.");
         } catch (IllegalArgumentException e){
