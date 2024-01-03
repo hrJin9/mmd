@@ -79,6 +79,8 @@ public class AuthService {
             throw new JwtException("로그인된 사용자의 Refresh 토큰이 아닙니다.");
         }
 
+        // TODO : access token 유효하지 않게 해주기
+
         refreshTokenRepository.delete(token);
     }
 
