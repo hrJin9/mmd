@@ -76,10 +76,8 @@ public class AuthService {
         RefreshToken token = refreshTokenRepository.findById(email)
                 .orElseThrow(() -> new JwtException("이미 로그아웃된 사용자입니다."));
         if(!refreshToken.equals(token.getRefreshToken())) {
-            throw new JwtException("로그인된 사용자의 Refresh 토큰이 아닙니다.");
+            throw new JwtException("로그인된 사용자의 refresh 토큰이 아닙니다.");
         }
-
-        // TODO : access token 유효하지 않게 해주기
 
         refreshTokenRepository.delete(token);
     }
