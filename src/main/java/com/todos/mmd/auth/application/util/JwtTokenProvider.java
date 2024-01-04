@@ -23,7 +23,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24;       // 24시간
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 1;        // 1시간
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private static final String AUTHORITIES_KEY = "auth";
     private final Key key;
@@ -58,10 +58,16 @@ public class JwtTokenProvider {
 
     /* access 토큰 재발급 */
     public TokenResponse reissueAccessToken(String email, String authorities) {
-
         // refresh 토큰 유무
         RefreshToken refreshToken = refreshTokenRepository.findById(email)
-                .orElseThrow(() -> new ExpiredRefreshTokenException("만료된 토큰입니다."));
+                .orElseThrow(() -> new ExpiredRefreshTokenException("존재하지 않는 만료된 refresh 토큰입니다."));
+
+        // refresh token 유효성 검증
+        validateToken(refreshToken.getRefreshToken());
+        Claims claims = parseClaims(refreshToken.getRefreshToken());
+        if(!claims.getSubject().equals(email)) {
+            throw new JwtException("로그인된 사용자의 refresh token이 아닙니다.");
+        }
 
         // access 토큰 재발급
         long now = (new Date()).getTime();
@@ -92,7 +98,7 @@ public class JwtTokenProvider {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             throw new JwtException("유효하지 않은 토큰입니다.");
         } catch (ExpiredJwtException e){
-            throw new JwtException("만료된 access 토큰입니다.");
+            throw new JwtException("만료된 토큰입니다.");
         } catch (UnsupportedJwtException e){
             throw new JwtException("지원되지 않는 유형의 토큰입니다.");
         } catch (IllegalArgumentException e){
