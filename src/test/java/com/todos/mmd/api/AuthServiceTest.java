@@ -150,11 +150,10 @@ class AuthServiceTest {
         given(refreshTokenRepository.findById(memberDetails.getUsername()))
                 .willReturn(Optional.empty());
 
-        // TODO : 왜 에러가 안던져지는지 모르겠음..
         // when, then
         assertThatThrownBy(() -> authService.reissueAccessToken(memberDetails))
                 .isInstanceOf(ExpiredRefreshTokenException.class)
-                .hasMessage("만료된 토큰입니다.");
+                .hasMessage("존재하지 않는 refresh 토큰입니다.");
     }
 
     @Test
