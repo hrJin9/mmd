@@ -1,6 +1,6 @@
 package com.todos.mmd.auth.domain;
 
-public enum UseStauts {
+public enum UseStatus {
     Y,
     N
 }
