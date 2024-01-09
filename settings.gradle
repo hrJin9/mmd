@@ -1,1 +1,8 @@
 rootProject.name = 'mmd'
+include 'application'
+include 'auth'
+include 'api-diary'
+include 'api-member'
+include 'infra-jpa'
+include 'infra-redis'
+include 'common'

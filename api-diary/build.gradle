@@ -1,0 +1,12 @@
+dependencies {
+    implementation project(':application')
+    implementation project(':auth')
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = false
+}

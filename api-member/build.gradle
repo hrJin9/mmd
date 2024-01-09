@@ -1,0 +1,16 @@
+dependencies {
+    implementation project(':application')
+    implementation project(':auth')
+
+    // spring security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+bootJar { // 다른 dependency와 함께 build해야함
+    enabled = true
+}
+
+jar {
+    enabled = false
+}

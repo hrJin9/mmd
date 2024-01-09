@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(':common')
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

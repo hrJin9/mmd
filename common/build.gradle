@@ -1,0 +1,7 @@
+bootJar { // 라이브러리 역할을 수행하는 모듈 => jar로 생성 및 첨부
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
