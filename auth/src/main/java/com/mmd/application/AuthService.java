@@ -71,7 +71,7 @@ public class AuthService {
                 .orElseThrow(() -> new EmailCheckException("존재하지 않는 이메일입니다."));
 
         // 비밀번호 일치 여부
-        if(member.getPassword().equals(PasswordEncryptor.encrypt(loginDto.getPassword()))) {
+        if(!member.getPassword().equals(PasswordEncryptor.encrypt(loginDto.getPassword()))) {
             throw new PasswordBadRequestException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 

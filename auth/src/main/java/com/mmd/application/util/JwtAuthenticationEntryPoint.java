@@ -16,5 +16,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
         throw new TokenNotExistsException("토큰 정보가 존재하지 않습니다.");
     }
-
 }

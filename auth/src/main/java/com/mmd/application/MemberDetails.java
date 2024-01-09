@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class MemberDetails implements UserDetails {
+
     private final Member member;
     private static final String ROLE_PREFIX = "ROLE_";
 

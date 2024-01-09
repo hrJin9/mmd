@@ -43,5 +43,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private String isBearerToken(String authorization){
         return (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) ? authorization.split(DELIMS)[1].trim() : null;
     }
-
 }

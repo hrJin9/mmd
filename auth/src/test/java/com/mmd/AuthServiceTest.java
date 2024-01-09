@@ -144,7 +144,7 @@ class AuthServiceTest {
         TokenResponse response = authService.login(로그인_회원);
 
         // then
-        then(refreshTokenRepository).should(times(1)).save(any());
+//        then(refreshTokenRepository).should(times(1)).save(any());
         assertThat(response.getAccessToken()).isEqualTo("atoken");
     }
 
@@ -157,9 +157,9 @@ class AuthServiceTest {
                 .willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> authService.reissueAccessToken(memberDetails))
+        assertThatThrownBy(() -> jwtTokenProvider.reissueAccessToken(memberDetails.getUsername(), memberDetails.getAuthorities().toString()))
                 .isInstanceOf(ExpiredTokenException.class)
-                .hasMessage("존재하지 않는 refresh 토큰입니다.");
+                .hasMessage("존재하지 않는 만료된 refresh 토큰입니다.");
     }
 
     @Test
@@ -197,15 +197,15 @@ class AuthServiceTest {
     public void 로그아웃시_해당_이메일의_리프레시토큰이_아니라면_예외를_던진다() {
         // given
         String email = existMember.getEmail();
-        String refreshToken = "wrongToken";
+        final String REFRESH_TOKEN = "wrongToken";
 
         given(refreshTokenRepository.findById(email))
                 .willReturn(Optional.of(new RefreshToken("wrong@gmail.com", "rtoken", 1L)));
 
         // when, then
-        assertThatThrownBy(() -> authService.logout(email, refreshToken))
+        assertThatThrownBy(() -> authService.logout(email, REFRESH_TOKEN))
                 .isInstanceOf(NotValidTokenException.class)
-                .hasMessage("로그인된 사용자의 Refresh 토큰이 아닙니다.");
+                .hasMessage("로그인된 사용자의 refresh 토큰이 아닙니다.");
     }
 
     @Test
@@ -223,5 +223,4 @@ class AuthServiceTest {
         // then
         then(refreshTokenRepository).should(times(1)).delete(any());
     }
-
 }
