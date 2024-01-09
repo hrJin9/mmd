@@ -3,6 +3,8 @@ package com.mmd.application.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmd.ExceptionResponse;
 import com.mmd.exception.AuthDeniedException;
+import com.mmd.exception.ExpiredTokenException;
+import com.mmd.exception.NotValidTokenException;
 import com.mmd.exception.TokenNotExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (TokenNotExistsException e) {
+        } catch (TokenNotExistsException | ExpiredTokenException | NotValidTokenException e) {
             sendResponse(response, HttpStatus.UNAUTHORIZED, e.getMessage());
         } catch (AuthDeniedException e) {
             sendResponse(response, HttpStatus.FORBIDDEN, e.getMessage());
