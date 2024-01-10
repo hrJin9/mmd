@@ -1,6 +1,6 @@
 dependencies {
-    implementation project(':infra-redis')
-    implementation project(':infra-jpa')
+    implementation project(':domain-infra-redis')
+    implementation project(':domain-infra-jpa')
     implementation project(':common')
 
     // spring security
