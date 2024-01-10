@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaAuditing
 @SpringBootApplication(scanBasePackages = "com.mmd")
 @EnableJpaRepositories(basePackages = "com.mmd.repository")
-public class MemberApiApplication {
+public class MmdApiApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(MemberApiApplication.class, args);
+		SpringApplication.run(MmdApiApplication.class, args);
 	}
 }

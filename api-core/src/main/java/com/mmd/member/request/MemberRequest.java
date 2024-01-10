@@ -1,4 +1,4 @@
-package com.mmd.request;
+package com.mmd.member.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

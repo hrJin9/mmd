@@ -1,9 +1,8 @@
-package com.mmd;
+package com.mmd.member;
 
 import com.mmd.application.MemberDetails;
-import com.mmd.member.MemberService;
 import com.mmd.member.dto.MemberUpdateDto;
-import com.mmd.request.MemberRequest;
+import com.mmd.member.request.MemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
