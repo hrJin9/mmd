@@ -2,7 +2,6 @@ package com.mmd.application;
 
 import com.mmd.api.response.TokenResponse;
 import com.mmd.application.dto.LoginDto;
-import com.mmd.exception.EmailCheckException;
 import com.mmd.exception.EmailNotFoundException;
 import com.mmd.exception.NotValidTokenException;
 import com.mmd.exception.PasswordBadRequestException;

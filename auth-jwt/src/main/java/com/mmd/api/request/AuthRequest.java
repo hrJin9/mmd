@@ -13,29 +13,6 @@ public class AuthRequest {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
-    public static class MemberCreateRequest {
-        @NotBlank
-        private String memberId;
-
-        @NotBlank
-        @Email
-        private String email;
-
-        @NotBlank
-        private String password;
-
-        @NotNull
-        private String name;
-
-        @NotBlank
-        private String phone;
-
-        private String address;
-    }
-
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
     public static class LoginRequest {
         @NotBlank
         @Email

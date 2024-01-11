@@ -1,15 +1,14 @@
 package com.mmd.exception;
 
-public class MemberDuplicatedException extends BusinessException {
+import org.springframework.http.HttpStatus;
+
+public class MemberDuplicatedException extends MmdApiException {
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.BAD_REQUEST;
+    }
+
     public MemberDuplicatedException(String message) {
         super(message);
-    }
-
-    public MemberDuplicatedException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public MemberDuplicatedException(Throwable cause) {
-        super(cause);
     }
 }

@@ -1,15 +1,14 @@
 package com.mmd.exception;
 
-public class PasswordBadRequestException extends DomainException {
+import org.springframework.http.HttpStatus;
+
+public class PasswordBadRequestException extends MmdApiException {
+    @Override
+    public HttpStatus getStatus() {
+        return null;
+    }
+
     public PasswordBadRequestException(String message) {
         super(message);
-    }
-
-    public PasswordBadRequestException(Throwable cause) {
-        super(cause);
-    }
-
-    public PasswordBadRequestException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

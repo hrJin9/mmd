@@ -1,5 +1,6 @@
 package com.mmd.security;
 
+import com.mmd.exception.EmailNotFoundException;
 import com.mmd.model.Member;
 import com.mmd.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class MemberDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailCheckException("존재하지 않는 계정입니다."));
+                .orElseThrow(() -> new EmailNotFoundException("존재하지 않는 계정입니다."));
         return new MemberDetails(member);
     }
 }

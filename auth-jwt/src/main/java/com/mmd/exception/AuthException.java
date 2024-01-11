@@ -1,6 +1,6 @@
 package com.mmd.exception;
 
-public class AuthException extends UnAuthorizedException {
+public class AuthException extends RuntimeException {
     public AuthException(String message) {
         super(message);
     }
