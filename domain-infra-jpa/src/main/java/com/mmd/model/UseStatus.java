@@ -1,6 +1,6 @@
 package com.mmd.model;
 
 public enum UseStatus {
-    Y,
-    N
+    IN_USE,
+    DELETED
 }

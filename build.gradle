@@ -24,34 +24,14 @@ subprojects {
 	}
 
 	dependencies { // 전체 모듈 공통 dependency
-		compileOnly 'org.projectlombok:lombok'
-		annotationProcessor 'org.projectlombok:lombok'
-
-		implementation 'org.springframework.boot:spring-boot-starter-web'
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-		implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-		// Swagger
-		implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-		implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-
-		// jpa
-		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
 		// lombok
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
 	}
+}
 
-	tasks.named('bootJar') {
-		enabled = false
-	}
-
-	tasks.named('jar') {
-		enabled = true
-	}
-
-	tasks.named('test') {
-		useJUnitPlatform()
+configure(subprojects.findAll {it.name != 'common'}) {
+	dependencies {
+		implementation project(':common')
 	}
 }

@@ -1,9 +1,16 @@
 dependencies {
     implementation project(':domain-infra-jpa')
     implementation project(':domain-infra-redis')
-    implementation project(':common')
+    implementation project(':auth-jwt')
 
+    // spring web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly "jakarta.transaction:jakarta.transaction-api"
+
+    // spring jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 bootJar {
