@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class PasswordBadRequestException extends MmdApiException {
     @Override
     public HttpStatus getStatus() {
-        return null;
+        return HttpStatus.BAD_REQUEST;
     }
 
     public PasswordBadRequestException(String message) {

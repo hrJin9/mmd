@@ -1,15 +1,14 @@
 package com.mmd.exception;
 
-public class AuthException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class AuthException extends MmdApiException {
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.UNAUTHORIZED;
+    }
+
     public AuthException(String message) {
         super(message);
-    }
-
-    public AuthException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public AuthException(Throwable cause) {
-        super(cause);
     }
 }
