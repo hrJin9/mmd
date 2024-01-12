@@ -1,6 +1,6 @@
 package com.mmd.security;
 
-import com.mmd.model.Member;
+import com.mmd.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

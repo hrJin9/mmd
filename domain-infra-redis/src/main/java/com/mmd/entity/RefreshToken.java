@@ -1,4 +1,4 @@
-package com.mmd.model;
+package com.mmd.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.Id;

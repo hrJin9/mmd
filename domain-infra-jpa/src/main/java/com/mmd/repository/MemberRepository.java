@@ -1,5 +1,5 @@
 package com.mmd.repository;
-import com.mmd.model.Member;
+import com.mmd.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

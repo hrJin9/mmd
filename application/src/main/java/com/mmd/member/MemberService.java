@@ -4,7 +4,7 @@ import com.mmd.exception.MemberDuplicatedException;
 import com.mmd.exception.MemberNotFoundException;
 import com.mmd.member.dto.MemberCreateDto;
 import com.mmd.member.dto.MemberUpdateDto;
-import com.mmd.model.Member;
+import com.mmd.entity.Member;
 import com.mmd.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

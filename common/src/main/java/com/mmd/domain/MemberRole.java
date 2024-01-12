@@ -1,4 +1,4 @@
-package com.mmd.model;
+package com.mmd.domain;
 
 public enum MemberRole {
     ADMIN,

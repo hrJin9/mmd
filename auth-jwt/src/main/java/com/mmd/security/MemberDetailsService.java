@@ -1,7 +1,7 @@
 package com.mmd.security;
 
 import com.mmd.exception.EmailNotFoundException;
-import com.mmd.model.Member;
+import com.mmd.entity.Member;
 import com.mmd.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

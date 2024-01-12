@@ -1,5 +1,7 @@
-package com.mmd.model;
+package com.mmd.entity;
 
+import com.mmd.domain.MemberRole;
+import com.mmd.domain.UseStatus;
 import com.mmd.service.member.PasswordEncryptor;
 import com.mmd.service.member.PasswordValidator;
 import lombok.*;
