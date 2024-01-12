@@ -1,6 +1,6 @@
 package com.mmd.member;
 
-import com.mmd.mapper.ServiceDtoMapper;
+import com.mmd.member.mapper.ServiceDtoMapper;
 import com.mmd.member.request.MemberRequest;
 import com.mmd.security.MemberDetails;
 import lombok.RequiredArgsConstructor;

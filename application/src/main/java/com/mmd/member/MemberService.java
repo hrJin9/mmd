@@ -17,8 +17,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     /* 일반회원 회원가입 */
-    @Transactional(readOnly = true)
-    public Member register(MemberCreateDto memberCreateDto) {
+    @Transactional
+    public void register(MemberCreateDto memberCreateDto) {
         // 아이디, 이메일 중복 검사
         isDuplicated(memberCreateDto.getMemberId(), memberCreateDto.getEmail());
 
@@ -31,7 +31,7 @@ public class MemberService {
                 memberCreateDto.getAddress()
         );
 
-        return memberRepository.save(member);
+        memberRepository.save(member);
     }
 
     @Transactional

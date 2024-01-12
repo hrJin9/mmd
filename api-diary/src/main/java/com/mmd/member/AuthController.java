@@ -1,9 +1,10 @@
-package com.mmd.api;
+package com.mmd.member;
 
-import com.mmd.api.request.AuthRequest;
-import com.mmd.api.response.TokenResponse;
 import com.mmd.application.AuthService;
-import com.mmd.application.dto.LoginDto;
+import com.mmd.application.dto.TokenDto;
+import com.mmd.member.mapper.ServiceDtoMapper;
+import com.mmd.member.request.AuthRequest;
+import com.mmd.member.response.TokenResponse;
 import com.mmd.security.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +25,17 @@ public class AuthController {
     /* 로그인 */
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid AuthRequest.LoginRequest request){
-        TokenResponse tokenResponse = authService.login(LoginDto.from(request));
+        TokenDto tokenDto = authService.login(ServiceDtoMapper.mapping(request));
         return ResponseEntity.ok()
-                .body(tokenResponse);
+                .body(TokenResponse.from(tokenDto));
     }
 
     /* access 토큰 재발급 */
     @GetMapping("/reissue")
     public ResponseEntity<TokenResponse> reissue(@AuthenticationPrincipal MemberDetails memberDetails) {
-        TokenResponse tokenResponse = authService.reissueAccessToken(memberDetails);
+        TokenDto tokenDto = authService.reissueAccessToken(memberDetails);
         return ResponseEntity.ok()
-                .body(tokenResponse);
+                .body(TokenResponse.from(tokenDto));
     }
 
     /* 로그아웃 */

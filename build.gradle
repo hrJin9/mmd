@@ -28,8 +28,13 @@ subprojects {
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
 	}
+
+	test {
+		useJUnitPlatform()
+	}
 }
 
+// common 모듈을 의존한다.
 configure(subprojects.findAll {it.name != 'common'}) {
 	dependencies {
 		implementation project(':common')

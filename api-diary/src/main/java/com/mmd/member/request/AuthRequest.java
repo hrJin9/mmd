@@ -1,4 +1,4 @@
-package com.mmd.api.request;
+package com.mmd.member.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class AuthRequest {
     @Getter

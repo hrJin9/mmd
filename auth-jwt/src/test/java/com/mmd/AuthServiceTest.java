@@ -1,9 +1,8 @@
 package com.mmd;
 
 import com.mmd.application.AuthService;
-import com.mmd.application.dto.LoginDto;
-import com.mmd.exception.ExpiredTokenException;
-import com.mmd.exception.NotValidTokenException;
+import com.mmd.exception.TokenExpiredException;
+import com.mmd.exception.TokenNotValidException;
 import com.mmd.model.RefreshToken;
 import com.mmd.repository.RefreshTokenRepository;
 import com.mmd.api.response.TokenResponse;
@@ -154,7 +153,7 @@ class AuthServiceTest {
 
         // when, then
         assertThatThrownBy(() -> jwtTokenProvider.reissueAccessToken(memberDetails.getUsername(), memberDetails.getAuthorities().toString()))
-                .isInstanceOf(ExpiredTokenException.class)
+                .isInstanceOf(TokenExpiredException.class)
                 .hasMessage("존재하지 않는 만료된 refresh 토큰입니다.");
     }
 
@@ -185,7 +184,7 @@ class AuthServiceTest {
 
         // when, then
         assertThatThrownBy(() -> authService.logout(email, refreshToken))
-                .isInstanceOf(ExpiredTokenException.class)
+                .isInstanceOf(TokenExpiredException.class)
                 .hasMessage("이미 로그아웃된 사용자입니다.");
     }
 
@@ -200,7 +199,7 @@ class AuthServiceTest {
 
         // when, then
         assertThatThrownBy(() -> authService.logout(email, REFRESH_TOKEN))
-                .isInstanceOf(NotValidTokenException.class)
+                .isInstanceOf(TokenNotValidException.class)
                 .hasMessage("로그인된 사용자의 refresh 토큰이 아닙니다.");
     }
 

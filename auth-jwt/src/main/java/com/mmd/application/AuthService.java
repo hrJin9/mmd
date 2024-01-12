@@ -1,9 +1,9 @@
 package com.mmd.application;
 
-import com.mmd.api.response.TokenResponse;
 import com.mmd.application.dto.LoginDto;
+import com.mmd.application.dto.TokenDto;
 import com.mmd.exception.EmailNotFoundException;
-import com.mmd.exception.NotValidTokenException;
+import com.mmd.exception.TokenNotValidException;
 import com.mmd.exception.PasswordBadRequestException;
 import com.mmd.exception.TokenNotFoundException;
 import com.mmd.model.Member;
@@ -30,7 +30,7 @@ public class AuthService {
 
     /* 로그인 */
     @Transactional
-    public TokenResponse login(LoginDto loginDto){
+    public TokenDto login(LoginDto loginDto){
         Member member = memberRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(() -> new EmailNotFoundException("존재하지 않는 이메일입니다."));
 
@@ -44,7 +44,7 @@ public class AuthService {
     }
 
     /* 토큰 재발급 */
-    public TokenResponse reissueAccessToken(MemberDetails memberDetails) {
+    public TokenDto reissueAccessToken(MemberDetails memberDetails) {
         return jwtTokenProvider.reissueAccessToken(memberDetails.getUsername(), memberDetails.getAuthorities().toString());
     }
 
@@ -53,7 +53,7 @@ public class AuthService {
         RefreshToken token = refreshTokenRepository.findById(email)
                 .orElseThrow(() -> new TokenNotFoundException("이미 로그아웃된 사용자입니다."));
         if(!refreshToken.equals(token.getRefreshToken())) {
-            throw new NotValidTokenException("로그인된 사용자의 refresh 토큰이 아닙니다.");
+            throw new TokenNotValidException("로그인된 사용자의 refresh 토큰이 아닙니다.");
         }
 
         refreshTokenRepository.delete(token);

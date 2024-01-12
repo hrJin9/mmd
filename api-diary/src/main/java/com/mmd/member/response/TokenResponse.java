@@ -1,5 +1,6 @@
-package com.mmd.api.response;
+package com.mmd.member.response;
 
+import com.mmd.application.dto.TokenDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,12 +12,12 @@ public class TokenResponse {
     private final String grantType;
     private final long expiresIn;
 
-    public static TokenResponse of(String accessToken, String refreshToken, String grantType, long expiresIn) {
+    public static TokenResponse from(TokenDto tokenDto) {
         return new TokenResponse(
-                accessToken,
-                refreshToken,
-                grantType,
-                expiresIn
+                tokenDto.getAccessToken(),
+                tokenDto.getRefreshToken(),
+                tokenDto.getGrantType(),
+                tokenDto.getExpiresIn()
         );
     }
 }
