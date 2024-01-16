@@ -2,8 +2,8 @@ package com.mmd.repository.custom;
 
 import com.mmd.entity.Comment;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface CustomCommentRepository {
-    Optional<Comment> findAllComment(Long diaryno, Long memberNo, Integer pageSize);
+    List<Comment> findAllComment(Long diaryno);
 }

@@ -6,6 +6,12 @@ import lombok.Getter;
 public class CommentRequest {
     @Getter
     @AllArgsConstructor
+    public static class ViewComments {
+        private Long diaryNo;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class CreateComment {
         private String contents;
     }
