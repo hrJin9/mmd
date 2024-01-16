@@ -19,13 +19,14 @@ public class MemberService {
     /* 일반회원 회원가입 */
     @Transactional
     public void register(MemberCreateDto memberCreateDto) {
-        // 아이디, 이메일 중복 검사
-        isDuplicated(memberCreateDto.getMemberId(), memberCreateDto.getEmail());
+        // 이메일 중복 검사
+        if(isDuplicated(memberCreateDto.getEmail()))
+            throw new MemberDuplicatedException("이미 존재하는 이메일입니다.");
 
         Member member = Member.of(
-                memberCreateDto.getMemberId(),
                 memberCreateDto.getEmail(),
                 memberCreateDto.getPassword(),
+                memberCreateDto.getNickName(),
                 memberCreateDto.getName(),
                 memberCreateDto.getPhone(),
                 memberCreateDto.getAddress()
@@ -40,6 +41,7 @@ public class MemberService {
                         .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다."));
 
         member.update(
+                member.getNickName(),
                 memberUpdateDto.getName(),
                 memberUpdateDto.getPhone(),
                 memberUpdateDto.getAddress()
@@ -47,12 +49,8 @@ public class MemberService {
     }
 
     /* 아이디, 이메일 중복검사 */
-    private void isDuplicated(String memberId, String email) {
-        if(memberRepository.findByMemberId(memberId).isEmpty()) {
-            throw new MemberDuplicatedException("중복된 아이디입니다.");
-        } else if(memberRepository.findByEmail(email).isEmpty()) {
-            throw new MemberDuplicatedException("중복된 이메일입니다.");
-        }
+    private boolean isDuplicated(String email) {
+        return memberRepository.findByEmail(email).isPresent();
     }
 
 }
