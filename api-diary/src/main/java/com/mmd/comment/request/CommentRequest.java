@@ -1,18 +1,21 @@
 package com.mmd.comment.request;
 
+import com.mmd.domain.Visibility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.validation.constraints.NotBlank;
+
 public class CommentRequest {
-    @Getter
-    @AllArgsConstructor
-    public static class ViewComments {
-        private Long diaryNo;
-    }
 
     @Getter
     @AllArgsConstructor
     public static class CreateComment {
+        private Long groupId;
+        private Long level;
+        private Long upperId;
+        @NotBlank
         private String contents;
+        private Visibility visibility;
     }
 }
