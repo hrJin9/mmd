@@ -1,6 +1,7 @@
 package com.mmd.comment.dto;
 
-import com.mmd.domain.Visibility;
+import com.mmd.domain.CommentVisibility;
+import com.mmd.domain.DiaryVisibility;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,5 +14,5 @@ public class CommentCreateDto {
     private final String content;
     private final Long diaryId;
     private final Long memberId;
-    private final Visibility visibility;
+    private final CommentVisibility commentVisibility;
 }

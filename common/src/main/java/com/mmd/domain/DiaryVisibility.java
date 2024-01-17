@@ -1,6 +1,6 @@
 package com.mmd.domain;
 
-public enum Visibility {
+public enum DiaryVisibility {
     PUBLIC,
     FRIEND,
     PRIVATE

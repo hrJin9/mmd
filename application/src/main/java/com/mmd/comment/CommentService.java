@@ -4,7 +4,7 @@ import com.mmd.comment.dto.CommentCreateDto;
 import com.mmd.comment.dto.CommentFindResultDto;
 import com.mmd.comment.dto.CommentUpdateDto;
 import com.mmd.diary.DiaryService;
-import com.mmd.domain.Visibility;
+import com.mmd.domain.CommentVisibility;
 import com.mmd.entity.Comment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
@@ -30,10 +30,10 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentFindResultDto> getComments(Long memberId, Long diaryId) {
 //        List<Comment> comments = commentRepository.findAllComment(diaryId);
-        // TODO : PUBLIC이면 그냥 조회, FRIEND이면 friend일때만 조회, private이면 본인 글 외에는 조회 불가
+        // TODO : PUBLIC이면 그냥 조회, FRIEND이면 friend일때만 조회 (PRIVATE은 안됨!!)
         List<Comment> comments = commentRepository.findAllByDiaryId(diaryId);
         return comments.stream()
-                .filter(comment -> comment.getVisibility().equals(Visibility.FRIEND) || comment.getVisibility().equals(Visibility.PUBLIC))
+                .filter(comment -> comment.getCommentVisibility().equals(CommentVisibility.FRIEND) || comment.getCommentVisibility().equals(CommentVisibility.PUBLIC))
                 .map(CommentFindResultDto::from)
                 .collect(Collectors.toList());
     }
@@ -51,7 +51,7 @@ public class CommentService {
                 serviceDto.getContent(),
                 diary,
                 member,
-                serviceDto.getVisibility()
+                serviceDto.getCommentVisibility()
         );
 
         commentRepository.save(comment);
@@ -67,7 +67,7 @@ public class CommentService {
             throw new MemberNotValidException("로그인된 사용자의 코멘트가 아닙니다.");
         }
 
-        comment.updateComment(serviceDto.getContent(), serviceDto.getVisibility());
+        comment.updateComment(serviceDto.getContent(), serviceDto.getCommentVisibility());
     }
 
     /* 코멘트 삭제 */

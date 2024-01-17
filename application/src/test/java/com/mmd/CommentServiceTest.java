@@ -1,6 +1,7 @@
 package com.mmd;
 
 import com.mmd.comment.CommentService;
+import com.mmd.comment.dto.CommentFindResultDto;
 import com.mmd.domain.MemberRole;
 import com.mmd.domain.UseStatus;
 import com.mmd.entity.Member;
@@ -12,6 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,11 +47,15 @@ class CommentServiceTest {
     @Test
     public void 해당_다이어리의_코멘트를_가져온다() {
         // given
-//        given(commentRepository.findAllComment(any()))
+        final Long DIARY_ID = 1L;
+
+//        given(commentRepository.findAllByDiaryId(any()))
 //                .willReturn();
 
-        // when, then
+        // when
+        List<CommentFindResultDto> comments = commentService.getComments(DIARY_ID);
 
+        // then
 
     }
 

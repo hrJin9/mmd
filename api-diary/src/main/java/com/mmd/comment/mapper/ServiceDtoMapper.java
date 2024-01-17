@@ -13,7 +13,7 @@ public class ServiceDtoMapper {
                 request.getContent(),
                 diaryId,
                 memberId,
-                request.getVisibility()
+                request.getCommentVisibility()
         );
     }
 
@@ -22,7 +22,7 @@ public class ServiceDtoMapper {
                 memberId,
                 commentId,
                 request.getContent(),
-                request.getVisibility()
+                request.getCommentVisibility()
         );
     }
 

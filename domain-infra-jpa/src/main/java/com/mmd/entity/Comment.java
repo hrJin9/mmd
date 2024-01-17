@@ -1,7 +1,8 @@
 package com.mmd.entity;
 
+import com.mmd.domain.CommentVisibility;
 import com.mmd.domain.UseStatus;
-import com.mmd.domain.Visibility;
+import com.mmd.domain.DiaryVisibility;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,24 +34,24 @@ public class Comment extends CommonDate {
     private Member writer;
 
     @Enumerated(EnumType.STRING)
-    private Visibility visibility = Visibility.PUBLIC;
+    private CommentVisibility commentVisibility = CommentVisibility.PUBLIC;
 
     @Enumerated(EnumType.STRING)
     private UseStatus useStatus = UseStatus.IN_USE;
 
     @Builder
-    public Comment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, Visibility visibility, UseStatus useStatus) {
+    public Comment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility, UseStatus useStatus) {
         this.groupId = groupId;
         this.level = level;
         this.upperId = upperId;
         this.content = content;
         this.diary = diary;
         this.writer = writer;
-        this.visibility = visibility;
+        this.commentVisibility = commentVisibility;
         this.useStatus = useStatus;
     }
     
-    public static Comment createComment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, Visibility visibility) {
+    public static Comment createComment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility) {
         return Comment.builder()
                 .groupId(groupId)
                 .level(level)
@@ -58,11 +59,11 @@ public class Comment extends CommonDate {
                 .content(content)
                 .diary(diary)
                 .writer(writer)
-                .visibility(visibility).build();
+                .commentVisibility(commentVisibility).build();
     }
     
-    public void updateComment(String content, Visibility visibility) {
+    public void updateComment(String content, CommentVisibility commentVisibility) {
         this.content = content;
-        this.visibility = visibility;
+        this.commentVisibility = commentVisibility;
     }
 }

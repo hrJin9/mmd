@@ -1,7 +1,7 @@
 package com.mmd.entity;
 
 import com.mmd.domain.UseStatus;
-import com.mmd.domain.Visibility;
+import com.mmd.domain.DiaryVisibility;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,7 +30,7 @@ public class Diary extends CommonDate {
     private List<Comment> comments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Visibility visibility = Visibility.PUBLIC;
+    private DiaryVisibility diaryVisibility = DiaryVisibility.PUBLIC;
 
     @Enumerated(EnumType.STRING)
     private UseStatus useStatus = UseStatus.IN_USE;

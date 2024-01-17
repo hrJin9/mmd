@@ -1,13 +1,12 @@
 package com.mmd.repository.custom;
 
-import com.mmd.domain.Visibility;
+import com.mmd.domain.DiaryVisibility;
 import com.mmd.entity.Comment;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +37,6 @@ public class CustomCommentRepositoryImpl implements CustomCommentRepository {
     
     // FRIEND, PUBLIC만 조회 가능
     private BooleanExpression findByVisibility() {
-        return comment.visibility.eq(Visibility.FRIEND).and(comment.visibility.eq(Visibility.PUBLIC));
+        return comment.visibility.eq(DiaryVisibility.FRIEND).and(comment.visibility.eq(DiaryVisibility.PUBLIC));
     }
 }

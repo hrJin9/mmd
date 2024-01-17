@@ -1,6 +1,7 @@
 package com.mmd.comment.request;
 
-import com.mmd.domain.Visibility;
+import com.mmd.domain.CommentVisibility;
+import com.mmd.domain.DiaryVisibility;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,7 +17,7 @@ public class CommentRequest {
         private Long upperId;
         @NotBlank
         private String content;
-        private Visibility visibility;
+        private CommentVisibility commentVisibility;
     }
 
     @Getter
@@ -24,6 +25,6 @@ public class CommentRequest {
     public static class UpdateComment {
         @NotBlank
         private String content;
-        private Visibility visibility;
+        private CommentVisibility commentVisibility;
     }
 }

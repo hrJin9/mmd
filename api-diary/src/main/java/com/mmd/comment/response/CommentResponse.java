@@ -10,13 +10,13 @@ public class CommentResponse {
     @AllArgsConstructor
     public static class ViewComments {
         private String contents;
-        private Long writerNo;
+        private Long writerId;
         private String writerNickName;
 
         public static CommentResponse.ViewComments from(CommentFindResultDto serviceDto) {
             return new CommentResponse.ViewComments(
                     serviceDto.getContents(),
-                    serviceDto.getWriterNo(),
+                    serviceDto.getWriterId(),
                     serviceDto.getWriterNickName()
             );
         }
