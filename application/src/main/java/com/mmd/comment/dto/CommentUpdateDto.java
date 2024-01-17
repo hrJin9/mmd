@@ -6,12 +6,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class CommentCreateDto {
-    private final Long groupId;
-    private final Long level;
-    private final Long upperId;
-    private final String content;
-    private final Long diaryId;
+public class CommentUpdateDto {
     private final Long memberId;
+    private final Long commentId;
+    private final String content;
     private final Visibility visibility;
 }

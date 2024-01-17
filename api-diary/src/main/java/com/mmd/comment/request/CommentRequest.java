@@ -15,7 +15,15 @@ public class CommentRequest {
         private Long level;
         private Long upperId;
         @NotBlank
-        private String contents;
+        private String content;
+        private Visibility visibility;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class UpdateComment {
+        @NotBlank
+        private String content;
         private Visibility visibility;
     }
 }

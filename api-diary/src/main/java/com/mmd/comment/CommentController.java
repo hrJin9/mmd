@@ -41,4 +41,14 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /* 코멘트 수정 */
+    @PutMapping("/diary/{diaryId}/comments/{commentId}")
+    public ResponseEntity<Void> updateComment(@AuthenticationPrincipal MemberDetails memberDetails,
+                                              @PathVariable Long commentId,
+                                              @RequestBody @Valid CommentRequest.UpdateComment request) {
+
+        commentService.updateComment(ServiceDtoMapper.mapping(memberDetails.getId(), commentId, request));
+        return ResponseEntity.ok().build();
+    }
+
 }

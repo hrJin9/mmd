@@ -49,7 +49,7 @@ public class Comment extends CommonDate {
         this.visibility = visibility;
         this.useStatus = useStatus;
     }
-
+    
     public static Comment createComment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, Visibility visibility) {
         return Comment.builder()
                 .groupId(groupId)
@@ -59,5 +59,10 @@ public class Comment extends CommonDate {
                 .diary(diary)
                 .writer(writer)
                 .visibility(visibility).build();
+    }
+    
+    public void updateComment(String content, Visibility visibility) {
+        this.content = content;
+        this.visibility = visibility;
     }
 }
