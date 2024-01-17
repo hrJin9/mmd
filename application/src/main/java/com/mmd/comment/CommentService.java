@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -39,8 +37,8 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     /* 코멘트 작성 */
+    @Transactional
     public Long createComment(CommentCreateDto serviceDto) {
         Member member = memberService.findMember(serviceDto.getMemberId());
         Diary diary = diaryService.findDiary(serviceDto.getDiaryId());
@@ -62,7 +60,7 @@ public class CommentService {
     /* 코멘트 수정 */
     @Transactional
     public void updateComment(CommentUpdateDto serviceDto) {
-        Comment comment = findComment(serviceDto.getCommentId());
+        Comment comment = findCommentById(serviceDto.getCommentId());
 
         if(!comment.getWriter().getId().equals(serviceDto.getMemberId())) {
             throw new MemberNotValidException("로그인된 사용자의 코멘트가 아닙니다.");
@@ -71,7 +69,20 @@ public class CommentService {
         comment.updateComment(serviceDto.getContent(), serviceDto.getVisibility());
     }
 
-    private Comment findComment(Long commentId) {
+    /* 코멘트 삭제 */
+    @Transactional
+    public void deleteComment(Long memberId, Long commentId) {
+        Comment comment = findCommentById(commentId);
+
+        if(!comment.getWriter().getId().equals(memberId)) {
+            throw new MemberNotValidException("로그인된 사용자의 코멘트가 아닙니다.");
+        }
+
+        commentRepository.delete(comment);
+    }
+    
+    // 코멘트 찾기
+    private Comment findCommentById(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new ContentsNotFoundException("존재하지 않는 코멘트입니다."));
     }
