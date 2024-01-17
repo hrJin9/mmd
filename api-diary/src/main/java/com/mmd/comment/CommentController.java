@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
-
+    
+    /* 다이어리의 코멘트 조회 */
     @GetMapping("/diary/{diaryId}/comments")
     public ResponseEntity<List<CommentResponse.ViewComments>> getComments(@PathVariable Long diaryId) {
         List<CommentFindResultDto> comments = commentService.getComments(diaryId);
@@ -30,7 +31,8 @@ public class CommentController {
         return ResponseEntity.ok()
                 .body(commentsResponse);
     }
-
+    
+    /* 코멘트 작성 */
     @PostMapping("/diary/{diaryId}/comments")
     public ResponseEntity<Void> createComment(@AuthenticationPrincipal MemberDetails memberDetails,
                                               @PathVariable Long diaryId,

@@ -3,6 +3,7 @@ package com.mmd.comment;
 import com.mmd.comment.dto.CommentCreateDto;
 import com.mmd.comment.dto.CommentFindResultDto;
 import com.mmd.diary.DiaryService;
+import com.mmd.domain.Visibility;
 import com.mmd.entity.Comment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
@@ -26,8 +27,10 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentFindResultDto> getComments(Long diaryId) {
-        List<Comment> comments = commentRepository.findAllComment(diaryId);
+//        List<Comment> comments = commentRepository.findAllComment(diaryId);
+        List<Comment> comments = commentRepository.findAllByDiaryId(diaryId);
         return comments.stream()
+                .filter(comment -> comment.getVisibility().equals(Visibility.FRIEND) || comment.getVisibility().equals(Visibility.PUBLIC))
                 .map(CommentFindResultDto::from)
                 .collect(Collectors.toList());
     }
