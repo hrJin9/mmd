@@ -28,8 +28,9 @@ public class CommentService {
 
     /* 다이어리의 코멘트 조회 */
     @Transactional(readOnly = true)
-    public List<CommentFindResultDto> getComments(Long diaryId) {
+    public List<CommentFindResultDto> getComments(Long memberId, Long diaryId) {
 //        List<Comment> comments = commentRepository.findAllComment(diaryId);
+        // TODO : PUBLIC이면 그냥 조회, FRIEND이면 friend일때만 조회, private이면 본인 글 외에는 조회 불가
         List<Comment> comments = commentRepository.findAllByDiaryId(diaryId);
         return comments.stream()
                 .filter(comment -> comment.getVisibility().equals(Visibility.FRIEND) || comment.getVisibility().equals(Visibility.PUBLIC))
