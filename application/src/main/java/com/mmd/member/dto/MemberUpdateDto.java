@@ -1,13 +1,14 @@
 package com.mmd.member.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberUpdateDto {
-    private String loginId;
-    private String name;
-    private String phone;
-    private String address;
+    private final Long id;
+    private final String nickName;
+    private final String name;
+    private final String phone;
+    private final String address;
 }

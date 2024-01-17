@@ -30,7 +30,7 @@ public class MemberController {
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal MemberDetails memberDetails,
                                              @RequestBody @Valid MemberRequest.MemberUpdateRequest request
     ) {
-        memberService.updateMember(ServiceDtoMapper.mapping(memberDetails.getMemberId(), request));
+        memberService.updateMember(ServiceDtoMapper.mapping(memberDetails.getId(), request));
         return ResponseEntity.ok().build();
     }
 }

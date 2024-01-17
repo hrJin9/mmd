@@ -22,12 +22,8 @@ public class MemberDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public Long getMemberNo() {
-        return member.getMemberNo();
-    }
-
-    public String getMemberId() {
-        return member.getMemberId();
+    public Long getId() {
+        return member.getId();
     }
 
     @Override

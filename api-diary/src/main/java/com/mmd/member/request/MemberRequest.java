@@ -15,14 +15,14 @@ public class MemberRequest {
     @AllArgsConstructor
     public static class MemberCreateRequest {
         @NotBlank
-        private String memberId;
-
-        @NotBlank
         @Email
         private String email;
 
         @NotBlank
         private String password;
+
+        @NotBlank
+        private String nickName;
 
         @NotNull
         private String name;
@@ -37,6 +37,9 @@ public class MemberRequest {
     @NoArgsConstructor(access =  AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class MemberUpdateRequest {
+        @NotNull
+        private String nickName;
+
         @NotBlank
         private String name;
         @NotBlank

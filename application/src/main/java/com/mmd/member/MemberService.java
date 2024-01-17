@@ -37,9 +37,7 @@ public class MemberService {
 
     @Transactional
     public void updateMember(MemberUpdateDto memberUpdateDto) {
-        Member member = memberRepository.findByMemberId(memberUpdateDto.getLoginId())
-                        .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다."));
-
+        Member member = findMember(memberUpdateDto.getId());
         member.update(
                 member.getNickName(),
                 memberUpdateDto.getName(),
@@ -48,9 +46,16 @@ public class MemberService {
         );
     }
 
-    /* 아이디, 이메일 중복검사 */
+    /* 이메일 중복검사 */
     private boolean isDuplicated(String email) {
         return memberRepository.findByEmail(email).isPresent();
+    }
+    
+    /* 회원 조회 */
+    @Transactional
+    public Member findMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다."));
     }
 
 }

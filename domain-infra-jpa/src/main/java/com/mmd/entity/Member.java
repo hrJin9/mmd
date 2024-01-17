@@ -16,7 +16,8 @@ import javax.persistence.*;
 public class Member extends CommonDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
-    private Long memberNo;
+    @Column(name = "member_id")
+    private Long id;
 
     private String email;
 
@@ -31,10 +32,10 @@ public class Member extends CommonDate {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    private MemberRole role;
+    private MemberRole role = MemberRole.USER;
 
     @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
+    private UseStatus useStatus = UseStatus.IN_USE;
 
     public static Member of(String email, String password, String name, String nickName, String phone, String address) {
         PasswordValidator.validatePassword(password);
@@ -44,9 +45,7 @@ public class Member extends CommonDate {
                 .name(name)
                 .nickName(nickName)
                 .phone(phone)
-                .address(address)
-                .role(MemberRole.USER)
-                .useStatus(UseStatus.IN_USE).build();
+                .address(address).build();
     }
 
     public void update(String nickName, String name, String phone, String address) {
