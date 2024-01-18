@@ -40,12 +40,19 @@ public class Friend extends CommonDate {
         this.friendStatus = friendStatus;
         this.useStatus = useStatus;
     }
-    
+
     // 친구 신청 수락/거절
     public void updateFriendRequest(FriendStatus friendStatus) {
         this.friendStatus = friendStatus;
     }
-    
+
+    // 친구 신청
+    public static Friend of(Member requester, Member respondent) {
+        return Friend.builder()
+                .requester(requester)
+                .respondent(respondent).build();
+    }
+
     // 친구 삭제
     public void deleteFriend() {
         this.friendStatus = FriendStatus.N;

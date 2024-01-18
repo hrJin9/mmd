@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/friend")
+@RequestMapping("/api/friends")
 @RequiredArgsConstructor
 public class FriendController {
     private final FriendService friendService;
@@ -32,7 +32,7 @@ public class FriendController {
     }
     
     /* 친구요청 확인 */
-    @GetMapping("/requests")
+    @GetMapping("     /requests")
     public ResponseEntity<List<FriendResponse.ViewFriends>> findFriendRequests(@AuthenticationPrincipal MemberDetails memberDetails) {
         List<FriendFindResultDto> friends = friendService.findFriendRequests(memberDetails.getId());
         List<FriendResponse.ViewFriends> friendsResponse = friends.stream()
@@ -52,6 +52,13 @@ public class FriendController {
         return ResponseEntity.noContent().build();
     }
 
+    /* 친구 요청 */
+    @PostMapping("/{memberId}")
+    public ResponseEntity<Void> createFriendRequest(@AuthenticationPrincipal MemberDetails memberDetails,
+                                                    @PathVariable Long memberId) {
+        friendService.createFriendRequest(memberDetails.getId(), memberId);
+        return ResponseEntity.noContent().build();
+    }
 
     /* 친구 삭제 */
     @DeleteMapping("/{friendId}")

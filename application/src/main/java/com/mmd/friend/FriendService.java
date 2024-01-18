@@ -2,10 +2,13 @@ package com.mmd.friend;
 
 import com.mmd.domain.FriendStatus;
 import com.mmd.entity.Friend;
+import com.mmd.entity.Member;
 import com.mmd.exception.ContentsNotFoundException;
 import com.mmd.exception.MemberNotValidException;
 import com.mmd.friend.dto.FriendFindResultDto;
+import com.mmd.member.MemberService;
 import com.mmd.repository.FriendRepository;
+import com.mmd.vo.FriendFindResultVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,17 +20,27 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FriendService {
     private final FriendRepository friendRepository;
-    
+    private final MemberService memberService;
+
     /* 친구 조회 */
     @Transactional(readOnly = true)
     public List<FriendFindResultDto> findFriends(Long memberId) {
-        return findFriendsByStatus(memberId, FriendStatus.Y);
+        List<Friend> friends = friendRepository.findAllFriends(memberId);
+        return friends.stream()
+                .map(friend -> {
+                    Member memberFriend = (friend.getRequester().getId().equals(memberId)) ? friend.getRespondent() : friend.getRequester();
+                    return FriendFindResultDto.of(friend.getId(), memberFriend);
+                })
+                .collect(Collectors.toList());
     }
     
     /* 친구 신청 조회 */
     @Transactional(readOnly = true)
-    public List<FriendFindResultDto> findFriendRequests(Long memberId) {
-        return findFriendsByStatus(memberId, FriendStatus.IN_PROGRESS);
+    public List<FriendFindResultDto> findFriendRequests(Long respondentId) {
+        List<FriendFindResultVO> results = friendRepository.findAllFriendRequests(respondentId);
+        return results.stream()
+                .map(FriendFindResultDto::from)
+                .collect(Collectors.toList());
     }
     
     /* 친구 신청 수락/거절 */
@@ -36,20 +49,21 @@ public class FriendService {
         friend.updateFriendRequest(friendStatus);
     }
 
+    /* 친구 신청 */
+    public void createFriendRequest(Long requesterId, Long respondentId) {
+        Member requester = memberService.findMember(requesterId);
+        Member respondent = memberService.findMember(respondentId);
+
+        Friend friend = Friend.of(requester, respondent);
+        friendRepository.save(friend);
+    }
+
     /* 친구 삭제 */
     public void deleteFriend(Long memberId, Long friendId) {
         Friend friend = findFriendByMemberIdAndFriendId(memberId, friendId);
         friend.deleteFriend();
     }
 
-    // FRIEND STATUS에 따른 friend 조회
-    private List<FriendFindResultDto> findFriendsByStatus(Long memberId, FriendStatus friendStatus) {
-        List<Friend> friends = friendRepository.findAllFriends(memberId, friendStatus);
-        return friends.stream()
-                .map(friend -> FriendFindResultDto.of(memberId, friend))
-                .collect(Collectors.toList());
-    }
-    
     // friend 조회
     private Friend findFriendByMemberIdAndFriendId(Long memberId, Long friendId) {
         Friend friend = friendRepository.findById(friendId)
@@ -61,4 +75,5 @@ public class FriendService {
 
         return friend;
     }
+
 }
