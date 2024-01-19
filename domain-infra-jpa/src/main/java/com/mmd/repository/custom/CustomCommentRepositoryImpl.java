@@ -1,5 +1,6 @@
 package com.mmd.repository.custom;
 
+import com.mmd.domain.CommentVisibility;
 import com.mmd.domain.DiaryVisibility;
 import com.mmd.entity.Comment;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -37,6 +38,6 @@ public class CustomCommentRepositoryImpl implements CustomCommentRepository {
     
     // FRIEND, PUBLIC만 조회 가능
     private BooleanExpression findByVisibility() {
-        return comment.visibility.eq(DiaryVisibility.FRIEND).and(comment.visibility.eq(DiaryVisibility.PUBLIC));
+        return comment.commentVisibility.eq(CommentVisibility.FRIEND).and(comment.commentVisibility.eq(CommentVisibility.PUBLIC));
     }
 }

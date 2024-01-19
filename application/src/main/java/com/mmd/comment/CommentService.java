@@ -5,6 +5,7 @@ import com.mmd.comment.dto.CommentFindResultDto;
 import com.mmd.comment.dto.CommentUpdateDto;
 import com.mmd.diary.DiaryService;
 import com.mmd.domain.CommentVisibility;
+import com.mmd.domain.UseStatus;
 import com.mmd.entity.Comment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
@@ -41,7 +42,7 @@ public class CommentService {
     /* 코멘트 작성 */
     @Transactional
     public Long createComment(CommentCreateDto serviceDto) {
-        Member member = memberService.findMember(serviceDto.getMemberId());
+        Member member = memberService.findValidMember(serviceDto.getMemberId());
         Diary diary = diaryService.findDiary(serviceDto.getDiaryId());
 
         Comment comment = Comment.createComment(
@@ -61,7 +62,7 @@ public class CommentService {
     /* 코멘트 수정 */
     @Transactional
     public void updateComment(CommentUpdateDto serviceDto) {
-        Comment comment = findCommentById(serviceDto.getCommentId());
+        Comment comment = findValidCommentById(serviceDto.getCommentId());
 
         if(!comment.getWriter().getId().equals(serviceDto.getMemberId())) {
             throw new MemberNotValidException("로그인된 사용자의 코멘트가 아닙니다.");
@@ -73,7 +74,7 @@ public class CommentService {
     /* 코멘트 삭제 */
     @Transactional
     public void deleteComment(Long memberId, Long commentId) {
-        Comment comment = findCommentById(commentId);
+        Comment comment = findValidCommentById(commentId);
 
         if(!comment.getWriter().getId().equals(memberId)) {
             throw new MemberNotValidException("로그인된 사용자의 코멘트가 아닙니다.");
@@ -83,8 +84,8 @@ public class CommentService {
     }
     
     // 코멘트 찾기
-    private Comment findCommentById(Long commentId) {
-        return commentRepository.findById(commentId)
+    private Comment findValidCommentById(Long commentId) {
+        return commentRepository.findByIdAndUseStatus(commentId, UseStatus.IN_USE)
                 .orElseThrow(() -> new ContentsNotFoundException("존재하지 않는 코멘트입니다."));
     }
 }
