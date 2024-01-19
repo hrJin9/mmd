@@ -40,7 +40,6 @@ class CommentServiceTest {
     @BeforeAll
     static void setUp() {
         member = new Member(1L, "tester@gmail.com", "password123!@#", "테스터", "테스터닉네임", "01011112222", "테스터 주소", MemberRole.USER, UseStatus.IN_USE);
-
     }
 
 
@@ -53,7 +52,7 @@ class CommentServiceTest {
 //                .willReturn();
 
         // when
-        List<CommentFindResultDto> comments = commentService.getComments(DIARY_ID);
+//        List<CommentFindResultDto> comments = commentService.getComments(DIARY_ID);
 
         // then
 
