@@ -36,9 +36,6 @@ sourceSets {
 
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
-//
-//    if(file(querydslDir).exists() )
-//        delete(file(querydslDir))
 }
 
 configurations {

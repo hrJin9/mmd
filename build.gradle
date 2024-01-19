@@ -23,14 +23,10 @@ subprojects {
 		mavenCentral()
 	}
 
-	dependencies { // 전체 모듈 공통 dependency
+	dependencies {
 		// lombok
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
-	}
-
-	test {
-		useJUnitPlatform()
 	}
 }
 
@@ -38,5 +34,13 @@ subprojects {
 configure(subprojects.findAll {it.name != 'common'}) {
 	dependencies {
 		implementation project(':common')
+
+		// test
+		testImplementation 'org.junit.jupiter:junit-jupiter-api'
+		testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	}
+
+	test {
+		useJUnitPlatform()
 	}
 }
