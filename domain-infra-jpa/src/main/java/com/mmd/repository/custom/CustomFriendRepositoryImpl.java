@@ -1,6 +1,7 @@
 package com.mmd.repository.custom;
 
 import com.mmd.domain.FriendStatus;
+import com.mmd.domain.UseStatus;
 import com.mmd.entity.Friend;
 import com.mmd.vo.FriendFindResultVO;
 import com.querydsl.core.types.Projections;
@@ -23,7 +24,7 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
     public List<Friend> findAllFriends(Long memberId) {
         return queryFactory
                 .selectFrom(friend)
-                .where(findByMemberId(memberId), findByFriendStatus(FriendStatus.Y))
+                .where(findByMemberId(memberId), findByFriendStatus(FriendStatus.Y), findByUseStatus(UseStatus.IN_USE))
                 .fetch();
     }
 
@@ -34,8 +35,12 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
                         friend.id,
                         friend.requester))
                 .from(friend)
-                .where(findByRespondentId(respondentId), findByFriendStatus(FriendStatus.IN_PROGRESS))
+                .where(findByRespondentId(respondentId), findByFriendStatus(FriendStatus.IN_PROGRESS), findByUseStatus(UseStatus.IN_USE))
                 .fetch();
+    }
+
+    private BooleanExpression findByUseStatus(UseStatus useStatus) {
+        return Objects.isNull(useStatus) ? null : friend.useStatus.eq(useStatus);
     }
 
     private BooleanExpression findByRequesterId(Long memberId) {

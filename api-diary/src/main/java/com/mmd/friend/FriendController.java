@@ -52,6 +52,13 @@ public class FriendController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/requests/{friendId}")
+    public ResponseEntity<Void> deleteFriendRequest(@AuthenticationPrincipal MemberDetails memberDetails,
+                                                    @PathVariable Long friendId) {
+        friendService.deleteFriendRequest(memberDetails.getId(), friendId);
+        return ResponseEntity.noContent().build();
+    }
+
     /* 친구 요청 */
     @PostMapping("/{memberId}")
     public ResponseEntity<Void> createFriendRequest(@AuthenticationPrincipal MemberDetails memberDetails,
