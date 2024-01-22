@@ -22,6 +22,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.security.Principal;
 import java.util.List;
 
 @Configuration
@@ -39,6 +40,7 @@ public class SwaggerConfig {
                 .securitySchemes(List.of(apiKey()))
                 .additionalModels(typeResolver.resolve(ExceptionResponse.class))
                 .ignoredParameterTypes(AuthenticationPrincipal.class)
+                .ignoredParameterTypes(Principal.class)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.mmd"))

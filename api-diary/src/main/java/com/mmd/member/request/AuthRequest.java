@@ -1,5 +1,7 @@
 package com.mmd.member.request;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,9 +14,11 @@ public class AuthRequest {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
+    @ApiModel(description = "로그인 요청 Parameter")
     public static class LoginRequest {
         @NotBlank
         @Email
+//        @ApiModelProperty(value = )
         private String email;
 
         @NotBlank
