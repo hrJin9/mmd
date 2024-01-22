@@ -25,6 +25,7 @@ public class WebSecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private static final String[] ALLOWED_URIS = {"/api/auth/**", "/api/member/register"};
+    private static final String[] SWAGGER_URIS = {"/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "swagger/**", "/swagger-ui.html"};
 
     /* filterChain 설정 */
     @Bean
@@ -39,7 +40,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(ALLOWED_URIS).permitAll()
-                .antMatchers("/swagger-resources/**", "/swagger-ui/**", "swagger/**").permitAll()
+                .antMatchers(SWAGGER_URIS).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -32,7 +32,7 @@ public class FriendController {
     }
     
     /* 친구요청 확인 */
-    @GetMapping("     /requests")
+    @GetMapping("/requests")
     public ResponseEntity<List<FriendResponse.ViewFriends>> findFriendRequests(@AuthenticationPrincipal MemberDetails memberDetails) {
         List<FriendFindResultDto> friends = friendService.findFriendRequests(memberDetails.getId());
         List<FriendResponse.ViewFriends> friendsResponse = friends.stream()
