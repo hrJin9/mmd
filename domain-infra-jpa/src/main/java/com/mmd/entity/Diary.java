@@ -26,7 +26,7 @@ public class Diary extends CommonDate {
     @JoinColumn(name = "member_id")
     private Member writer;
 
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

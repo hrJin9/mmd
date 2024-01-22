@@ -8,7 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Comment extends CommonDate {

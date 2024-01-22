@@ -32,10 +32,10 @@ public class Member extends CommonDate {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    private MemberRole role = MemberRole.USER;
+    private MemberRole role;
 
     @Enumerated(EnumType.STRING)
-    private UseStatus useStatus = UseStatus.IN_USE;
+    private UseStatus useStatus;
 
     public static Member of(String email, String password, String name, String nickName, String phone, String address) {
         PasswordValidator.validatePassword(password);
@@ -45,7 +45,9 @@ public class Member extends CommonDate {
                 .name(name)
                 .nickName(nickName)
                 .phone(phone)
-                .address(address).build();
+                .address(address)
+                .role(MemberRole.USER)
+                .useStatus(UseStatus.IN_USE).build();
     }
 
     public void update(String nickName, String name, String phone, String address) {

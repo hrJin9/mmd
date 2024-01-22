@@ -20,11 +20,11 @@ public class Friend extends CommonDate {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(referencedColumnName = "member_id", name = "requester_id")
     private Member requester;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(referencedColumnName = "member_id", name = "respondent_id")
     private Member respondent;
 
     @Enumerated(EnumType.STRING)

@@ -24,7 +24,7 @@ public class WebSecurityConfig {
     private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private static final String[] ALLOWED_URIS = {"/api/auth/**"};
+    private static final String[] ALLOWED_URIS = {"/api/auth/**", "/api/member/register"};
 
     /* filterChain 설정 */
     @Bean
