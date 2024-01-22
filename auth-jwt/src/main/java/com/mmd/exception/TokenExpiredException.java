@@ -2,12 +2,11 @@ package com.mmd.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class TokenExpiredException extends AuthException {
+public class TokenExpiredException extends MmdApiException {
     @Override
     public HttpStatus getStatus() {
-        return super.getStatus();
+        return HttpStatus.UNAUTHORIZED;
     }
-
     public TokenExpiredException(String message) {
         super(message);
     }

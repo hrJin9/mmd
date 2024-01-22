@@ -2,10 +2,10 @@ package com.mmd.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class TokenNotValidException extends AuthException {
+public class TokenNotValidException extends MmdApiException {
     @Override
     public HttpStatus getStatus() {
-        return super.getStatus();
+        return HttpStatus.UNAUTHORIZED;
     }
 
     public TokenNotValidException(String message) {
