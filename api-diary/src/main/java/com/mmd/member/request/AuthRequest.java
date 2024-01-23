@@ -16,13 +16,13 @@ public class AuthRequest {
     @AllArgsConstructor
     @ApiModel(description = "로그인 요청 Parameter")
     public static class LoginRequest {
+        @ApiModelProperty(value = "이메일", required = true, example = "dallae@gmail.com")
         @NotBlank
         @Email
-        @ApiModelProperty(value = "이메일", required = true, example = "dallae@gmail.com")
         private String email;
 
-        @NotBlank
         @ApiModelProperty(value = "비밀번호", required = true, example = "dallae123!@#")
+        @NotBlank
         private String password;
     }
 }
