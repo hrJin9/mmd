@@ -71,7 +71,7 @@ public class FriendController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "친구 삭제", description = "현재 회원의 친구 목록을 조회합니다.", tags = "친구 API")
+    @Operation(summary = "친구 삭제", description = "특정 회원의 친구 관계를 삭제 처리합니다.", tags = "친구 API")
     @DeleteMapping("/{friendId}")
     public ResponseEntity<Void> deleteFriend(@AuthenticationPrincipal MemberDetails memberDetails,
                                              @PathVariable Long friendId) {
