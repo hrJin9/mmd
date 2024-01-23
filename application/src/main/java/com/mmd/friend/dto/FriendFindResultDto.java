@@ -1,9 +1,7 @@
 package com.mmd.friend.dto;
 
-import com.mmd.entity.Friend;
 import com.mmd.entity.Member;
 import com.mmd.vo.FriendFindResultVO;
-import com.mmd.vo.SimpleFriendVO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
