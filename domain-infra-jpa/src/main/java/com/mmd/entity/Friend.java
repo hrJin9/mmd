@@ -19,19 +19,19 @@ public class Friend extends CommonDate {
     @Column(name = "friend_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "member_id", name = "requester_id")
     private Member requester;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(referencedColumnName = "member_id", name = "respondent_id")
     private Member respondent;
 
     @Enumerated(EnumType.STRING)
-    private FriendStatus friendStatus = FriendStatus.IN_PROGRESS;
+    private FriendStatus friendStatus;
 
     @Enumerated(EnumType.STRING)
-    private UseStatus useStatus = UseStatus.IN_USE;
+    private UseStatus useStatus;
 
     @Builder
     public Friend(Member requester, Member respondent, FriendStatus friendStatus, UseStatus useStatus) {

@@ -92,14 +92,12 @@ public class FriendService {
     @Transactional
     public void updateFriendRequest(Long memberId, Long friendId, FriendStatus friendStatus) {
         Friend friend = findValidFriend(friendId);
-
-        if(!friend.getFriendStatus().equals(FriendStatus.IN_PROGRESS)) {
-            throw new ContentsNotFoundException("신청중인 내역이 아닙니다.");
-        }
-
         // 로그인한 사용자의 정보가 respondent의 id와 일치하지 않는다면
         if(!friend.getRespondent().getId().equals(memberId)) {
             throw new MemberNotValidException("로그인한 사용자에 대한 친구 신청이 아닙니다.");
+        }
+        if(!friend.getFriendStatus().equals(FriendStatus.IN_PROGRESS)) {
+            throw new ContentsNotFoundException("신청중인 내역이 아닙니다.");
         }
 
         friend.updateFriendRequest(friendStatus);

@@ -3,6 +3,7 @@ package com.mmd.repository.custom;
 import com.mmd.domain.FriendStatus;
 import com.mmd.domain.UseStatus;
 import com.mmd.entity.Friend;
+import com.mmd.entity.QMember;
 import com.mmd.vo.FriendFindResultVO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -18,23 +19,29 @@ import static com.mmd.entity.QFriend.friend;
 @Repository
 @RequiredArgsConstructor
 public class CustomFriendRepositoryImpl implements CustomFriendRepository {
+    private static final QMember requester = new QMember("requester");
+    private static final QMember respondent = new QMember("respondent");
     private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Friend> findAllFriends(Long memberId) {
         return queryFactory
                 .selectFrom(friend)
+                .join(friend.requester, requester).fetchJoin()
+                .join(friend.respondent, respondent).fetchJoin()
                 .where(findByMemberId(memberId), findByFriendStatus(FriendStatus.Y), findByUseStatus(UseStatus.IN_USE))
                 .fetch();
     }
 
     @Override
+//    public List<FriendFindResultVO> findAllFriendRequests(Long respondentId) {
     public List<FriendFindResultVO> findAllFriendRequests(Long respondentId) {
         return queryFactory
-                .select(Projections.bean(FriendFindResultVO.class,
-                        friend.id,
-                        friend.requester))
+                .select(Projections.constructor(FriendFindResultVO.class,
+                                                friend.id,
+                                                friend.requester))
                 .from(friend)
+                .join(friend.requester, requester)
                 .where(findByRespondentId(respondentId), findByFriendStatus(FriendStatus.IN_PROGRESS), findByUseStatus(UseStatus.IN_USE))
                 .fetch();
     }

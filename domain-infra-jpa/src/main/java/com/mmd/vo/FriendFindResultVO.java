@@ -8,5 +8,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FriendFindResultVO {
     private final Long friendId;
-    private final Member requester;
+    private final Member friend;
 }

@@ -13,7 +13,7 @@ public class FriendRequest {
     @ApiModel(description = "친구 신청 수락/거절 요청 Parameter")
     public static class UpdateFriendRequest {
         @ApiModelProperty(value = "수락/거절할 친구 상태", required = true, example = "Y")
-        @NotBlank
+        // TODO : Enum 타입 validate
         private FriendStatus friendStatus;
     }
 

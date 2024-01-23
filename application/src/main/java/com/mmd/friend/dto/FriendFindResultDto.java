@@ -1,7 +1,9 @@
 package com.mmd.friend.dto;
 
+import com.mmd.entity.Friend;
 import com.mmd.entity.Member;
 import com.mmd.vo.FriendFindResultVO;
+import com.mmd.vo.SimpleFriendVO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -25,9 +27,9 @@ public class FriendFindResultDto {
     public static FriendFindResultDto from(FriendFindResultVO friendFindResultVO) {
         return new FriendFindResultDto(
                 friendFindResultVO.getFriendId(),
-                friendFindResultVO.getRequester().getId(),
-                friendFindResultVO.getRequester().getNickName(),
-                friendFindResultVO.getRequester().getName()
+                friendFindResultVO.getFriend().getId(),
+                friendFindResultVO.getFriend().getNickName(),
+                friendFindResultVO.getFriend().getName()
         );
     }
 }
