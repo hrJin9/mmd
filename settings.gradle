@@ -1,6 +1,6 @@
 rootProject.name = 'mmd'
 include 'application'
-include 'domain-infra-jpa'
+include 'domain-infra-mysql'
 include 'domain-infra-redis'
 include 'auth-jwt'
 include 'api-diary'

@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(':domain-infra-jpa')
+    implementation project(':domain-infra-mysql')
     implementation project(':domain-infra-redis')
 
     // spring web
