@@ -23,7 +23,7 @@ public class MemberRequest {
         private String email;
 
         @NotBlank
-        @ApiModelProperty(value = "비밀번호", required = true, example = "member123!@#")
+        @ApiModelProperty(value = "비밀번호", required = true, example = "dallae123!@#")
         private String password;
 
         @NotBlank

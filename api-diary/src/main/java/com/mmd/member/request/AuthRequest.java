@@ -18,10 +18,11 @@ public class AuthRequest {
     public static class LoginRequest {
         @NotBlank
         @Email
-//        @ApiModelProperty(value = )
+        @ApiModelProperty(value = "이메일", required = true, example = "dallae@gmail.com")
         private String email;
 
         @NotBlank
+        @ApiModelProperty(value = "비밀번호", required = true, example = "dallae123!@#")
         private String password;
     }
 }
