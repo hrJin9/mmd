@@ -35,6 +35,9 @@ public class Comment extends Common {
     @Enumerated(EnumType.STRING)
     private CommentVisibility commentVisibility;
 
+    @Enumerated(EnumType.STRING)
+    private UseStatus useStatus;
+
     @Builder
     public Comment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility, UseStatus useStatus) {
         this.groupId = groupId;

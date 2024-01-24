@@ -30,6 +30,9 @@ public class Friend extends Common {
     @Enumerated(EnumType.STRING)
     private FriendStatus friendStatus;
 
+    @Enumerated(EnumType.STRING)
+    private UseStatus useStatus;
+
     @Builder
     public Friend(Member requester, Member respondent, FriendStatus friendStatus, UseStatus useStatus) {
         this.requester = requester;

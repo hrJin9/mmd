@@ -1,6 +1,5 @@
 package com.mmd.entity;
 
-import com.mmd.domain.UseStatus;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,9 +12,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class Common {
-    @Enumerated(EnumType.STRING)
-    UseStatus useStatus;
-
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;

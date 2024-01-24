@@ -32,8 +32,11 @@ public class Member extends Common {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
+    @Enumerated(EnumType.STRING)
+    private UseStatus useStatus;
+
     @Builder
-    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, UseStatus useStatus) {
+    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -41,7 +44,6 @@ public class Member extends Common {
         this.phone = phone;
         this.address = address;
         this.role = role;
-        this.useStatus = useStatus;
     }
 
     public static Member of(String email, String password, String name, String nickName, String phone, String address) {
@@ -53,8 +55,7 @@ public class Member extends Common {
                 .nickName(nickName)
                 .phone(phone)
                 .address(address)
-                .role(MemberRole.USER)
-                .useStatus(UseStatus.IN_USE).build();
+                .role(MemberRole.USER).build();
     }
 
     public void update(String nickName, String name, String phone, String address) {
