@@ -12,7 +12,7 @@ import com.mmd.repository.MemberRepository;
 import com.mmd.repository.RefreshTokenRepository;
 import com.mmd.security.MemberDetails;
 import com.mmd.security.jwt.JwtTokenProvider;
-import com.mmd.service.member.PasswordEncryptor;
+import com.mmd.util.PasswordEncryptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

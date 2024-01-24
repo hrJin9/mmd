@@ -1,4 +1,4 @@
-package com.mmd.service.member;
+package com.mmd.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -2,8 +2,8 @@ package com.mmd.entity;
 
 import com.mmd.domain.MemberRole;
 import com.mmd.domain.UseStatus;
-import com.mmd.service.member.PasswordEncryptor;
-import com.mmd.service.member.PasswordValidator;
+import com.mmd.util.PasswordEncryptor;
+import com.mmd.util.PasswordValidator;
 import lombok.*;
 
 import javax.persistence.*;

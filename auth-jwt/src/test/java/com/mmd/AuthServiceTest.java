@@ -11,7 +11,7 @@ import com.mmd.entity.Member;
 import com.mmd.domain.MemberRole;
 import com.mmd.domain.UseStatus;
 import com.mmd.repository.MemberRepository;
-import com.mmd.service.member.PasswordEncryptor;
+import com.mmd.util.PasswordEncryptor;
 import com.mmd.support.ServiceTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
