@@ -12,7 +12,7 @@ import java.util.List;
 @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Diary extends CommonDate {
+public class Diary extends Common {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_id")
@@ -22,16 +22,32 @@ public class Diary extends CommonDate {
 
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member writer;
 
-    @OneToMany(mappedBy = "diary", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL) // 기본 Lazy
     private List<Comment> comments = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private DiaryVisibility diaryVisibility = DiaryVisibility.PUBLIC;
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    private List<Attachment> attachments = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private UseStatus useStatus = UseStatus.IN_USE;
+    private DiaryVisibility diaryVisibility;
+
+    @Builder
+    public Diary(String subject, String contents, Member writer, DiaryVisibility diaryVisibility) {
+        this.subject = subject;
+        this.contents = contents;
+        this.writer = writer;
+        this.diaryVisibility = diaryVisibility;
+    }
+
+    public static Diary createDiary(String subject, String contents, Member writer, DiaryVisibility diaryVisibility) {
+        return Diary.builder()
+                .subject(subject)
+                .contents(contents)
+                .writer(writer)
+                .diaryVisibility(diaryVisibility).build();
+    }
 }
