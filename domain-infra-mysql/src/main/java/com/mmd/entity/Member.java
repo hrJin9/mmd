@@ -10,10 +10,8 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class Member extends CommonDate {
+public class Member extends Common {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
     @Column(name = "member_id")
@@ -34,8 +32,17 @@ public class Member extends CommonDate {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
+    @Builder
+    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, UseStatus useStatus) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.nickName = nickName;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.useStatus = useStatus;
+    }
 
     public static Member of(String email, String password, String name, String nickName, String phone, String address) {
         PasswordValidator.validatePassword(password);

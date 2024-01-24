@@ -2,7 +2,6 @@ package com.mmd.entity;
 
 import com.mmd.domain.CommentVisibility;
 import com.mmd.domain.UseStatus;
-import com.mmd.domain.DiaryVisibility;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Comment extends CommonDate {
+public class Comment extends Common {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -34,10 +33,7 @@ public class Comment extends CommonDate {
     private Member writer;
 
     @Enumerated(EnumType.STRING)
-    private CommentVisibility commentVisibility = CommentVisibility.PUBLIC;
-
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus = UseStatus.IN_USE;
+    private CommentVisibility commentVisibility;
 
     @Builder
     public Comment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility, UseStatus useStatus) {

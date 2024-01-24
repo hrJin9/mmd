@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friend extends CommonDate {
+public class Friend extends Common {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friend_id")
@@ -29,9 +29,6 @@ public class Friend extends CommonDate {
 
     @Enumerated(EnumType.STRING)
     private FriendStatus friendStatus;
-
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
 
     @Builder
     public Friend(Member requester, Member respondent, FriendStatus friendStatus, UseStatus useStatus) {
