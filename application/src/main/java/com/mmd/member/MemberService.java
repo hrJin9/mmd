@@ -1,9 +1,7 @@
 package com.mmd.member;
 
-import com.mmd.domain.UseStatus;
 import com.mmd.exception.MemberDuplicatedException;
 import com.mmd.exception.MemberNotFoundException;
-import com.mmd.exception.MemberNotValidException;
 import com.mmd.member.dto.MemberCreateDto;
 import com.mmd.member.dto.MemberUpdateDto;
 import com.mmd.entity.Member;
@@ -56,7 +54,7 @@ public class MemberService {
     /* 회원 조회 */
     @Transactional
     public Member findValidMember(Long memberId) {
-        return memberRepository.findByIdAndUseStatus(memberId, UseStatus.IN_USE)
+        return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 회원입니다."));
     }
 }

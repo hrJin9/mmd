@@ -5,6 +5,7 @@ import com.mmd.diary.dto.DiaryCreateDto;
 import com.mmd.entity.Attachment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
+import com.mmd.exception.ContentsNotFoundException;
 import com.mmd.exception.MemberNotFoundException;
 import com.mmd.member.MemberService;
 import com.mmd.repository.DiaryRepository;
@@ -59,4 +60,11 @@ public class DiaryService {
 
         return diary.getId();
     }
+    
+
+    public Diary findValidDiaryById(Long diaryId) {
+        return diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new ContentsNotFoundException("존재하지 않는 다이어리입니다."));
+    }
+
 }

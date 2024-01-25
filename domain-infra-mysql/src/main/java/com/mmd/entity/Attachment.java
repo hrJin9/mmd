@@ -1,14 +1,21 @@
 package com.mmd.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Table
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Attachment extends Common {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@OnDelete(action = OnDeleteAction.CASCADE) // hard delete 방지
+@SQLDelete(sql = "UPDATE diary SET deleted_date = CURRENT_TIMESTAMP WHERE attachment_id = ?") // soft delete
+@Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
+public class Attachment extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attachment_id")

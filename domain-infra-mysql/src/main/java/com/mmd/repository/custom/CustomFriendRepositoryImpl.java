@@ -1,7 +1,6 @@
 package com.mmd.repository.custom;
 
 import com.mmd.domain.FriendStatus;
-import com.mmd.domain.UseStatus;
 import com.mmd.entity.Friend;
 import com.mmd.entity.QMember;
 import com.mmd.vo.FriendFindResultVO;
@@ -29,12 +28,11 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
                 .selectFrom(friend)
                 .join(friend.requester, requester).fetchJoin()
                 .join(friend.respondent, respondent).fetchJoin()
-                .where(findByMemberId(memberId), findByFriendStatus(FriendStatus.Y), findByUseStatus(UseStatus.IN_USE))
+                .where(findByMemberId(memberId), findByFriendStatus(FriendStatus.Y))
                 .fetch();
     }
 
     @Override
-//    public List<FriendFindResultVO> findAllFriendRequests(Long respondentId) {
     public List<FriendFindResultVO> findAllFriendRequests(Long respondentId) {
         return queryFactory
                 .select(Projections.constructor(FriendFindResultVO.class,
@@ -42,12 +40,8 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
                                                 friend.requester))
                 .from(friend)
                 .join(friend.requester, requester)
-                .where(findByRespondentId(respondentId), findByFriendStatus(FriendStatus.IN_PROGRESS), findByUseStatus(UseStatus.IN_USE))
+                .where(findByRespondentId(respondentId), findByFriendStatus(FriendStatus.IN_PROGRESS))
                 .fetch();
-    }
-
-    private BooleanExpression findByUseStatus(UseStatus useStatus) {
-        return Objects.isNull(useStatus) ? null : friend.useStatus.eq(useStatus);
     }
 
     private BooleanExpression findByRequesterId(Long memberId) {

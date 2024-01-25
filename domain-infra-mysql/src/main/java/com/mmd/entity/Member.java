@@ -1,19 +1,22 @@
 package com.mmd.entity;
 
 import com.mmd.domain.MemberRole;
-import com.mmd.domain.UseStatus;
 import com.mmd.util.PasswordEncryptor;
 import com.mmd.util.PasswordValidator;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends Common {
+@SQLDelete(sql = "UPDATE member SET deleted_date = CURRENT_TIMESTAMP WHERE member_id = ?") // soft delete
+@Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
+public class Member extends CommonEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 db에 위임e
     @Column(name = "member_id")
     private Long id;
 
@@ -31,9 +34,6 @@ public class Member extends Common {
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
-
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
 
     @Builder
     public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role) {

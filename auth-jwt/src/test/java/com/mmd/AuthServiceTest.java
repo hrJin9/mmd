@@ -9,7 +9,6 @@ import com.mmd.api.response.TokenResponse;
 import com.mmd.security.jwt.JwtTokenProvider;
 import com.mmd.entity.Member;
 import com.mmd.domain.MemberRole;
-import com.mmd.domain.UseStatus;
 import com.mmd.repository.MemberRepository;
 import com.mmd.util.PasswordEncryptor;
 import com.mmd.support.ServiceTest;

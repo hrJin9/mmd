@@ -23,9 +23,9 @@ public class CommentController {
     
     /* 다이어리의 코멘트 조회 */
     @GetMapping("/diary/{diaryId}/comments")
-    public ResponseEntity<List<CommentResponse.ViewComments>> getComments(@AuthenticationPrincipal MemberDetails memberDetails,
+    public ResponseEntity<List<CommentResponse.ViewComments>> findComments(@AuthenticationPrincipal MemberDetails memberDetails,
                                                                           @PathVariable Long diaryId) {
-        List<CommentFindResultDto> comments = commentService.getComments(memberDetails.getId(), diaryId);
+        List<CommentFindResultDto> comments = commentService.findComments(memberDetails.getId(), diaryId);
         List<CommentResponse.ViewComments> commentsResponse = comments.stream()
                 .map(CommentResponse.ViewComments::from)
                 .collect(Collectors.toList());

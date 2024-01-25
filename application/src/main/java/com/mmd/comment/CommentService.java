@@ -5,7 +5,6 @@ import com.mmd.comment.dto.CommentFindResultDto;
 import com.mmd.comment.dto.CommentUpdateDto;
 import com.mmd.diary.DiaryService;
 import com.mmd.domain.CommentVisibility;
-import com.mmd.domain.UseStatus;
 import com.mmd.entity.Comment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
@@ -29,8 +28,9 @@ public class CommentService {
 
     /* 다이어리의 코멘트 조회 */
     @Transactional(readOnly = true)
-    public List<CommentFindResultDto> getComments(Long memberId, Long diaryId) {
-//        List<Comment> comments = commentRepository.findAllComment(diaryId);
+    public List<CommentFindResultDto> findComments(Long memberId, Long diaryId) {
+        // TODO : 다이어리 조회할 수 있는지 체크
+        
         // TODO : PUBLIC이면 그냥 조회, FRIEND이면 friend일때만 조회 (PRIVATE은 안됨!!)
         List<Comment> comments = commentRepository.findAllByDiaryId(diaryId);
         return comments.stream()
@@ -84,8 +84,8 @@ public class CommentService {
     }
     
     // 코멘트 찾기
-    private Comment findValidCommentById(Long commentId) {
-        return commentRepository.findByIdAndUseStatus(commentId, UseStatus.IN_USE)
+    public Comment findValidCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(() -> new ContentsNotFoundException("존재하지 않는 코멘트입니다."));
     }
 }

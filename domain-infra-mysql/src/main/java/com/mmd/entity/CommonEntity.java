@@ -11,11 +11,13 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class Common {
+public class CommonEntity {
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
+
+    private LocalDateTime deletedDate;
 }

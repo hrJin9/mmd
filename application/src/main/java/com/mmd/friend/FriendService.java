@@ -1,7 +1,6 @@
 package com.mmd.friend;
 
 import com.mmd.domain.FriendStatus;
-import com.mmd.domain.UseStatus;
 import com.mmd.entity.Friend;
 import com.mmd.entity.Member;
 import com.mmd.exception.BadRequestException;
@@ -60,7 +59,7 @@ public class FriendService {
         if(result.isPresent()) { // 친구(신청) 내역이 있는 경우 기존 내역을 가져온다.
             Friend friend = result.get();
             // 이미 친구인 경우
-            if(friend.getFriendStatus().equals(FriendStatus.Y) && friend.getUseStatus().equals(UseStatus.IN_USE)) {
+            if(friend.getFriendStatus().equals(FriendStatus.Y)) {
                 throw new BadRequestException("이미 친구인 회원입니다.");
             }
 
@@ -85,7 +84,7 @@ public class FriendService {
             throw new MemberNotValidException("로그인한 사용자가 신청한 내역이 아닙니다.");
         }
 
-        friend.deleteFriend();
+        friendRepository.delete(friend);
     }
 
     /* 친구 신청 수락/거절 */
@@ -116,12 +115,12 @@ public class FriendService {
             throw new MemberNotValidException("로그인한 사용자의 친구가 아닙니다.");
         }
 
-        friend.deleteFriend();
+        friendRepository.delete(friend);
     }
 
     /* friend 유효성 검사 후 반환 */
     public Friend findValidFriend(Long friendId) {
-        return friendRepository.findByIdAndUseStatus(friendId, UseStatus.IN_USE)
+        return friendRepository.findById(friendId)
                 .orElseThrow(() -> new ContentsNotFoundException("존재하지 않는 내역입니다."));
     }
 }

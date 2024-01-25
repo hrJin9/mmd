@@ -2,7 +2,6 @@ package com.mmd;
 
 import com.mmd.domain.FriendStatus;
 import com.mmd.domain.MemberRole;
-import com.mmd.domain.UseStatus;
 import com.mmd.entity.Friend;
 import com.mmd.entity.Member;
 import com.mmd.exception.BadRequestException;

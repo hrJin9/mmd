@@ -1,8 +1,9 @@
 package com.mmd.entity;
 
-import com.mmd.domain.UseStatus;
 import com.mmd.domain.DiaryVisibility;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,9 +11,11 @@ import java.util.List;
 
 @Entity
 @Table
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Diary extends Common {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE diary SET deleted_date = CURRENT_TIMESTAMP WHERE diary_id = ?") // soft delete
+@Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
+public class Diary extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "diary_id")
@@ -26,7 +29,7 @@ public class Diary extends Common {
     @JoinColumn(name = "member_id")
     private Member writer;
 
-    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL) // 기본 Lazy
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL) // 기본 Lazy, cascade = 영속성 함께 관리
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)

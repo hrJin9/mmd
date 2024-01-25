@@ -1,11 +1,14 @@
 package com.mmd.entity;
 
 import com.mmd.domain.FriendStatus;
-import com.mmd.domain.UseStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -13,7 +16,10 @@ import javax.persistence.*;
 @Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friend extends Common {
+@OnDelete(action = OnDeleteAction.CASCADE) // hard delete 방지
+@SQLDelete(sql = "UPDATE friend SET deleted_date = CURRENT_TIMESTAMP WHERE friend_id = ?") // soft delete
+@Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
+public class Friend extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "friend_id")
@@ -30,29 +36,21 @@ public class Friend extends Common {
     @Enumerated(EnumType.STRING)
     private FriendStatus friendStatus;
 
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
-
     @Builder
-    public Friend(Member requester, Member respondent, FriendStatus friendStatus, UseStatus useStatus) {
+    public Friend(Member requester, Member respondent, FriendStatus friendStatus) {
         this.requester = requester;
         this.respondent = respondent;
         this.friendStatus = friendStatus;
-        this.useStatus = useStatus;
     }
 
     // 친구 신청 수락/거절
     public void updateFriendRequest(FriendStatus friendStatus) {
         this.friendStatus = friendStatus;
-        if(friendStatus.equals(FriendStatus.N)) {
-            this.useStatus = UseStatus.DELETED;
-        }
     }
 
     // 친구 신청
     public void createFriendRequest() {
         this.friendStatus = FriendStatus.IN_PROGRESS;
-        this.useStatus = UseStatus.IN_USE;
     }
 
     // 친구 신청시 entity 생성
@@ -62,11 +60,5 @@ public class Friend extends Common {
                 .respondent(respondent)
                 .build();
     }
-
-    // 친구 삭제
-    public void deleteFriend() {
-        this.useStatus = UseStatus.DELETED;
-    }
-
 }
 

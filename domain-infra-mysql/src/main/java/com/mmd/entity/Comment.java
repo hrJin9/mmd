@@ -1,16 +1,22 @@
 package com.mmd.entity;
 
 import com.mmd.domain.CommentVisibility;
-import com.mmd.domain.UseStatus;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "comment")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Comment extends Common {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@OnDelete(action = OnDeleteAction.CASCADE) // hard delete 방지
+@SQLDelete(sql = "UPDATE comment SET deleted_date = CURRENT_TIMESTAMP WHERE comment_id = ?") // soft delete
+@Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
+public class Comment extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -35,11 +41,8 @@ public class Comment extends Common {
     @Enumerated(EnumType.STRING)
     private CommentVisibility commentVisibility;
 
-    @Enumerated(EnumType.STRING)
-    private UseStatus useStatus;
-
     @Builder
-    public Comment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility, UseStatus useStatus) {
+    public Comment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility) {
         this.groupId = groupId;
         this.level = level;
         this.upperId = upperId;
@@ -47,7 +50,6 @@ public class Comment extends Common {
         this.diary = diary;
         this.writer = writer;
         this.commentVisibility = commentVisibility;
-        this.useStatus = useStatus;
     }
     
     public static Comment createComment(Long groupId, Long level, Long upperId, String content, Diary diary, Member writer, CommentVisibility commentVisibility) {
