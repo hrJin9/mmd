@@ -27,11 +27,12 @@ import java.util.List;
 public class DiaryController {
     private final DiaryService diaryService;
 
-    @Operation(summary = "", description = "", tags = "다이어리 API")
+    @Operation(summary = "다이어리 작성", description = "다이어리를 작성합니다.", tags = "다이어리 API")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> createDiary(@AuthenticationPrincipal MemberDetails memberDetails,
                                             @RequestPart(value = "writeRequest") @Valid DiaryRequest.WriteRequest request,
                                             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+
         DiaryCreateDto diaryCreateDto = ServiceDtoMapper.mapping(memberDetails.getId(), request);
         DiaryAttachmentDto diaryAttachmentDto = ServiceDtoMapper.mapping(files);
 
@@ -39,4 +40,15 @@ public class DiaryController {
 
         return ResponseEntity.created(URI.create("/api/diary/" + diaryId)).build();
     }
+
+
+    @Operation(summary = "다이어리 삭제", description = "특정 다이어리를 삭제합니다.", tags = "다이어리 API")
+    @DeleteMapping("/{diaryId}")
+    public ResponseEntity<Void> deleteDiary(@AuthenticationPrincipal MemberDetails memberDetails,
+                                            @PathVariable Long diaryId) {
+
+        diaryService.deleteDiary(memberDetails.getId(), diaryId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

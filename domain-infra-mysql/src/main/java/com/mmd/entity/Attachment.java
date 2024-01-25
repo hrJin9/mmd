@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @OnDelete(action = OnDeleteAction.CASCADE) // hard delete 방지
-@SQLDelete(sql = "UPDATE diary SET deleted_date = CURRENT_TIMESTAMP WHERE attachment_id = ?") // soft delete
+@SQLDelete(sql = "UPDATE attachment SET deleted_date = CURRENT_TIMESTAMP WHERE attachment_id = ?") // soft delete
 @Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
 public class Attachment extends CommonEntity {
     @Id

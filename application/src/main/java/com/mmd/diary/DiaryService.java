@@ -7,6 +7,7 @@ import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
 import com.mmd.exception.ContentsNotFoundException;
 import com.mmd.exception.MemberNotFoundException;
+import com.mmd.exception.MemberNotValidException;
 import com.mmd.member.MemberService;
 import com.mmd.repository.DiaryRepository;
 import com.mmd.util.FileManager;
@@ -60,7 +61,20 @@ public class DiaryService {
 
         return diary.getId();
     }
-    
+
+    /* 다이어리 삭제 */
+    @Transactional
+    public void deleteDiary(Long memberId, Long diaryId) {
+        Member member = memberService.findValidMember(memberId);
+        Diary diary = findValidDiaryById(diaryId);
+
+        if(!diary.getWriter().getId().equals(memberId)) {
+            throw new MemberNotValidException("로그인한 사용자의 다이어리가 아닙니다.");
+        }
+
+        diaryRepository.delete(diary);
+    }
+
 
     public Diary findValidDiaryById(Long diaryId) {
         return diaryRepository.findById(diaryId)
