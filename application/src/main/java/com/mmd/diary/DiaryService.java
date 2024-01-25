@@ -68,7 +68,7 @@ public class DiaryService {
         Member member = memberService.findValidMember(memberId);
         Diary diary = findValidDiaryById(diaryId);
 
-        if(!diary.getWriter().getId().equals(memberId)) {
+        if(!diary.getWriter().getId().equals(member.getId())) {
             throw new MemberNotValidException("로그인한 사용자의 다이어리가 아닙니다.");
         }
 
