@@ -2,15 +2,13 @@ package com.mmd.diary.mapper;
 
 import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
-import com.mmd.diary.request.DiaryRequest;
+import com.mmd.diary.request.DiaryCreateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ServiceDtoMapper {
-    public static DiaryCreateDto mapping(Long memberId, DiaryRequest.WriteRequest request) {
+    public static DiaryCreateDto mapping(Long memberId, DiaryCreateRequest request) {
         return new DiaryCreateDto(
                 memberId,
                 request.getSubject(),

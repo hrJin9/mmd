@@ -43,7 +43,7 @@ public class CommentService {
     @Transactional
     public Long createComment(CommentCreateDto serviceDto) {
         Member member = memberService.findValidMember(serviceDto.getMemberId());
-        Diary diary = diaryService.findDiary(serviceDto.getDiaryId());
+        Diary diary = diaryService.findValidDiaryById(serviceDto.getDiaryId());
 
         Comment comment = Comment.createComment(
                 serviceDto.getGroupId(),
