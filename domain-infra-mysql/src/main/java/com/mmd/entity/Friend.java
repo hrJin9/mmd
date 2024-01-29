@@ -16,7 +16,6 @@ import javax.persistence.*;
 @Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@OnDelete(action = OnDeleteAction.CASCADE) // hard delete 방지
 @SQLDelete(sql = "UPDATE friend SET deleted_date = CURRENT_TIMESTAMP WHERE friend_id = ?") // soft delete
 @Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
 public class Friend extends CommonEntity {
