@@ -26,7 +26,7 @@ public class Diary extends CommonEntity {
     private String contents;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "writer_id")
     private Member writer;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL) // 기본 Lazy, cascade = 영속성 함께 관리
