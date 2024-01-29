@@ -1,11 +1,11 @@
 package com.mmd.repository.custom;
 
 import com.mmd.domain.FriendStatus;
-import com.mmd.entity.Friend;
 import com.mmd.entity.QMember;
 import com.mmd.vo.FriendFindResultVO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,12 +23,15 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Friend> findAllFriends(Long memberId) {
+    public List<FriendFindResultVO> findAllFriends(Long memberId) {
         return queryFactory
-                .selectFrom(friend)
-                .join(friend.requester, requester).fetchJoin()
-                .join(friend.respondent, respondent).fetchJoin()
-                .where(findByMemberId(memberId), findByFriendStatus(FriendStatus.Y))
+                .select(Projections.constructor(FriendFindResultVO.class,
+                                                friend.id,
+                                                new CaseBuilder()
+                                                        .when(friend.requester.id.eq(memberId)).then(friend.respondent)
+                                                        .otherwise(friend.requester)))
+                .from(friend)
+                .where(findByRequesterOrRespondentId(memberId), findByFriendStatus(FriendStatus.Y))
                 .fetch();
     }
 
@@ -52,7 +55,7 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
         return Objects.isNull(memberId) ? null : friend.respondent.id.eq(memberId);
     }
 
-    private BooleanExpression findByMemberId(Long memberId) {
+    private BooleanExpression findByRequesterOrRespondentId(Long memberId) {
         return Objects.isNull(memberId) ? null : friend.requester.id.eq(memberId).or(friend.respondent.id.eq(memberId));
     }
 

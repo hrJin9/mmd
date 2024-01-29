@@ -27,12 +27,9 @@ public class FriendService {
     /* 친구 조회 */
     @Transactional(readOnly = true)
     public List<FriendFindResultDto> findFriends(Long memberId) {
-        List<Friend> friends = friendRepository.findAllFriends(memberId);
+        List<FriendFindResultVO> friends = friendRepository.findAllFriends(memberId);
         return friends.stream()
-                .map(friend -> {
-                    Member memberFriend = (friend.getRequester().getId().equals(memberId)) ? friend.getRespondent() : friend.getRequester();
-                    return FriendFindResultDto.of(friend.getId(), memberFriend);
-                })
+                .map(FriendFindResultDto::from)
                 .collect(Collectors.toList());
     }
     
