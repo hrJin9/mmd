@@ -50,8 +50,8 @@ public class DiaryController {
     @GetMapping("/{memberId}")
     public ResponseEntity<List<DiaryResponse.FindDiaries>> findMemberDiaries(@AuthenticationPrincipal MemberDetails memberDetails,
                                                                              @PathVariable Long memberId,
-                                                                             Pageable pageable) {
-        List<DiaryFindResultDto> diaries = diaryService.findMemberDiaries(memberDetails.getId(), memberId, pageable);
+                                                                             PagingRequest request) {
+        List<DiaryFindResultDto> diaries = diaryService.findMemberDiaries(memberDetails.getId(), memberId, request.toServiceDto());
         List<DiaryResponse.FindDiaries> response = diaries.stream()
                 .map(DiaryResponse.FindDiaries::from)
                 .collect(Collectors.toList());
@@ -68,8 +68,8 @@ public class DiaryController {
 
 
         // TODO : 코멘트, 첨부파일은 따로 조회
-        return ResponseEntity.ok()
-                .body();
+        return ResponseEntity.ok().build();
+//                .body();
     }
 
 //    @Operation(summary = "다이어리 임시 저장", description = "다이어리 작성 중 임시저장합니다.", tags = "다이어리 API")
@@ -91,9 +91,8 @@ public class DiaryController {
 
 
     @Operation(summary = "다이어리 삭제", description = "특정 다이어리를 삭제합니다.", tags = "다이어리 API")
-    @DeleteMapping("/{memberId}/{diaryId}")
+    @DeleteMapping("/{diaryId}")
     public ResponseEntity<Void> deleteDiary(@AuthenticationPrincipal MemberDetails memberDetails,
-                                            @PathVariable Long memberId,
                                             @PathVariable Long diaryId) {
         diaryService.deleteDiary(memberDetails.getId(), diaryId);
         return ResponseEntity.noContent().build();

@@ -1,6 +1,5 @@
 package com.mmd.diary;
 
-import com.mmd.comment.CommentService;
 import com.mmd.common.PageDto;
 import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
@@ -9,15 +8,13 @@ import com.mmd.entity.Attachment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
 import com.mmd.exception.ContentsNotFoundException;
-import com.mmd.exception.MemberNotFoundException;
 import com.mmd.exception.MemberNotValidException;
+import com.mmd.friend.FriendService;
 import com.mmd.member.MemberService;
 import com.mmd.repository.DiaryRepository;
 import com.mmd.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -29,15 +26,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DiaryService {
     private final DiaryRepository diaryRepository;
-    private final CommentService commentService;
+    private final FriendService friendService;
     private final MemberService memberService;
     private final FileManager fileManager;
 
     /* 모든 다이어리 목록 조회 */
     @Transactional(readOnly = true)
     public List<DiaryFindResultDto> findAllDiaries(Long loginId, PageDto pageDto) {
-        Member member = memberService.findValidMember(loginId);
-        Page<Diary> diaryPage = diaryRepository.findAllDiaries(member.getId(), pageDto.toPageable());
+        Page<Diary> diaryPage = diaryRepository.findAllDiaries(loginId, pageDto.toPageable());
         List<Diary> diaries = diaryPage.getContent();
 
         return diaries.stream()
@@ -47,14 +43,16 @@ public class DiaryService {
 
     /* 특정 멤버의 다이어리 작성 목록 조회 */
     @Transactional(readOnly = true)
-    public List<DiaryFindResultDto> findMemberDiaries(Long loginId, Long memberId, Pageable pageable) {
+    public List<DiaryFindResultDto> findMemberDiaries(Long loginId, Long memberId, PageDto pageDto) {
         // FRIEND, PUBLIC인 다이어리만 조회한다.
+        return null;
     }
 
     /* 다이어리 조회 */
     @Transactional(readOnly = true)
     public DiaryFindResultDto findOneDiary(Long diaryId) {
         // FRIEND, PUBLIC인 다이어리만 조회한다.
+        return null;
     }
 
     /* 다이어리 작성 */
@@ -89,10 +87,9 @@ public class DiaryService {
     /* 다이어리 삭제 */
     @Transactional
     public void deleteDiary(Long loginId, Long diaryId) {
-        Member member = memberService.findValidMember(loginId);
         Diary diary = findValidDiaryById(diaryId);
 
-        if(!diary.getWriter().getId().equals(member.getId())) {
+        if(!diary.getWriter().getId().equals(loginId)) {
             throw new MemberNotValidException("로그인한 사용자의 다이어리가 아닙니다.");
         }
 

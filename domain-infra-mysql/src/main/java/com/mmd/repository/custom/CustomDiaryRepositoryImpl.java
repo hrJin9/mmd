@@ -3,20 +3,16 @@ package com.mmd.repository.custom;
 import com.mmd.domain.DiaryVisibility;
 import com.mmd.domain.FriendStatus;
 import com.mmd.entity.Diary;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.mmd.entity.QDiary.diary;
 import static com.mmd.entity.QFriend.friend;
@@ -29,46 +25,50 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
     @Override
     public Page<Diary> findAllDiaries(Long loginId, Pageable pageable) {
         // FRIEND, PUBLIC인 다이어리만 조회한다.
-        // FRIEND인 경우, 로그인한 멤버와 작성한 멤버가 친구관계일 때만 조회한다.
-        // TODO : 이게 도메인 비즈니스인걸까?? 서비스 비즈니스 아닐까?
         List<Diary> diaries = queryFactory
                 .selectFrom(diary)
-                .leftJoin(diary.writer, friend.requester).fetchJoin()
-                .leftJoin(diary.writer, friend.respondent).fetchJoin()
-                .where(findCondition(loginId))
+                .leftJoin(friend).on(friend.friendStatus.eq(FriendStatus.Y).and(friendCondition(loginId)))
+                .where(findByDiaryVisibility(DiaryVisibility.PUBLIC)
+                        .or(findByDiaryVisibility(DiaryVisibility.FRIEND)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = getCount(loginId);
-
-        return PageableExecutionUtils.getPage(diaries, pageable, () -> countQuery.fetchOne());
+        return PageableExecutionUtils.getPage(diaries, pageable, countQuery::fetchOne);
     }
 
     private JPAQuery<Long> getCount(Long loginId) {
         return queryFactory
                 .select(diary.count())
                 .from(diary)
-                .where(findCondition(loginId));
+                .leftJoin(friend).on(friendCondition(loginId))
+                .where(findByDiaryVisibility(DiaryVisibility.PUBLIC)
+                        .or(findByDiaryVisibility(DiaryVisibility.FRIEND)));
+    }
+    
+    // friend join 조건
+    private BooleanExpression friendCondition(Long loginId) {
+        return loginId == null ? null : findFriendByRequester(loginId).or(findFriendByRespondent(loginId));
+    }
+    
+    // diary visibility 조인 조건
+    private BooleanExpression findByDiaryVisibility(DiaryVisibility diaryVisibility) {
+        BooleanExpression diaryBoolean = diary.diaryVisibility.eq(diaryVisibility);
+        return diaryVisibility.equals(DiaryVisibility.FRIEND) ? diaryBoolean.and(friend.requester.id.isNotNull()) : diaryBoolean;
     }
 
-    private BooleanBuilder findCondition(Long loginId) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        // PUBLIC
-        booleanBuilder.or(diary.diaryVisibility.eq(DiaryVisibility.PUBLIC));
-
-        // FRIEND
-        booleanBuilder.or(
-                diary.diaryVisibility.eq(DiaryVisibility.FRIEND)
-                .and(friend.friendStatus.eq(FriendStatus.Y))
-        );
-
-        // PRIVATE
-        booleanBuilder.or(diary.diaryVisibility.eq(DiaryVisibility.PRIVATE)
-                .and(diary.writer.id.eq(loginId)));
-        return booleanBuilder;
+    //
+    private BooleanExpression findFriendByRequester(Long loginId) {
+        return loginId == null ? null : diary.writer.id.eq(friend.requester.id).and(friend.respondent.id.eq(loginId));
     }
 
+    private BooleanExpression findFriendByRespondent(Long loginId) {
+        return loginId == null ? null : diary.writer.id.eq(friend.respondent.id).and(friend.requester.id.eq(loginId));
+    }
 
+    private BooleanExpression findFriendCondition(FriendStatus friendStatus) {
+        return friendStatus == null ? null : friend.friendStatus.eq(friendStatus);
+    }
 
 }
