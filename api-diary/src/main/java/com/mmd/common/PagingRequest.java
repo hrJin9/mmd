@@ -1,5 +1,6 @@
 package com.mmd.common;
 
+import com.mmd.domain.Criteria;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,22 +12,22 @@ public class PagingRequest {
     private final Integer pageNo;
 
     @ApiModelProperty(value = "페이지 사이즈", example = "10")
-    private final Integer pageSize;
+    private final Integer size;
 
     @ApiModelProperty(value = "정렬 기준", example = "createdDate")
-    private final String criteria;
+    private final Criteria criteria;
 
     // TODO : 기본값 세팅을 dto에서 해줘도 되는걸까?
-    public PagingRequest(Integer pageNo, Integer pageSize, String criteria) {
+    public PagingRequest(Integer pageNo, Integer size, Criteria criteria) {
         this.pageNo = pageNo == null ? 0 : pageNo;
-        this.pageSize = pageSize == null ? 10 : pageSize;
-        this.criteria = criteria == null ? "createdDate" : criteria;
+        this.size = size == null ? 10 : size;
+        this.criteria = criteria == null ? Criteria.CREATED_DATE : criteria;
     }
 
     public PageDto toServiceDto() {
         return new PageDto(
                 this.pageNo,
-                this.pageSize,
+                this.size,
                 this.criteria
         );
     }
