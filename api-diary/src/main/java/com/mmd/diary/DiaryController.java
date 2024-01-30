@@ -65,11 +65,10 @@ public class DiaryController {
     public ResponseEntity<DiaryResponse.FindOneDiary> findOneDiary(@AuthenticationPrincipal MemberDetails memberDetails,
                                                       @PathVariable Long memberId,
                                                       @PathVariable Long diaryId) {
-
-
+        DiaryFindResultDto response = diaryService.findOneDiary(memberDetails.getId(), memberId, diaryId);
         // TODO : 코멘트, 첨부파일은 따로 조회
-        return ResponseEntity.ok().build();
-//                .body();
+        return ResponseEntity.ok()
+                .body(DiaryResponse.FindOneDiary.from(response));
     }
 
 //    @Operation(summary = "다이어리 임시 저장", description = "다이어리 작성 중 임시저장합니다.", tags = "다이어리 API")
