@@ -1,9 +1,10 @@
 package com.mmd.repository.custom;
 
 import com.mmd.domain.FriendStatus;
+import com.mmd.entity.Friend;
 import com.mmd.entity.QMember;
 import com.mmd.vo.FriendFindResultVO;
-import com.querydsl.core.types.Projections;
+import com.mmd.vo.QFriendFindResultVO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import static com.mmd.entity.QFriend.friend;
 
@@ -25,41 +26,53 @@ public class CustomFriendRepositoryImpl implements CustomFriendRepository {
     @Override
     public List<FriendFindResultVO> findAllFriends(Long memberId) {
         return queryFactory
-                .select(Projections.constructor(FriendFindResultVO.class,
-                                                friend.id,
-                                                new CaseBuilder()
-                                                        .when(friend.requester.id.eq(memberId)).then(friend.respondent)
-                                                        .otherwise(friend.requester)))
+                .select(new QFriendFindResultVO(
+                        friend.id,
+                        new CaseBuilder()
+                                .when(friend.requester.id.eq(memberId)).then(friend.respondent)
+                                .otherwise(friend.requester)
+                ))
                 .from(friend)
-                .where(findByRequesterOrRespondentId(memberId), findByFriendStatus(FriendStatus.Y))
+                .where(requesterIdEq(memberId).or(respondentIdEq(memberId))
+                      ,friendStatusEq(FriendStatus.Y))
                 .fetch();
     }
 
     @Override
     public List<FriendFindResultVO> findAllFriendRequests(Long respondentId) {
         return queryFactory
-                .select(Projections.constructor(FriendFindResultVO.class,
-                                                friend.id,
-                                                friend.requester))
+                .select(new QFriendFindResultVO(
+                        friend.id,
+                        friend.requester
+                ))
                 .from(friend)
                 .join(friend.requester, requester)
-                .where(findByRespondentId(respondentId), findByFriendStatus(FriendStatus.IN_PROGRESS))
+                .where(respondentIdEq(respondentId)
+                      ,friendStatusEq(FriendStatus.IN_PROGRESS))
                 .fetch();
     }
 
-    private BooleanExpression findByRequesterId(Long memberId) {
-        return Objects.isNull(memberId) ? null : friend.requester.id.eq(memberId);
+    @Override
+    public Optional<Friend> existsFriend(Long loginId, Long memberId) {
+        Friend result = queryFactory
+                        .selectFrom(friend)
+                        .where(requesterIdEq(loginId).and(respondentIdEq(memberId))
+                                .or(requesterIdEq(memberId).and(respondentIdEq(loginId))),
+                                friendStatusEq(FriendStatus.Y))
+                        .fetchOne();
+        return Optional.ofNullable(result);
+
     }
 
-    private BooleanExpression findByRespondentId(Long memberId) {
-        return Objects.isNull(memberId) ? null : friend.respondent.id.eq(memberId);
+    private BooleanExpression requesterIdEq(Long memberId) {
+        return memberId != null ? friend.requester.id.eq(memberId) : null;
     }
 
-    private BooleanExpression findByRequesterOrRespondentId(Long memberId) {
-        return Objects.isNull(memberId) ? null : friend.requester.id.eq(memberId).or(friend.respondent.id.eq(memberId));
+    private BooleanExpression respondentIdEq(Long memberId) {
+        return memberId != null ? friend.respondent.id.eq(memberId) : null;
     }
 
-    private BooleanExpression findByFriendStatus(FriendStatus friendStatus) {
-        return Objects.isNull(friendStatus) ? null : friend.friendStatus.eq(friendStatus);
+    private BooleanExpression friendStatusEq(FriendStatus friendStatus) {
+        return friendStatus != null ? friend.friendStatus.eq(friendStatus) : null;
     }
 }

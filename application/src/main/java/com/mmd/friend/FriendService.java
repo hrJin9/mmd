@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.management.LockInfo;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -113,6 +114,10 @@ public class FriendService {
         }
 
         friendRepository.delete(friend);
+    }
+
+    public boolean findExistFriend(Long loginId, Long memberId) {
+        return friendRepository.existsFriend(loginId, memberId).isPresent();
     }
 
     /* friend 유효성 검사 후 반환 */
