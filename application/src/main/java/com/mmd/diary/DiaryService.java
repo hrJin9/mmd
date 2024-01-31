@@ -121,7 +121,6 @@ public class DiaryService {
         diaryRepository.delete(diary);
     }
 
-
     public Diary findValidDiaryById(Long diaryId) {
         return diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new ContentsNotFoundException("존재하지 않는 다이어리입니다."));
