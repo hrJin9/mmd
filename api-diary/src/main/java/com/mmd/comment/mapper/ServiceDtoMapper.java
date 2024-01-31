@@ -7,11 +7,11 @@ import com.mmd.comment.request.CommentRequest;
 public class ServiceDtoMapper {
     public static CommentCreateDto mapping(Long memberId, Long diaryId, CommentRequest.CreateComment request) {
         return new CommentCreateDto(
+                diaryId,
                 request.getGroupId(),
                 request.getLevel(),
                 request.getUpperId(),
                 request.getContent(),
-                diaryId,
                 memberId,
                 request.getCommentVisibility()
         );

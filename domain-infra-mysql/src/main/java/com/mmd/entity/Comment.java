@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "comment")
@@ -29,11 +30,11 @@ public class Comment extends CommonEntity {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     private Diary diary;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private Member writer;
 
@@ -64,6 +65,8 @@ public class Comment extends CommonEntity {
     
     public void updateComment(String content, CommentVisibility commentVisibility) {
         this.content = content;
-        this.commentVisibility = commentVisibility;
+        if(Objects.nonNull(commentVisibility)) {
+            this.commentVisibility = commentVisibility;
+        }
     }
 }

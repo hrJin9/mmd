@@ -4,6 +4,7 @@ import com.mmd.comment.dto.CommentCreateDto;
 import com.mmd.comment.dto.CommentFindResultDto;
 import com.mmd.comment.dto.CommentUpdateDto;
 import com.mmd.diary.DiaryService;
+import com.mmd.diary.dto.DiaryFindResultDto;
 import com.mmd.domain.CommentVisibility;
 import com.mmd.entity.Comment;
 import com.mmd.entity.Diary;
@@ -12,6 +13,8 @@ import com.mmd.exception.ContentsNotFoundException;
 import com.mmd.exception.MemberNotValidException;
 import com.mmd.member.MemberService;
 import com.mmd.repository.CommentRepository;
+import com.mmd.repository.DiaryRepository;
+import com.mmd.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,26 +27,23 @@ import java.util.stream.Collectors;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final DiaryService diaryService;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     /* 다이어리의 코멘트 조회 */
     @Transactional(readOnly = true)
-    public List<CommentFindResultDto> findComments(Long memberId, Long diaryId) {
-        // TODO : 다이어리 조회할 수 있는지 체크
-        
-        // TODO : PUBLIC이면 그냥 조회, FRIEND이면 friend일때만 조회 (PRIVATE은 안됨!!)
-        List<Comment> comments = commentRepository.findAllByDiaryId(diaryId);
+    public List<CommentFindResultDto> findComments(Long loginId, Long diaryId) {
+        diaryService.findValidDiaryById(diaryId);
+        List<Comment> comments = commentRepository.findByDiaryId(loginId, diaryId);
         return comments.stream()
-                .filter(comment -> comment.getCommentVisibility().equals(CommentVisibility.FRIEND) || comment.getCommentVisibility().equals(CommentVisibility.PUBLIC))
                 .map(CommentFindResultDto::from)
                 .collect(Collectors.toList());
     }
 
     /* 코멘트 작성 */
     @Transactional
-    public Long createComment(CommentCreateDto serviceDto) {
-        Member member = memberService.findValidMember(serviceDto.getMemberId());
-        Diary diary = diaryService.findValidDiaryById(serviceDto.getDiaryId());
+    public void createComment(CommentCreateDto serviceDto) {
+        Diary diary = diaryService.findValidDiaryById(serviceDto.getDiaryId()); // 접근 가능한 다이어리에 대한 검증은 DiaryService에서 진행했다고 가정 후 생략.
+        Member member = memberRepository.getReferenceById(serviceDto.getMemberId()); // 로그인한 Member에 대한 검증은 security filter에서 처리
 
         Comment comment = Comment.createComment(
                 serviceDto.getGroupId(),
@@ -56,7 +56,6 @@ public class CommentService {
         );
 
         commentRepository.save(comment);
-        return comment.getId();
     }
 
     /* 코멘트 수정 */

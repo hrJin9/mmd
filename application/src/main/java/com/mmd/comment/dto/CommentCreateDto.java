@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class CommentCreateDto {
+    private final Long diaryId;
     private final Long groupId;
     private final Long level;
     private final Long upperId;
     private final String content;
-    private final Long diaryId;
     private final Long memberId;
     private final CommentVisibility commentVisibility;
 }
