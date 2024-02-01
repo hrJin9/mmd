@@ -6,6 +6,7 @@ import com.mmd.common.PageDto;
 import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
 import com.mmd.diary.dto.DiaryFindResultDto;
+import com.mmd.diary.dto.DiaryUpdateDto;
 import com.mmd.domain.DiaryVisibility;
 import com.mmd.entity.Attachment;
 import com.mmd.entity.Diary;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +44,7 @@ public class DiaryService {
         int totalPages = diaryPage.getTotalPages();
 
         return diaries.stream()
-                .map(d -> DiaryFindResultDto.of(d, totalPages))
+                .map(diary -> DiaryFindResultDto.of(diary, totalPages))
                 .collect(Collectors.toList());
     }
 
@@ -52,9 +54,9 @@ public class DiaryService {
         // FRIEND, PUBLIC인 다이어리이거나 자신일 경우 PRIVATE까지 함께 조회한다.
         Page<Diary> diaryPage;
 
-        if(loginId.equals(memberId)) {
+        if(loginId.equals(memberId)) { // 자신의 다이어리 목록을 조회
             diaryPage = diaryRepository.findAllByWriterId(loginId, pageDto.toPageable());
-        } else {
+        } else { // 타인의 다이어리 목록을 조회
             diaryPage = diaryRepository.findOtherDiaries(loginId, memberId, pageDto.toPageable());
         }
 
@@ -62,7 +64,7 @@ public class DiaryService {
         int totalPages = diaryPage.getTotalPages();
 
         return diaries.stream()
-                .map(d -> DiaryFindResultDto.of(d, totalPages))
+                .map(diary -> DiaryFindResultDto.of(diary, totalPages))
                 .collect(Collectors.toList());
     }
 
@@ -101,6 +103,49 @@ public class DiaryService {
         }
 
         return diary.getId();
+    }
+
+    /* 다이어리 수정 */
+    @Transactional
+    public void updateDiary(Long loginId, DiaryUpdateDto diaryUpdateDto, DiaryAttachmentDto diaryAttachmentDto) {
+        // 다이어리 조회
+        Diary diary = this.findValidDiaryById(diaryUpdateDto.getDiaryId());
+
+        if(!diary.getWriter().getId().equals(loginId)) {
+            throw new MemberNotValidException("로그인한 사용자의 다이어리가 아닙니다.");
+        }
+
+        // 기존에 있는 다이어리의 첨부파일을 가져온다.
+        List<Attachment> files = diary.getAttachments();
+        List<MultipartFile> newFiles = diaryAttachmentDto.getFiles();
+
+        List<Attachment> newAttachments = new ArrayList<>();
+        List<Attachment> deleteAttachments = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(newFiles)) { // 첨부파일이 있는 경우
+            if(CollectionUtils.isEmpty(files)) { // 기존의 첨부파일이 있는 경우
+                for(int i=0; i<newFiles.size(); i++) {
+                    MultipartFile newFile = newFiles.get(i);
+                    Attachment file = files.get(i);
+
+                    String uploadFileName = fileManager.uploadFile(newFile);
+                    if(file.getFileName().equals(uploadFileName)) { // 저장된 첨부파일의 이름이 같다면 삭제한다
+                        deleteAttachments.add(file);
+                    } else {
+                        Attachment attachment = Attachment.createAttachment(
+                                diary,
+                                uploadFileName,
+                                newFile.getOriginalFilename(),
+                                newFile.getSize()
+                        );
+                        newAttachments.add(attachment);
+                    }
+                }
+            }
+
+            deleteAttachments.forEach(files::remove);
+            files.addAll(newAttachments);
+        }
+
     }
 
     /* 다이어리 삭제 */
