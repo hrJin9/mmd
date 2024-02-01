@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 @Component
@@ -15,16 +16,19 @@ public class FileManager {
     private final Environment environment;
     private static final String FILE_DIR = "file-dir";
 
-    public String uploadFile(MultipartFile file) {
-        String savedFileName = createFileName(file.getOriginalFilename());
+    public String getFileName(MultipartFile file) {
+        return createFileName(file.getOriginalFilename());
+    }
 
+    public String uploadAndGetFilePath(MultipartFile file) {
+        String fileName = createFileName(file.getOriginalFilename());
+        File newFile = new File(createPath(fileName));
         try {
-            file.transferTo(new File(createPath(savedFileName)));
+            file.transferTo(newFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return savedFileName;
+        return newFile.getAbsolutePath();
     }
 
     private String createFileName(String originFileName) {
@@ -35,4 +39,5 @@ public class FileManager {
     private String createPath(String fileName) {
         return environment.getProperty(FILE_DIR) + fileName;
     }
+
 }

@@ -1,5 +1,7 @@
 package com.mmd.diary;
 
+import com.mmd.attachment.AttachmentService;
+import com.mmd.attachment.dto.AttachmentDto;
 import com.mmd.common.PageDto;
 import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +32,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final FriendService friendService;
     private final MemberService memberService;
-    private final FileManager fileManager;
+    private final AttachmentService attachmentService;
 
     /* 모든 다이어리 목록 조회 */
     @Transactional(readOnly = true)
@@ -82,7 +85,7 @@ public class DiaryService {
 
     /* 다이어리 작성 */
     @Transactional
-    public Long createDiary(DiaryCreateDto diaryCreateDto, DiaryAttachmentDto diaryAttachmentDto) {
+    public Long createDiary(DiaryCreateDto diaryCreateDto, List<MultipartFile> files) {
         // 다이어리 저장
         Member member = memberService.findValidMember(diaryCreateDto.getMemberId());
         Diary diary = Diary.createDiary(
@@ -91,19 +94,10 @@ public class DiaryService {
                 member,
                 diaryCreateDto.getDiaryVisibility());
         diaryRepository.save(diary);
-        
-        // 다이어리 첨부파일 저장
-        if(!CollectionUtils.isEmpty(diaryAttachmentDto.getFiles())) {
-            List<Attachment> attachments = diaryAttachmentDto.getFiles().stream()
-                    .map(file -> Attachment.createAttachment(
-                            diary,
-                            fileManager.uploadFile(file),
-                            file.getOriginalFilename(),
-                            file.getSize()
-                    ))
-                    .collect(Collectors.toList());
 
-            diary.getAttachments().addAll(attachments);
+        // 첨부파일 저장
+        if(!CollectionUtils.isEmpty(files)) {
+            attachmentService.saveDiaryFiles(diary, new AttachmentDto(files));
         }
 
         return diary.getId();

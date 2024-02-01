@@ -1,5 +1,6 @@
 package com.mmd.diary;
 
+import com.mmd.attachment.dto.AttachmentDto;
 import com.mmd.common.PagingRequest;
 import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
@@ -66,7 +67,6 @@ public class DiaryController {
                                                       @PathVariable Long memberId,
                                                       @PathVariable Long diaryId) {
         DiaryFindResultDto response = diaryService.findOneDiary(memberDetails.getId(), memberId, diaryId);
-        // TODO : 코멘트, 첨부파일은 따로 조회
         return ResponseEntity.ok()
                 .body(DiaryResponse.FindOneDiary.from(response));
     }
@@ -81,9 +81,7 @@ public class DiaryController {
                                             @RequestPart(value = "writeRequest") @Valid DiaryCreateRequest request,
                                             @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         DiaryCreateDto diaryCreateDto = ServiceDtoMapper.mapping(memberDetails.getId(), request);
-        DiaryAttachmentDto diaryAttachmentDto = ServiceDtoMapper.mapping(files);
-
-        Long diaryId = diaryService.createDiary(diaryCreateDto, diaryAttachmentDto);
+        Long diaryId = diaryService.createDiary(diaryCreateDto, files);
 
         return ResponseEntity.created(URI.create("/api/diary/" + diaryId)).build();
     }

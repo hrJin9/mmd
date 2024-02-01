@@ -28,21 +28,26 @@ public class Attachment extends CommonEntity {
 
     private String originFileName;
 
+    private String path;
+
     private Long fileSize;
 
     @Builder
-    public Attachment(Diary diary, String fileName, String originFileName, Long fileSize) {
+    public Attachment(Diary diary, String fileName, String originFileName, String path, Long fileSize) {
         this.diary = diary;
         this.fileName = fileName;
         this.originFileName = originFileName;
+        this.path = path;
         this.fileSize = fileSize;
     }
 
-    public static Attachment createAttachment(Diary diary, String fileName, String originFileName, Long fileSize) {
+    public static Attachment createAttachment(Diary diary, String fileName, String originFileName, String path, Long fileSize) {
         return Attachment.builder()
                 .diary(diary)
                 .fileName(fileName)
                 .originFileName(originFileName)
-                .fileSize(fileSize).build();
+                .fileSize(fileSize)
+                .path(path)
+                .build();
     }
 }
