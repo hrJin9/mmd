@@ -4,9 +4,11 @@ import com.mmd.domain.DiaryVisibility;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class DiaryRequest {
     @ApiModel(description = "다이어리 작성 request parameter")
@@ -37,5 +39,4 @@ public class DiaryRequest {
         @ApiModelProperty(value = "공개 여부", example = "PUBLIC")
         private DiaryVisibility diaryVisibility;
     }
-
 }

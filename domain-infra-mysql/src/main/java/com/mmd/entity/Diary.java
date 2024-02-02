@@ -4,10 +4,12 @@ import com.mmd.domain.DiaryVisibility;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -33,7 +35,7 @@ public class Diary extends CommonEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
-    private List<Attachment> attachments = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private DiaryVisibility diaryVisibility;
@@ -52,5 +54,23 @@ public class Diary extends CommonEntity {
                 .contents(contents)
                 .writer(writer)
                 .diaryVisibility(diaryVisibility).build();
+    }
+    
+    /* 다이어리 수정 */
+    public int update(String subject, String contents, DiaryVisibility diaryVisibility) {
+        int updateCount = 0;
+        if(StringUtils.hasText(subject)) {
+            this.subject = subject;
+            updateCount++;
+        }
+        if(StringUtils.hasText(contents)) {
+            this.contents = contents;
+            updateCount++;
+        }
+        if(Objects.nonNull(diaryVisibility)) {
+            this.diaryVisibility = diaryVisibility;
+            updateCount++;
+        }
+        return updateCount;
     }
 }

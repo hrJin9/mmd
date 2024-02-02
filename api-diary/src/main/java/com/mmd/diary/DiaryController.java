@@ -1,8 +1,8 @@
 package com.mmd.diary;
 
-import com.mmd.attachment.dto.AttachmentDto;
+import com.mmd.image.dto.ImageDto;
+import com.mmd.image.request.ImageRequest;
 import com.mmd.common.PagingRequest;
-import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
 import com.mmd.diary.dto.DiaryFindResultDto;
 import com.mmd.diary.dto.DiaryUpdateDto;
@@ -20,7 +20,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.plaf.UIResource;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -79,10 +78,9 @@ public class DiaryController {
     @Operation(summary = "다이어리 작성", description = "다이어리를 작성합니다.", tags = "다이어리 API")
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> createDiary(@AuthenticationPrincipal MemberDetails memberDetails,
-                                            @RequestPart(value = "writeRequest") @Valid DiaryRequest.CreateDiary request,
-                                            @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+                                            @RequestPart(value = "writeRequest") @Valid DiaryRequest.CreateDiary request) {
         DiaryCreateDto diaryCreateDto = ServiceDtoMapper.mapping(memberDetails.getId(), request);
-        Long diaryId = diaryService.createDiary(diaryCreateDto, files);
+        Long diaryId = diaryService.createDiary(diaryCreateDto);
 
         return ResponseEntity.created(URI.create("/api/diary/" + diaryId)).build();
     }
@@ -91,14 +89,14 @@ public class DiaryController {
     @PatchMapping(value = "/{diaryId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateDiary(@AuthenticationPrincipal MemberDetails memberDetails,
                                             @PathVariable Long diaryId,
-                                            @RequestPart(value = "updateRequest") @Valid DiaryRequest.UpdateDiary request,
-                                            @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+                                            @RequestPart(value = "updateRequest") @Valid DiaryRequest.UpdateDiary request) {
         DiaryUpdateDto diaryUpdateDto = ServiceDtoMapper.mapping(diaryId, request);
-        DiaryAttachmentDto diaryAttachmentDto = ServiceDtoMapper.mapping(files);
+        int updateCount = diaryService.updateDiary(memberDetails.getId(), diaryUpdateDto);
 
-        diaryService.updateDiary(memberDetails.getId(), diaryUpdateDto, diaryAttachmentDto);
-
-        return ResponseEntity.created(URI.create("/api/diary/" + diaryId)).build();
+        if(updateCount > 0) {
+            return ResponseEntity.created(URI.create("/api/diary/" + diaryId)).build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
 

@@ -1,14 +1,12 @@
 package com.mmd.diary;
 
-import com.mmd.attachment.AttachmentService;
-import com.mmd.attachment.dto.AttachmentDto;
+import com.mmd.image.ImageSevice;
+import com.mmd.image.dto.ImageDto;
 import com.mmd.common.PageDto;
-import com.mmd.diary.dto.DiaryAttachmentDto;
 import com.mmd.diary.dto.DiaryCreateDto;
 import com.mmd.diary.dto.DiaryFindResultDto;
 import com.mmd.diary.dto.DiaryUpdateDto;
 import com.mmd.domain.DiaryVisibility;
-import com.mmd.entity.Attachment;
 import com.mmd.entity.Diary;
 import com.mmd.entity.Member;
 import com.mmd.exception.ContentsNotFoundException;
@@ -16,7 +14,6 @@ import com.mmd.exception.MemberNotValidException;
 import com.mmd.friend.FriendService;
 import com.mmd.member.MemberService;
 import com.mmd.repository.DiaryRepository;
-import com.mmd.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -24,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +30,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final FriendService friendService;
     private final MemberService memberService;
-    private final AttachmentService attachmentService;
+    private final ImageSevice imageSevice;
 
     /* 모든 다이어리 목록 조회 */
     @Transactional(readOnly = true)
@@ -87,7 +83,7 @@ public class DiaryService {
 
     /* 다이어리 작성 */
     @Transactional
-    public Long createDiary(DiaryCreateDto diaryCreateDto, List<MultipartFile> files) {
+    public Long createDiary(DiaryCreateDto diaryCreateDto) {
         // 다이어리 저장
         Member member = memberService.findValidMember(diaryCreateDto.getMemberId());
         Diary diary = Diary.createDiary(
@@ -96,18 +92,12 @@ public class DiaryService {
                 member,
                 diaryCreateDto.getDiaryVisibility());
         diaryRepository.save(diary);
-
-        // 첨부파일 저장
-        if(!CollectionUtils.isEmpty(files)) {
-            attachmentService.saveDiaryFiles(diary, new AttachmentDto(files));
-        }
-
         return diary.getId();
     }
 
     /* 다이어리 수정 */
     @Transactional
-    public void updateDiary(Long loginId, DiaryUpdateDto diaryUpdateDto, DiaryAttachmentDto diaryAttachmentDto) {
+    public int updateDiary(Long loginId, DiaryUpdateDto diaryUpdateDto) {
         // 다이어리 조회
         Diary diary = this.findValidDiaryById(diaryUpdateDto.getDiaryId());
 
@@ -115,37 +105,9 @@ public class DiaryService {
             throw new MemberNotValidException("로그인한 사용자의 다이어리가 아닙니다.");
         }
 
-        // 기존에 있는 다이어리의 첨부파일을 가져온다.
-        List<Attachment> files = diary.getAttachments();
-        List<MultipartFile> newFiles = diaryAttachmentDto.getFiles();
-
-        List<Attachment> newAttachments = new ArrayList<>();
-        List<Attachment> deleteAttachments = new ArrayList<>();
-        if(!CollectionUtils.isEmpty(newFiles)) { // 첨부파일이 있는 경우
-            if(CollectionUtils.isEmpty(files)) { // 기존의 첨부파일이 있는 경우
-                for(int i=0; i<newFiles.size(); i++) {
-                    MultipartFile newFile = newFiles.get(i);
-                    Attachment file = files.get(i);
-
-                    String uploadFileName = fileManager.uploadFile(newFile);
-                    if(file.getFileName().equals(uploadFileName)) { // 저장된 첨부파일의 이름이 같다면 삭제한다
-                        deleteAttachments.add(file);
-                    } else {
-                        Attachment attachment = Attachment.createAttachment(
-                                diary,
-                                uploadFileName,
-                                newFile.getOriginalFilename(),
-                                newFile.getSize()
-                        );
-                        newAttachments.add(attachment);
-                    }
-                }
-            }
-
-            deleteAttachments.forEach(files::remove);
-            files.addAll(newAttachments);
-        }
-
+        return diary.update(diaryUpdateDto.getSubject(),
+                diaryUpdateDto.getContents(),
+                diaryUpdateDto.getDiaryVisibility());
     }
 
     /* 다이어리 삭제 */
