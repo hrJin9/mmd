@@ -19,6 +19,9 @@ dependencies {
     implementation  "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation  "com.querydsl:querydsl-apt:${queryDslVersion}"
 
+    // amazon s3
+    implementation "org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE"
+
     // TODO : web 의존성을 domain 계층에서 의존하는게 맞는 것인지.. 어차피 지그음 domain계층이 완전하 분리되어있지 않기 때문에 어쩔수없는듯..?
     implementation 'org.springframework:spring-web'
 }

@@ -1,7 +1,6 @@
 package com.mmd.diary;
 
-import com.mmd.image.ImageSevice;
-import com.mmd.image.dto.ImageDto;
+import com.mmd.image.ImageService;
 import com.mmd.common.PageDto;
 import com.mmd.diary.dto.DiaryCreateDto;
 import com.mmd.diary.dto.DiaryFindResultDto;
@@ -18,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +27,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final FriendService friendService;
     private final MemberService memberService;
-    private final ImageSevice imageSevice;
+    private final ImageService imageService;
 
     /* 모든 다이어리 목록 조회 */
     @Transactional(readOnly = true)

@@ -24,35 +24,16 @@ public class Image extends CommonEntity {
 
     private String fileName;
 
-    private String originalFileName;
-
-    private String type;
-
-    private String path;
-
-    @Lob
-    @Column(length = 1000)
-    private byte[] data;
-
     @Builder
-    public Image(Diary diary, String fileName, String originalFileName, String type, String path, byte[] data) {
+    public Image(Diary diary, String fileName) {
         this.diary = diary;
         this.fileName = fileName;
-        this.originalFileName = originalFileName;
-        this.type = type;
-        this.path = path;
-        this.data = data;
     }
 
-
-    public static Image createAttachment(Diary diary, String fileName, String originalFileName, String type, String path, byte[] data) {
+    public static Image upload(Diary diary, String fileName) {
         return Image.builder()
                 .diary(diary)
                 .fileName(fileName)
-                .originalFileName(originalFileName)
-                .type(type)
-                .path(path)
-                .data(data)
                 .build();
     }
 }
