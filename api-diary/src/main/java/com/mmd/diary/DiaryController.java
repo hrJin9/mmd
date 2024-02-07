@@ -1,7 +1,5 @@
 package com.mmd.diary;
 
-import com.mmd.image.dto.ImageDto;
-import com.mmd.image.request.ImageRequest;
 import com.mmd.common.PagingRequest;
 import com.mmd.diary.dto.DiaryCreateDto;
 import com.mmd.diary.dto.DiaryFindResultDto;
@@ -18,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;

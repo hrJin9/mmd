@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE attachment SET deleted_date = CURRENT_TIMESTAMP WHERE image_id = ?") // soft delete
+@SQLDelete(sql = "UPDATE image SET deleted_date = CURRENT_TIMESTAMP WHERE image_id = ?") // soft delete
 @Where(clause = "deleted_date is null") // delete 되지 않은것만 조회
 public class Image extends CommonEntity {
     @Id

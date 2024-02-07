@@ -53,7 +53,7 @@ public class S3ImageUploader implements ImageManager {
             log.error("이미지 저장 실패");
             throw new FileException("이미지 저장에 실패하였습니다.");
         }
-        return BASE_URL +  DIRECTORY_DELIMS + DIRECTORY + DIRECTORY_DELIMS + formattedFileName;
+        return DIRECTORY + DIRECTORY_DELIMS + formattedFileName;
     }
 
     @Override
