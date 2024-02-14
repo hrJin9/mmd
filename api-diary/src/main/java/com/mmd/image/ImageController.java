@@ -33,7 +33,7 @@ public class ImageController {
                 .body(response);
     }
 
-    @Operation(summary = "특정 다이어리의 이미지 조회", description = "조회한 다이어리 한 개의 이미지를 모두 가져옵니다.", tags = "이미지 API")
+    @Operation(summary = "특정 다이어리의 이미지 목록 조회", description = "조회한 다이어리 한 개의 이미지를 모두 가져옵니다.", tags = "이미지 API")
     @GetMapping("/{diaryId}")
     public ResponseEntity<List<String>> findOneDiaryImages(@PathVariable Long diaryId) {
         List<String> response = imageService.findOneDiaryImages(diaryId);

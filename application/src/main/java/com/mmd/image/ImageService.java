@@ -5,6 +5,7 @@ import com.mmd.entity.Diary;
 import com.mmd.exception.ContentsNotFoundException;
 import com.mmd.image.dto.ImageFindResultDto;
 import com.mmd.repository.DiaryRepository;
+import com.mmd.repository.ImageRepository;
 import com.mmd.util.ImageManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 public class ImageService {
     private final ImageManager imageManager;
     private final DiaryRepository diaryRepository;
-    private final EntityManager entityManager;
-    
+    private final ImageRepository imageRepository;
+
     /* 대표 이미지 목록 조회 */
     @Transactional(readOnly = true)
     public List<ImageFindResultDto> findDiaryImages(List<Long> diaryIds) {
@@ -82,21 +82,17 @@ public class ImageService {
 
         // 이미지 삭제
         if(!CollectionUtils.isEmpty(deleteFileNames)) {
-            Diary diary = diaryRepository.getReferenceById(diaryId);
-            List<Image> originImages = diary.getImages();
-
-//            if(originImages.stream().noneMatch(image -> deleteFileNames.contains(image.getFileName()))) {
-//                throw new ContentsNotFoundException("삭제할 이미지가 존재하지 않습니다.");
-//            }
-//
-//            // aws s3 삭제
+            // aws s3 삭제
 //            deleteFileNames.forEach(imageManager::deleteImages);
-
+            
             // local 삭제
-            // TODO: 더티체킹 왜 안되는지??
-            originImages.removeIf(image -> deleteFileNames.contains(image.getFileName()));
+            List<Image> deleteImage = imageRepository.findAllByFileNameIn(deleteFileNames);
 
+            if(deleteImage.isEmpty() || deleteFileNames.size() != deleteImage.size()) {
+                throw new ContentsNotFoundException("삭제할 이미지가 존재하지 않습니다.");
+            }
+
+            imageRepository.deleteAll(deleteImage);
         }
     }
-
 }
