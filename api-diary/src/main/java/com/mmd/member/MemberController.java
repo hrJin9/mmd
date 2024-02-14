@@ -4,6 +4,7 @@ import com.mmd.member.mapper.ServiceDtoMapper;
 import com.mmd.member.request.MemberRequest;
 import com.mmd.security.MemberDetails;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
 
-    @Operation(summary = "일반회원 회원가입", description = "일반 회원이 회원가입합니다.", tags = "회원 API")
+    @ApiOperation(value = "일반회원 회원가입", notes = "일반 회원이 회원가입합니다.", tags = "회원 API")
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid MemberRequest.MemberCreateRequest request){
         memberService.register(ServiceDtoMapper.mapping(request));
@@ -30,7 +31,7 @@ public class MemberController {
     }
 
 
-    @Operation(summary = "일반회원 정보 수정", description = "일반 회원의 회원 정보를 수정합니다.", tags = "회원 API")
+    @ApiOperation(value = "일반회원 정보 수정", notes = "일반 회원의 회원 정보를 수정합니다.", tags = "회원 API")
     @PutMapping
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal MemberDetails memberDetails,
                                              @RequestBody @Valid MemberRequest.MemberUpdateRequest request
