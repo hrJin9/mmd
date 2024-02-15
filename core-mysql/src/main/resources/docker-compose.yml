@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mmd-mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: mmd123!@#
+      MYSQL_DATABASE: mmd
+      MYSQL_USER: mmd_dev
+      MYSQL_PASSWORD: mmd123!@#
+      TZ: Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db/mysql/data:/var/lib/mmd/mysql
