@@ -2,6 +2,7 @@ package com.mmd.application;
 
 import com.mmd.application.dto.LoginDto;
 import com.mmd.application.dto.TokenDto;
+import com.mmd.domain.MemberRole;
 import com.mmd.exception.EmailNotFoundException;
 import com.mmd.exception.TokenNotValidException;
 import com.mmd.exception.PasswordBadRequestException;
@@ -58,4 +59,13 @@ public class AuthService {
 
         refreshTokenRepository.delete(token);
     }
+
+    /* OAuth2 로그인 성공 시 ROLE 정보를 업데이트 */
+    public void updateOAuth2MemberRole(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException("존재하지 않는 이메일입니다."));
+
+        member.updateRole(MemberRole.USER);
+    }
+
 }

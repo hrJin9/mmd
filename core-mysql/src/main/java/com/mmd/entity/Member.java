@@ -1,6 +1,7 @@
 package com.mmd.entity;
 
 import com.mmd.domain.MemberRole;
+import com.mmd.domain.SocialType;
 import com.mmd.util.PasswordEncryptor;
 import com.mmd.util.PasswordValidator;
 import lombok.*;
@@ -35,8 +36,13 @@ public class Member extends CommonEntity {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    private String socialId;
+
     @Builder
-    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role) {
+    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, SocialType socialType, String socialId) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -44,6 +50,8 @@ public class Member extends CommonEntity {
         this.phone = phone;
         this.address = address;
         this.role = role;
+        this.socialType = socialType;
+        this.socialId = socialId;
     }
 
     public static Member of(String email, String password, String name, String nickName, String phone, String address) {
@@ -63,6 +71,10 @@ public class Member extends CommonEntity {
         this.name = name;
         this.phone = phone;
         this.address = address;
+    }
+
+    public void updateRole(MemberRole role) {
+        this.role = role;
     }
 }
 
