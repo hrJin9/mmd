@@ -1,0 +1,16 @@
+dependencies {
+    implementation project(':core-mysql')
+    // amazon s3
+    implementation "org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE"
+
+    // web 의존..
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

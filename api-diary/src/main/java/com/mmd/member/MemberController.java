@@ -30,7 +30,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
     @ApiOperation(value = "일반회원 정보 수정", notes = "일반 회원의 회원 정보를 수정합니다.", tags = "회원 API")
     @PutMapping
     public ResponseEntity<Void> updateMember(@AuthenticationPrincipal MemberDetails memberDetails,

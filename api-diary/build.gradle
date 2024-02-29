@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':application')
-    implementation project(':auth-jwt')
+    implementation project(':auth')
 
     // spring web
     implementation 'org.springframework.boot:spring-boot-starter-web'
