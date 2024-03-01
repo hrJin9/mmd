@@ -1,4 +1,4 @@
-package com.mmd.oauth.dto;
+package com.mmd.oauth.application.dto;
 
 import java.util.Map;
 

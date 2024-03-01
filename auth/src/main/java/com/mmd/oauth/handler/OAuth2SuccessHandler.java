@@ -2,7 +2,7 @@ package com.mmd.oauth.handler;
 
 import com.mmd.application.dto.TokenDto;
 import com.mmd.domain.MemberRole;
-import com.mmd.oauth.dto.CustomOAuth2Member;
+import com.mmd.oauth.application.dto.CustomOAuth2Member;
 import com.mmd.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
