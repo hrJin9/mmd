@@ -1,8 +1,5 @@
 package com.mmd.security.config;
 
-import com.mmd.oauth2.OAuth2Service;
-import com.mmd.oauth2.handler.OAuth2FaliureHandler;
-import com.mmd.oauth2.handler.OAuth2SuccessHandler;
 import com.mmd.security.jwt.JwtAccessDeniedHandler;
 import com.mmd.security.jwt.JwtAuthFilter;
 import com.mmd.security.jwt.JwtAuthenticationEntryPoint;
@@ -26,10 +23,10 @@ public class WebSecurityConfig {
     private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final OAuth2Service oAuth2Service;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
-    private final OAuth2FaliureHandler oAuth2FaliureHandler;
-    private static final String[] ALLOWED_URIS = {"/api/auth/**", "/api/member/register", "/api/oauth2/register"};
+//    private final OAuth2Service oAuth2Service;
+//    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+//    private final OAuth2FaliureHandler oAuth2FaliureHandler;
+    private static final String[] ALLOWED_URIS = {"/api/auth/**", "/api/member/register", "/api/oauth2/**"};
     private static final String[] SWAGGER_URIS = {"/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "swagger/**", "/swagger-ui.html"};
 
     /* filterChain 설정 */
@@ -46,12 +43,12 @@ public class WebSecurityConfig {
                 .authorizeRequests() // 요청에 대한 인가 처리
                 .antMatchers(ALLOWED_URIS).permitAll()
                 .antMatchers(SWAGGER_URIS).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .successHandler(oAuth2SuccessHandler)
-                .failureHandler(oAuth2FaliureHandler)
-                .userInfoEndpoint().userService(oAuth2Service);
+                .anyRequest().authenticated();
+//                .and()
+//                .oauth2Login()
+//                .successHandler(oAuth2SuccessHandler)
+//                .failureHandler(oAuth2FaliureHandler)
+//                .userInfoEndpoint().userService(oAuth2Service);
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);

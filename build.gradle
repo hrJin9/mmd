@@ -27,6 +27,16 @@ subprojects {
 		// lombok
 		compileOnly 'org.projectlombok:lombok'
 		annotationProcessor 'org.projectlombok:lombok'
+
+		// 자동reload
+		developmentOnly("org.springframework.boot:spring-boot-devtools")
+	}
+
+	configurations {
+		developmentOnly
+		runtimeClasspath {
+			extendsFrom developmentOnly
+		}
 	}
 }
 

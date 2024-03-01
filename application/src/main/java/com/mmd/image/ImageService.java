@@ -6,7 +6,7 @@ import com.mmd.exception.ContentsNotFoundException;
 import com.mmd.image.dto.ImageFindResultDto;
 import com.mmd.repository.DiaryRepository;
 import com.mmd.repository.ImageRepository;
-import com.mmd.util.ImageManager;
+import com.mmd.s3.ImageManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

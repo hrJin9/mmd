@@ -1,4 +1,4 @@
-package com.mmd.util;
+package com.mmd.s3;
 
 import org.springframework.web.multipart.MultipartFile;
 

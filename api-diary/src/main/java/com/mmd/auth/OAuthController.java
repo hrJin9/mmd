@@ -6,16 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/oauth2")
 public class OAuthController {
-    private OAuthService oAuthService;
+    private final OAuthService oAuthService;
 
     @GetMapping("/login/{oAuthProvider}")
     public ResponseEntity<Void> oauthLogin(@PathVariable String oAuthProvider) {
         String redirectUri = oAuthService.findLoginRedirectUri(oAuthProvider);
-
 
         return ResponseEntity.ok().build();
     }
