@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-public class OAuth2FaliureHandler implements AuthenticationFailureHandler {
+public class CustomOAuth2FaliureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
