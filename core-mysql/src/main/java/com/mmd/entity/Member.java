@@ -38,9 +38,11 @@ public class Member extends CommonEntity {
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "oauth_provider")
     private OAuthProvider OAuthProvider;
 
-    private String socialId;
+    @Column(name = "oauth_id")
+    private Long oAuthId;
 
     @Builder
     public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, OAuthProvider OAuthProvider, String socialId) {
@@ -74,8 +76,5 @@ public class Member extends CommonEntity {
         this.address = address;
     }
 
-//    public void updateRole(MemberRole role) {
-//        this.role = role;
-//    }
 }
 
