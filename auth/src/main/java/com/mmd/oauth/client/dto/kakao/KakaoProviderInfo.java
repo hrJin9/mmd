@@ -1,9 +1,14 @@
-package com.mmd.oauth.client.dto;
+package com.mmd.oauth.client.dto.kakao;
 
-import lombok.NoArgsConstructor;
+import com.mmd.domain.OAuthProvider;
+import com.mmd.oauth.client.dto.OAuthProviderInfo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public class KakakoProviderInfo implements OAuthProviderInfo {
+@RequiredArgsConstructor
+@Component
+public class KakaoProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.kakao.client-id}")
     private String clientId;
 
@@ -12,6 +17,11 @@ public class KakakoProviderInfo implements OAuthProviderInfo {
 
     @Value("${oauth2.kakao.redirect-uri}")
     private String redirectUri;
+
+    @Override
+    public OAuthProvider oAuthProvider() {
+        return OAuthProvider.KAKAO;
+    }
 
     @Override
     public String getClientId() {

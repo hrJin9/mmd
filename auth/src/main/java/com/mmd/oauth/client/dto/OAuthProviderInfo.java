@@ -1,7 +1,11 @@
 package com.mmd.oauth.client.dto;
 
+
+import com.mmd.domain.OAuthProvider;
+
 public interface OAuthProviderInfo {
-    public String getClientId();
-    public String getClientSecret();
-    public String getRedirectUri();
+    OAuthProvider oAuthProvider();
+    String getClientId();
+    String getClientSecret();
+    String getRedirectUri();
 }
