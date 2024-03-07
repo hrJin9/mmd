@@ -1,5 +1,6 @@
 package com.mmd.security.config;
 
+import com.mmd.oauth.application.OAuthService;
 import com.mmd.security.jwt.JwtAccessDeniedHandler;
 import com.mmd.security.jwt.JwtAuthFilter;
 import com.mmd.security.jwt.JwtAuthenticationEntryPoint;
@@ -23,7 +24,7 @@ public class WebSecurityConfig {
     private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-//    private final OAuth2Service oAuth2Service;
+//    private final OAuthService oAuthService;
 //    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 //    private final OAuth2FaliureHandler oAuth2FaliureHandler;
     private static final String[] ALLOWED_URIS = {"/api/auth/**", "/api/member/register", "/api/oauth2/**"};
@@ -48,7 +49,8 @@ public class WebSecurityConfig {
 //                .oauth2Login()
 //                .successHandler(oAuth2SuccessHandler)
 //                .failureHandler(oAuth2FaliureHandler)
-//                .userInfoEndpoint().userService(oAuth2Service);
+//                .userInfoEndpoint()
+//                .userService(oAuthService);
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class);
