@@ -1,4 +1,4 @@
-package com.mmd.oauth.client.dto.google;
+package com.mmd.oauth.client.dto;
 
 import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class GoogleProviderInfo implements OAuthProviderInfo {
-    @Value("${oauth2.google.client-id}")
+public class NaverProviderInfo implements OAuthProviderInfo {
+    @Value("${oauth2.naver.client-id}")
     private String clientId;
 
-    @Value("${oauth2.google.client-secret}")
+    @Value("${oauth2.naver.client-secret}")
     private String clientSecret;
 
-    @Value("${oauth2.google.redirect-uri}")
+    @Value("${oauth2.naver.redirect-uri}")
     private String redirectUri;
 
     @Override
     public OAuthProvider oAuthProvider() {
-        return OAuthProvider.GOOGLE;
+        return OAuthProvider.NAVER;
     }
 
     @Override
@@ -37,4 +37,5 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     public String getRedirectUri() {
         return this.redirectUri;
     }
+
 }

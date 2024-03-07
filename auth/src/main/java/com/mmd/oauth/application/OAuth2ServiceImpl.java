@@ -3,13 +3,17 @@
 //import com.mmd.domain.MemberRole;
 //import com.mmd.domain.OAuthProvider;
 //import com.mmd.entity.Member;
-//import com.mmd.oauth.application.dto.CustomOAuth2Member;
 //import com.mmd.oauth.application.dto.OAuth2Member;
 //import com.mmd.oauth.application.dto.OAuthAttributes;
 //import com.mmd.repository.MemberRepository;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+//import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+//import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+//import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+//import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.stereotype.Service;
 //
 //import java.util.Collections;
@@ -18,10 +22,8 @@
 //@Slf4j
 //@RequiredArgsConstructor
 //@Service
-//public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+//public class OAuth2ServiceImpl implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 //    private final MemberRepository memberRepository;
-//    private static final String NAVER_REGISTRATION_ID = "naver";
-//    private static final String KAKAO_REGISTRATION_ID = "kakao";
 //
 //    @Override
 //    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -32,7 +34,11 @@
 //
 //        // OAuth2 서비스 RegistrationId 추출(kakao/naver/google)
 //        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-//        OAuthProvider OAuthProvider = getSocialType(registrationId);
+//        String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+//
+//        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+//
+//
 //
 //        // OAuth2 key 추출
 //        String userNameAttributeName = userRequest.getClientRegistration()

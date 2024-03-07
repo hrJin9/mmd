@@ -45,7 +45,7 @@ public class Member extends CommonEntity {
     private Long oAuthId;
 
     @Builder
-    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, OAuthProvider OAuthProvider, String socialId) {
+    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, OAuthProvider OAuthProvider, Long oAuthId) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -54,7 +54,7 @@ public class Member extends CommonEntity {
         this.address = address;
         this.role = role;
         this.OAuthProvider = OAuthProvider;
-        this.socialId = socialId;
+        this.oAuthId = oAuthId;
     }
 
     public static Member of(String email, String password, String name, String nickName, String phone, String address) {

@@ -1,4 +1,4 @@
-package com.mmd.oauth.client.dto.kakao;
+package com.mmd.oauth.client.dto;
 
 import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class KakaoProviderInfo implements OAuthProviderInfo {
-    @Value("${oauth2.kakao.client-id}")
+public class GoogleProviderInfo implements OAuthProviderInfo {
+    @Value("${oauth2.google.client-id}")
     private String clientId;
 
-    @Value("${oauth2.kakao.client-secret}")
+    @Value("${oauth2.google.client-secret}")
     private String clientSecret;
 
-    @Value("${oauth2.kakao.redirect-uri}")
+    @Value("${oauth2.google.redirect-uri}")
     private String redirectUri;
 
     @Override
     public OAuthProvider oAuthProvider() {
-        return OAuthProvider.KAKAO;
+        return OAuthProvider.GOOGLE;
     }
 
     @Override

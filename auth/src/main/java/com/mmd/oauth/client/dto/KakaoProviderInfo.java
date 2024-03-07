@@ -1,4 +1,4 @@
-package com.mmd.oauth.client.dto.naver;
+package com.mmd.oauth.client.dto;
 
 import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
@@ -8,19 +8,19 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class NaverProviderInfo implements OAuthProviderInfo {
-    @Value("${oauth2.naver.client-id}")
+public class KakaoProviderInfo implements OAuthProviderInfo {
+    @Value("${oauth2.kakao.client-id}")
     private String clientId;
 
-    @Value("${oauth2.naver.client-secret}")
+    @Value("${oauth2.kakao.client-secret}")
     private String clientSecret;
 
-    @Value("${oauth2.naver.redirect-uri}")
+    @Value("${oauth2.kakao.redirect-uri}")
     private String redirectUri;
 
     @Override
     public OAuthProvider oAuthProvider() {
-        return OAuthProvider.NAVER;
+        return OAuthProvider.KAKAO;
     }
 
     @Override
@@ -37,5 +37,4 @@ public class NaverProviderInfo implements OAuthProviderInfo {
     public String getRedirectUri() {
         return this.redirectUri;
     }
-
 }
