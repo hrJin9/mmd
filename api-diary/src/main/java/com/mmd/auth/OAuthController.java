@@ -17,12 +17,13 @@ public class OAuthController {
     private final OAuthService oAuthService;
 
     @GetMapping("/login/{oAuthProvider}")
-    public ResponseEntity<Void> oauthLogin(@PathVariable OAuthProvider oAuthProvider) {
+    public ResponseEntity<String> oauthLogin(@PathVariable OAuthProvider oAuthProvider) {
         String redirectUri = oAuthService.findLoginRedirectUri(oAuthProvider);
-
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(redirectUri))
-                .build();
+//        return ResponseEntity.status(HttpStatus.FOUND)
+//                .location(URI.create(redirectUri))
+//                .build();
+        return ResponseEntity.ok()
+                .body(redirectUri);
     }
 
     @GetMapping("/{oauthProvider}")
