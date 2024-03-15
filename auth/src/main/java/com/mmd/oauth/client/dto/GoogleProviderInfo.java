@@ -15,8 +15,14 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.google.client-secret}")
     private String clientSecret;
 
-    @Value("${oauth2.google.redirect-uri}")
-    private String redirectUri;
+    @Value("${oauth2.google.auth-uri}")
+    private String authUri;
+
+    @Value("${oauth2.google.token-uri}")
+    private String tokenUri;
+
+    @Value("${oauth2.google.user-info-uri}")
+    private String userInfoUri;
 
     @Override
     public OAuthProvider oAuthProvider() {
@@ -34,7 +40,17 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     }
 
     @Override
-    public String getRedirectUri() {
-        return this.redirectUri;
+    public String getAuthUri() {
+        return this.authUri;
+    }
+
+    @Override
+    public String getTokenUri() {
+        return this.tokenUri;
+    }
+
+    @Override
+    public String getUserInfoUri() {
+        return this.userInfoUri;
     }
 }

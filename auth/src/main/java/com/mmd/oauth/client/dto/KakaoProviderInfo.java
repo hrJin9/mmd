@@ -15,8 +15,14 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.kakao.client-secret}")
     private String clientSecret;
 
-    @Value("${oauth2.kakao.redirect-uri}")
-    private String redirectUri;
+    @Value("${oauth2.kakao.auth-uri}")
+    private String authUri;
+
+    @Value("${oauth2.kakao.token-uri}")
+    private String tokenUri;
+
+    @Value("${oauth2.kakao.user-info-uri}")
+    private String userInfoUri;
 
     @Override
     public OAuthProvider oAuthProvider() {
@@ -34,7 +40,17 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
     }
 
     @Override
-    public String getRedirectUri() {
-        return this.redirectUri;
+    public String getAuthUri() {
+        return this.authUri;
+    }
+
+    @Override
+    public String getTokenUri() {
+        return this.tokenUri;
+    }
+
+    @Override
+    public String getUserInfoUri() {
+        return this.userInfoUri;
     }
 }
