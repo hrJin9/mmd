@@ -4,7 +4,6 @@ import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.application.OAuthService;
 import com.mmd.oauth.client.response.OAuthResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class OAuthController {
 
     @GetMapping("/{oauthProvider}")
     public ResponseEntity<OAuthResponse> OAuth2Register(@PathVariable OAuthProvider oauthProvider,
-                                                        @RequestParam String authorizationCode) {
+                                                        @RequestParam(name = "code") String authorizationCode) {
 //        authService.updateOAuth2MemberRole(email);
         return ResponseEntity.ok(oAuthService.login(oauthProvider, authorizationCode));
     }

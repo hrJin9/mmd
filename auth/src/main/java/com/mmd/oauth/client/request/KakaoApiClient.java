@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class KakaoApiClient implements OAuthApiClient {
     private static final String GRANT_TYPE = "authorization_code";
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
 
     @Override
     public OAuthProvider oAuthProvider() {
@@ -26,18 +26,18 @@ public class KakaoApiClient implements OAuthApiClient {
 
     @Override
     public String requestAccessToken(OAuthProviderInfo providerInfo, String authorizationCode) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("authorization_code", authorizationCode);
-        body.add("grant_type", GRANT_TYPE);
-        body.add("client_id", providerInfo.getClientId());
-        body.add("redirect_uri", providerInfo.getRedirectUri());
-
-        final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        KakaoTokens response = restTemplate.postForObject()
-
+//        final HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//
+//        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//        body.add("authorization_code", authorizationCode);
+//        body.add("grant_type", GRANT_TYPE);
+//        body.add("client_id", providerInfo.getClientId());
+//        body.add("redirect_uri", providerInfo.getRedirectUri());
+//
+//        final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+//        KakaoTokens response = restTemplate.postForObject()
+        return null;
     }
 
     @Override

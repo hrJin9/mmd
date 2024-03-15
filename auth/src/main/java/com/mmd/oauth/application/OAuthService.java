@@ -6,7 +6,6 @@ import com.mmd.oauth.client.request.OAuthApiClient;
 import com.mmd.oauth.client.response.OAuthResponse;
 import com.mmd.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,10 +28,10 @@ public class OAuthService {
         this.clients = clients.stream().collect(Collectors.toUnmodifiableMap(OAuthApiClient::oAuthProvider, Function.identity()));
     }
 
-    /* oauth 서버에 따른 redirect Uri를 알아온다. */
+    /* oauth 서버에 따른 redirect uri(auth)를 알아온다. */
     public String findLoginRedirectUri(OAuthProvider oAuthProvider) {
         OAuthProviderInfo oAuthProviderInfo = providers.get(oAuthProvider);
-        return oAuthProviderInfo.getRedirectUri();
+        return oAuthProviderInfo.getAuthUri();
     }
 
     /* OAuth 로그인한다. */
