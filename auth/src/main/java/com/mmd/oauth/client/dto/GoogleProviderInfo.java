@@ -15,6 +15,9 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.google.client-secret}")
     private String clientSecret;
 
+    @Value("${oauth2.google.end-point-uri}")
+    private String endPointUri;
+
     @Value("${oauth2.google.auth-uri}")
     private String authUri;
 
@@ -37,6 +40,11 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     @Override
     public String getClientSecret() {
         return this.clientSecret;
+    }
+
+    @Override
+    public String getEndPointUri() {
+        return this.endPointUri;
     }
 
     @Override

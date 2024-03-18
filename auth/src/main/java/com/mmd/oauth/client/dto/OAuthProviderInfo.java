@@ -7,6 +7,7 @@ public interface OAuthProviderInfo {
     OAuthProvider oAuthProvider();
     String getClientId();
     String getClientSecret();
+    String getEndPointUri();
     String getAuthUri();
     String getTokenUri();
     String getUserInfoUri();

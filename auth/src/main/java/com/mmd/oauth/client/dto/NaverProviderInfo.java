@@ -15,6 +15,9 @@ public class NaverProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.naver.client-secret}")
     private String clientSecret;
 
+    @Value("${oauth2.naver.end-point-uri}")
+    private String endPointUri;
+
     @Value("${oauth2.naver.auth-uri}")
     private String authUri;
 
@@ -36,6 +39,11 @@ public class NaverProviderInfo implements OAuthProviderInfo {
     @Override
     public String getClientSecret() {
         return this.clientSecret;
+    }
+
+    @Override
+    public String getEndPointUri() {
+        return this.endPointUri;
     }
 
     @Override

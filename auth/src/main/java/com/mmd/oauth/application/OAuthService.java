@@ -31,7 +31,11 @@ public class OAuthService {
     /* oauth 서버에 따른 redirect uri(auth)를 알아온다. */
     public String findLoginRedirectUri(OAuthProvider oAuthProvider) {
         OAuthProviderInfo oAuthProviderInfo = providers.get(oAuthProvider);
-        return oAuthProviderInfo.getAuthUri();
+
+        return oAuthProviderInfo.getEndPointUri()
+                + "?client_id=" + oAuthProviderInfo.getClientId()
+                + "&response_type=code"
+                + "&redirect_uri=" + oAuthProviderInfo.getAuthUri();
     }
 
     /* OAuth 로그인한다. */

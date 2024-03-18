@@ -4,6 +4,7 @@ import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.application.OAuthService;
 import com.mmd.oauth.client.response.OAuthResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +19,15 @@ public class OAuthController {
     @GetMapping("/login/{oAuthProvider}")
     public ResponseEntity<String> oauthLogin(@PathVariable OAuthProvider oAuthProvider) {
         String redirectUri = oAuthService.findLoginRedirectUri(oAuthProvider);
-//        return ResponseEntity.status(HttpStatus.FOUND)
-//                .location(URI.create(redirectUri))
-//                .build();
-        return ResponseEntity.ok()
-                .body(redirectUri);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(redirectUri))
+                .build();
     }
 
     @GetMapping("/{oauthProvider}")
     public ResponseEntity<OAuthResponse> OAuth2Register(@PathVariable OAuthProvider oauthProvider,
                                                         @RequestParam(name = "code") String authorizationCode) {
+        // authorization code를 받는다.
 //        authService.updateOAuth2MemberRole(email);
         return ResponseEntity.ok(oAuthService.login(oauthProvider, authorizationCode));
     }

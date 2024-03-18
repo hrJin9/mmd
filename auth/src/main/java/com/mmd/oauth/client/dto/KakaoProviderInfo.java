@@ -15,6 +15,9 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.kakao.client-secret}")
     private String clientSecret;
 
+    @Value("${oauth2.kakao.end-point-uri}")
+    private String endPointUri;
+
     @Value("${oauth2.kakao.auth-uri}")
     private String authUri;
 
@@ -27,6 +30,11 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
     @Override
     public OAuthProvider oAuthProvider() {
         return OAuthProvider.KAKAO;
+    }
+
+    @Override
+    public String getEndPointUri() {
+        return this.endPointUri;
     }
 
     @Override
