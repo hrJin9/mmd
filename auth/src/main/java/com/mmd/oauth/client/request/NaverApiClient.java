@@ -2,6 +2,7 @@ package com.mmd.oauth.client.request;
 
 import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.client.dto.KakaoTokens;
+import com.mmd.oauth.client.dto.NaverTokens;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
 import com.mmd.oauth.client.response.OAuthResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Component
-public class KakaoApiClient implements OAuthApiClient {
+public class NaverApiClient implements OAuthApiClient {
     private final RestTemplate restTemplate;
 
     @Override
@@ -33,10 +34,10 @@ public class KakaoApiClient implements OAuthApiClient {
         body.add("grant_type", providerInfo.getGrantType());
         body.add("client_id", providerInfo.getClientId());
         body.add("client_secret", providerInfo.getClientSecret());
-        body.add("redirect_uri", providerInfo.getAuthUri());
+        body.add("state", providerInfo.getState());
 
         final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        KakaoTokens response = restTemplate.postForObject(providerInfo.getTokenUri(), request, KakaoTokens.class);
+        NaverTokens response = restTemplate.postForObject(providerInfo.getTokenUri(), request, NaverTokens.class);
         return response.getAccessToken();
     }
 

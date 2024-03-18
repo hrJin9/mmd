@@ -27,8 +27,6 @@ public class OAuthController {
     @GetMapping("/{oauthProvider}")
     public ResponseEntity<OAuthResponse> OAuth2Register(@PathVariable OAuthProvider oauthProvider,
                                                         @RequestParam(name = "code") String authorizationCode) {
-        // authorization code를 받는다.
-//        authService.updateOAuth2MemberRole(email);
         return ResponseEntity.ok(oAuthService.login(oauthProvider, authorizationCode));
     }
 }

@@ -1,6 +1,7 @@
 package com.mmd.oauth.client.request;
 
 import com.mmd.domain.OAuthProvider;
+import com.mmd.oauth.client.dto.GoogleTokens;
 import com.mmd.oauth.client.dto.KakaoTokens;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
 import com.mmd.oauth.client.response.OAuthResponse;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Component
-public class KakaoApiClient implements OAuthApiClient {
+public class GoogleApiClient implements OAuthApiClient {
     private final RestTemplate restTemplate;
 
     @Override
@@ -36,7 +37,7 @@ public class KakaoApiClient implements OAuthApiClient {
         body.add("redirect_uri", providerInfo.getAuthUri());
 
         final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        KakaoTokens response = restTemplate.postForObject(providerInfo.getTokenUri(), request, KakaoTokens.class);
+        GoogleTokens response = restTemplate.postForObject(providerInfo.getTokenUri(), request, GoogleTokens.class);
         return response.getAccessToken();
     }
 

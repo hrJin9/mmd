@@ -27,14 +27,20 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.kakao.user-info-uri}")
     private String userInfoUri;
 
+    @Value("${oauth2.kakao.grant-type}")
+    private String grantType;
+
     @Override
     public OAuthProvider oAuthProvider() {
         return OAuthProvider.KAKAO;
     }
 
     @Override
-    public String getEndPointUri() {
-        return this.endPointUri;
+    public String getEndPointUrl() {
+        return this.endPointUri
+                + "?client_id=" + this.getClientId()
+                + "&response_type=code"
+                + "&redirect_uri=" + this.getAuthUri();
     }
 
     @Override
@@ -60,5 +66,15 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
     @Override
     public String getUserInfoUri() {
         return this.userInfoUri;
+    }
+
+    @Override
+    public String getGrantType() {
+        return this.grantType;
+    }
+
+    @Override
+    public String getState() {
+        return null;
     }
 }

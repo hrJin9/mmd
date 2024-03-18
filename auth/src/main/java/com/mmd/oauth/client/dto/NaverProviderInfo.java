@@ -26,6 +26,13 @@ public class NaverProviderInfo implements OAuthProviderInfo {
 
     @Value("${oauth2.naver.user-info-uri}")
     private String userInfoUri;
+
+    @Value("${oauth2.naver.grant-type}")
+    private String grantType;
+
+    @Value("${oauth2.naver.state}")
+    private String state;
+
     @Override
     public OAuthProvider oAuthProvider() {
         return OAuthProvider.NAVER;
@@ -42,8 +49,12 @@ public class NaverProviderInfo implements OAuthProviderInfo {
     }
 
     @Override
-    public String getEndPointUri() {
-        return this.endPointUri;
+    public String getEndPointUrl() {
+        return this.endPointUri
+                + "?client_id=" + this.clientId
+                + "&response_type=code"
+                + "&redirect_uri=" + this.authUri
+                + "&state=" + this.state;
     }
 
     @Override
@@ -59,5 +70,15 @@ public class NaverProviderInfo implements OAuthProviderInfo {
     @Override
     public String getUserInfoUri() {
         return this.userInfoUri;
+    }
+
+    @Override
+    public String getGrantType() {
+        return this.grantType;
+    }
+
+    @Override
+    public String getState() {
+        return this.state;
     }
 }

@@ -27,6 +27,12 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     @Value("${oauth2.google.user-info-uri}")
     private String userInfoUri;
 
+    @Value("${oauth2.google.grant-type}")
+    private String grantType;
+
+    @Value("${oauth2.google.scope}")
+    private String scope;
+
     @Override
     public OAuthProvider oAuthProvider() {
         return OAuthProvider.GOOGLE;
@@ -43,8 +49,12 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     }
 
     @Override
-    public String getEndPointUri() {
-        return this.endPointUri;
+    public String getEndPointUrl() {
+        return this.endPointUri
+                + "?client_id=" + this.clientId
+                + "&redirect_uri=" + this.authUri
+                + "&response_type=code"
+                + "&scope=" + this.scope;
     }
 
     @Override
@@ -60,5 +70,15 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     @Override
     public String getUserInfoUri() {
         return this.userInfoUri;
+    }
+
+    @Override
+    public String getGrantType() {
+        return this.grantType;
+    }
+
+    @Override
+    public String getState() {
+        return null;
     }
 }

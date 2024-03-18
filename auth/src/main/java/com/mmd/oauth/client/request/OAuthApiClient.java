@@ -6,7 +6,6 @@ import com.mmd.oauth.client.response.OAuthResponse;
 
 public interface OAuthApiClient {
     OAuthProvider oAuthProvider();
-
     String requestAccessToken(OAuthProviderInfo oAuthProviderInfo, String authorizationCode);
     OAuthResponse requestOAuthResponse(String accessToken);
 
