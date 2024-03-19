@@ -3,7 +3,7 @@ package com.mmd.oauth.application;
 import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.client.dto.*;
 import com.mmd.oauth.client.request.OAuthApiClient;
-import com.mmd.oauth.client.response.OAuthResponse;
+import com.mmd.oauth.client.response.OAuthUserInfo;
 import com.mmd.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,11 +35,11 @@ public class OAuthService {
     }
 
     /* OAuth 로그인한다. */
-    public OAuthResponse login(OAuthProvider oAuthProvider, String authorizationCode) {
+    public OAuthUserInfo login(OAuthProvider oAuthProvider, String authorizationCode) {
         OAuthApiClient client = clients.get(oAuthProvider);
         OAuthProviderInfo providerInfo = providers.get(oAuthProvider);
         String accessToken = client.requestAccessToken(providerInfo, authorizationCode);
-        return client.requestOAuthResponse(accessToken);
+        return client.requestUserInfo(providerInfo, accessToken);
     }
 
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GoogleOAuthResponse implements OAuthResponse {
+public class GoogleOAuthUserInfo implements OAuthUserInfo {
     @JsonProperty("sub")
     private Long id;
 

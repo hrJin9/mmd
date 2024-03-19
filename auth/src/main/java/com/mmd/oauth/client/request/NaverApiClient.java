@@ -1,10 +1,9 @@
 package com.mmd.oauth.client.request;
 
 import com.mmd.domain.OAuthProvider;
-import com.mmd.oauth.client.dto.KakaoTokens;
 import com.mmd.oauth.client.dto.NaverTokens;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
-import com.mmd.oauth.client.response.OAuthResponse;
+import com.mmd.oauth.client.response.OAuthUserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,7 @@ public class NaverApiClient implements OAuthApiClient {
 
     @Override
     public OAuthProvider oAuthProvider() {
-        return OAuthProvider.KAKAO;
+        return OAuthProvider.NAVER;
     }
 
     @Override
@@ -42,7 +41,7 @@ public class NaverApiClient implements OAuthApiClient {
     }
 
     @Override
-    public OAuthResponse requestOAuthResponse(String accessToken) {
+    public OAuthUserInfo requestUserInfo(OAuthProviderInfo providerInfo, String accessToken) {
         return null;
     }
 }

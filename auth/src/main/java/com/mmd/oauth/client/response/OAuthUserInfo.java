@@ -2,7 +2,7 @@ package com.mmd.oauth.client.response;
 
 import com.mmd.domain.OAuthProvider;
 
-public interface OAuthResponse {
+public interface OAuthUserInfo {
     String getEmail();
     String getNickname();
     OAuthProvider getOAuthProvider();

@@ -3,12 +3,11 @@ package com.mmd.oauth.client.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mmd.domain.OAuthProvider;
-import com.mmd.oauth.client.response.OAuthResponse;
 import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NaverOAuthResponse implements OAuthResponse {
+public class NaverOAuthUserInfo implements OAuthUserInfo {
     @JsonProperty("response")
     private NaverAccount naverAccount;
 

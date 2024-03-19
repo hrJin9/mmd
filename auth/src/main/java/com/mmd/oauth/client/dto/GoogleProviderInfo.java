@@ -5,6 +5,7 @@ import com.mmd.oauth.client.dto.OAuthProviderInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.util.UriEncoder;
 
 @RequiredArgsConstructor
 @Component
@@ -52,9 +53,9 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     public String getEndPointUrl() {
         return this.endPointUri
                 + "?client_id=" + this.clientId
-                + "&redirect_uri=" + this.authUri
+                + "&redirect_uri=" + this.authUri + "/authorize"
                 + "&response_type=code"
-                + "&scope=" + this.scope;
+                + "&scope=" + UriEncoder.encode(scope);
     }
 
     @Override
