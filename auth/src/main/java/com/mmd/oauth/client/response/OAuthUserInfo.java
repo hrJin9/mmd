@@ -6,5 +6,5 @@ public interface OAuthUserInfo {
     String getEmail();
     String getNickname();
     OAuthProvider getOAuthProvider();
-    Long getOAuthId();
+    String getOAuthId();
 }
