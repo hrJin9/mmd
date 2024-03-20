@@ -40,7 +40,7 @@ public class KakaoProviderInfo implements OAuthProviderInfo {
         return this.endPointUri
                 + "?client_id=" + this.getClientId()
                 + "&response_type=code"
-                + "&redirect_uri=" + this.getAuthUri()  + "/authorize";
+                + "&redirect_uri=" + this.getAuthUri();
     }
 
     @Override

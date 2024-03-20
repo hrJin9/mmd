@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mmd.domain.OAuthProvider;
 import lombok.Getter;
 
+import java.util.UUID;
+
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoOAuthUserInfo implements OAuthUserInfo {
@@ -18,18 +20,19 @@ public class KakaoOAuthUserInfo implements OAuthUserInfo {
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class KakaoAccount {
         private KakaoProfile profile;
-        private String email;
+//        private String email;
     }
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class KakaoProfile {
         private String nickname;
+//        private String phone_number;
     }
 
     @Override
     public String getEmail() {
-        return kakaoAccount.getEmail();
+        return "kakaoEmail" + UUID.randomUUID() +"@kakaomail.com";
     }
 
     @Override
