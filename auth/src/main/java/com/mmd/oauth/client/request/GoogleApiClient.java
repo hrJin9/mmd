@@ -33,8 +33,6 @@ public class GoogleApiClient implements OAuthApiClient {
 
     @Override
     public String requestAccessToken(OAuthProviderInfo providerInfo, String authorizationCode) {
-        String url = providerInfo.getAuthUri() + "/token";
-
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -43,7 +41,7 @@ public class GoogleApiClient implements OAuthApiClient {
         body.add("grant_type", providerInfo.getGrantType());
         body.add("client_id", providerInfo.getClientId());
         body.add("client_secret", providerInfo.getClientSecret());
-        body.add("redirect_uri", url);
+        body.add("redirect_uri", providerInfo.getAuthUri());
 
         final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
         GoogleTokens response = restTemplate.postForObject(providerInfo.getTokenUri(), request, GoogleTokens.class);
@@ -52,14 +50,12 @@ public class GoogleApiClient implements OAuthApiClient {
 
     @Override
     public OAuthUserInfo requestUserInfo(OAuthProviderInfo providerInfo, String accessToken) {
-        String uri = providerInfo.getUserInfoUri();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.setBearerAuth(accessToken);
+        String url = providerInfo.getUserInfoUri()
+                + "?access_token=" + accessToken;
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        HttpEntity<?> request = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(uri, request, String.class);
+        HttpEntity<?> request = new HttpEntity<>(body);
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class, request);
         String responseBody = response.getBody();
 
         try {

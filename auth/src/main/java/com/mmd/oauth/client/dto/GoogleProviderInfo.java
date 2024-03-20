@@ -53,7 +53,7 @@ public class GoogleProviderInfo implements OAuthProviderInfo {
     public String getEndPointUrl() {
         return this.endPointUri
                 + "?client_id=" + this.clientId
-                + "&redirect_uri=" + this.authUri + "/authorize"
+                + "&redirect_uri=" + this.authUri
                 + "&response_type=code"
                 + "&scope=" + UriEncoder.encode(scope);
     }
