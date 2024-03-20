@@ -39,13 +39,13 @@ public class Member extends CommonEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "oauth_provider")
-    private OAuthProvider OAuthProvider;
+    private OAuthProvider oAuthProvider;
 
     @Column(name = "oauth_id")
-    private Long oAuthId;
+    private String oAuthId;
 
     @Builder
-    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, OAuthProvider OAuthProvider, Long oAuthId) {
+    public Member(String email, String password, String name, String nickName, String phone, String address, MemberRole role, OAuthProvider oAuthProvider, String oAuthId) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -53,7 +53,7 @@ public class Member extends CommonEntity {
         this.phone = phone;
         this.address = address;
         this.role = role;
-        this.OAuthProvider = OAuthProvider;
+        this.oAuthProvider = oAuthProvider;
         this.oAuthId = oAuthId;
     }
 
@@ -74,6 +74,16 @@ public class Member extends CommonEntity {
         this.name = name;
         this.phone = phone;
         this.address = address;
+    }
+
+    public static Member registerByOauth(String email, String nickName, OAuthProvider oAuthProvider, String oauthId) {
+        return Member.builder()
+                .email(email)
+                .nickName(nickName)
+                .oAuthProvider(oAuthProvider)
+                .oAuthId(oauthId)
+                .role(MemberRole.USER)
+                .build();
     }
 
 }

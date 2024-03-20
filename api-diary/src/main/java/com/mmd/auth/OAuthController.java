@@ -1,5 +1,6 @@
 package com.mmd.auth;
 
+import com.mmd.application.dto.TokenDto;
 import com.mmd.domain.OAuthProvider;
 import com.mmd.oauth.application.OAuthService;
 import com.mmd.oauth.client.response.OAuthUserInfo;
@@ -25,8 +26,8 @@ public class OAuthController {
     }
 
     @GetMapping("/{oauthProvider}/authorize")
-    public ResponseEntity<OAuthUserInfo> OAuth2Register(@PathVariable OAuthProvider oauthProvider,
-                                                        @RequestParam(name = "code") String authorizationCode) {
+    public ResponseEntity<TokenDto> OAuth2Register(@PathVariable OAuthProvider oauthProvider,
+                                                   @RequestParam(name = "code") String authorizationCode) {
         return ResponseEntity.ok(oAuthService.login(oauthProvider, authorizationCode));
     }
 }
