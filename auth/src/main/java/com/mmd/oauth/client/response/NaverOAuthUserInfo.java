@@ -1,5 +1,6 @@
 package com.mmd.oauth.client.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mmd.domain.OAuthProvider;
@@ -14,9 +15,10 @@ public class NaverOAuthUserInfo implements OAuthUserInfo {
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class NaverAccount {
-        private Long id;
+        private String id;
         private String email;
         private String nickname;
+        private String mobile;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class NaverOAuthUserInfo implements OAuthUserInfo {
     }
 
     @Override
-    public Long getOAuthId() {
+    public String getOAuthId() {
         return naverAccount.id;
     }
 }

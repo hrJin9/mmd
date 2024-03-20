@@ -53,7 +53,7 @@ public class NaverProviderInfo implements OAuthProviderInfo {
         return this.endPointUri
                 + "?client_id=" + this.clientId
                 + "&response_type=code"
-                + "&redirect_uri=" + this.authUri + "/authorize"
+                + "&redirect_uri=" + this.authUri
                 + "&state=" + this.state;
     }
 

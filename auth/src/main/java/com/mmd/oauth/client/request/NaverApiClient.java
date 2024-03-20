@@ -1,13 +1,18 @@
 package com.mmd.oauth.client.request;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmd.domain.OAuthProvider;
+import com.mmd.exception.OAuth2Exception;
 import com.mmd.oauth.client.dto.NaverTokens;
 import com.mmd.oauth.client.dto.OAuthProviderInfo;
+import com.mmd.oauth.client.response.NaverOAuthUserInfo;
 import com.mmd.oauth.client.response.OAuthUserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -17,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class NaverApiClient implements OAuthApiClient {
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     @Override
     public OAuthProvider oAuthProvider() {
@@ -42,6 +48,17 @@ public class NaverApiClient implements OAuthApiClient {
 
     @Override
     public OAuthUserInfo requestUserInfo(OAuthProviderInfo providerInfo, String accessToken) {
-        return null;
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(accessToken);
+
+        HttpEntity<String> request = new HttpEntity<>(null, header);
+        ResponseEntity<String> response = restTemplate.postForEntity(providerInfo.getUserInfoUri(), request, String.class);
+        String responseBody = response.getBody();
+
+        try {
+            return objectMapper.readValue(responseBody, NaverOAuthUserInfo.class);
+        } catch (JsonProcessingException e) {
+            throw new OAuth2Exception("naver oauth2 직렬화 실패");
+        }
     }
 }

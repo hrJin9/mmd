@@ -9,7 +9,7 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GoogleOAuthUserInfo implements OAuthUserInfo {
     @JsonProperty("sub")
-    private Long id;
+    private String id;
 
     @JsonProperty("given_name")
     private String nickName;
@@ -33,7 +33,7 @@ public class GoogleOAuthUserInfo implements OAuthUserInfo {
     }
 
     @Override
-    public Long getOAuthId() {
+    public String getOAuthId() {
         return id;
     }
 }

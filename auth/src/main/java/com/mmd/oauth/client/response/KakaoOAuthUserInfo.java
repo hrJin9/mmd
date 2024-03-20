@@ -11,7 +11,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoOAuthUserInfo implements OAuthUserInfo {
     @JsonProperty("id")
-    private Long id;
+    private String id;
 
     @JsonProperty("kakao_account")
     private KakaoAccount kakaoAccount;
@@ -46,7 +46,7 @@ public class KakaoOAuthUserInfo implements OAuthUserInfo {
     }
 
     @Override
-    public Long getOAuthId() {
+    public String getOAuthId() {
         return this.id;
     }
 }
