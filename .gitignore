@@ -38,3 +38,4 @@ out/
 
 ### auth ###
 !**/src/main/resources/**.yml
+!**/src/main/resources/**.properties
